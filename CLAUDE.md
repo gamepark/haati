@@ -63,6 +63,35 @@ app/src/                      # Client-side React UI
   └── images/                 # Game assets
 ```
 
+## Haati material (from `app/public/rules-fr.pdf` and the publisher's files)
+
+Images live in `app/src/images/` (sources: `kDrive/Licences/TIKI Editions/Haati`, resized).
+
+| Material | Count | Images | Notes |
+|----------|-------|--------|-------|
+| Animal cards | 24, all distinct | `cards/animals/{Elephant,Mouse,Tiger}{1-8}.jpg`, back `cards/AnimalBack.jpg` | 3 families × values 1 to 8 |
+| Character cards | 8, all distinct | `cards/characters/{Hunter,Merchant,Maharaja,Thief}{Win,Lose}.jpg`, back `cards/CharacterBack.jpg` | 4 characters × 2 bets (✓ win the duel / ✗ lose it) |
+| Board | 1 | `boards/Board.jpg` | the portrait layout, the one the digital version uses |
+| Collection tokens | 1 Palace + 1 Jungle | `tokens/collection/{Palace,Jungle}{1,2}.png` | two faces each, face drawn at random at setup |
+| Round victory tokens | **2 identical copies** | `tokens/RoundVictory{1,2}.png` | files 1/2 are the two faces |
+| Prestige tokens | 16 in the box, **unlimited here** | `tokens/prestige/Favor{1,3,6}.png` (white side) / `Honor{1,3,6}.png` (black side) | see below |
+
+### Favour and Honour are money, not tokens
+
+The box holds 16 double-sided Prestige tokens, but how many of each value is irrelevant to play: the
+supply never runs out. So they are **not** individual items to count — each is a `MaterialMoney` with
+denominations 6, 3 and 1, and an infinite stock shown as a static heap.
+
+- Two currencies, hence two `MaterialType`s (`Favor`, `Honor`): they are scored apart (Favour is
+  lost between rounds, Honour is kept) even though both add up to Prestige.
+- `units = [6, 3, 1]` — highest first, `MaterialMoney` makes change on its own. Read a player's
+  total with `this.material(MaterialType.Favor).location(…).player(p).money(units).count`.
+- The item id is the denomination, so `images` is keyed by 1, 3 and 6.
+- The supply is a `staticItems` heap on a reserve location, never part of the game state; money is
+  created and destroyed there rather than moved.
+- Models to copy: `../greylune/app/src/material/Tokens.tsx` (`CoinDescription`, unlimited bank) and
+  `../aurealis/rules/src/material/Coin.ts`.
+
 ## Core Concepts
 
 ### MaterialItem
