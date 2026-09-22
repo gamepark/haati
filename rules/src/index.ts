@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpecV2 } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { HaatiRules } from './HaatiRules'
+export { HaatiOptionsSpecV2 } from './HaatiOptions'
+export { HaatiSetup } from './HaatiSetup'
