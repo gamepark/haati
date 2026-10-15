@@ -295,6 +295,19 @@ class ReserveLocator extends PileLocator {
   }
 }
 
+/**
+ * The place of the discarded Character cards, outlined: the tutorial shows it while it is still empty.
+ * Elsewhere, it is only drawn when a card may be dropped there.
+ */
+class CharacterDiscardDescription extends DropAreaDescription {
+  width = CARD_WIDTH
+  height = CARD_HEIGHT
+  borderRadius = 0.4
+  extraCss = css`
+    border: 0.12em dashed rgba(253, 246, 227, 0.8);
+  `
+}
+
 /** The empty place of each half of the elephant, in black and white, waiting for the Round victory tokens. */
 class VictorySlotDescription extends LocationDescription {
   width = VICTORY_WIDTH
@@ -337,7 +350,10 @@ export const Locators: Partial<Record<LocationType, Locator<number, MaterialType
   [LocationType.AnimalSetAside]: new DeckLocator({ coordinates: ANIMAL_SET_ASIDE }),
   [LocationType.AnimalDiscard]: new DeckLocator({ coordinates: ANIMAL_DISCARD }),
   [LocationType.CharacterDeck]: new DeckLocator({ coordinates: CHARACTER_DECK }),
-  [LocationType.CharacterDiscard]: new DeckLocator({ coordinates: CHARACTER_DISCARD }),
+  [LocationType.CharacterDiscard]: new DeckLocator({
+    coordinates: CHARACTER_DISCARD,
+    locationDescription: new CharacterDiscardDescription()
+  }),
   [LocationType.PlayerHand]: new PlayerHandLocator(),
   [LocationType.PlayerDuel]: new DuelLocator(),
   [LocationType.Palace]: new PlaceLocator(LocationType.Palace),

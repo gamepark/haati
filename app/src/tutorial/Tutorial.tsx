@@ -42,8 +42,9 @@ const scriptNumbers: Record<string, string> = {
   'play-mouse': '3.1',
   'tiger-beats-mouse': '3.2',
   'mouse-jungle': '3.3',
-  character: '3.4',
-  'choose-card': '3.5',
+  'character-piles': '3.4',
+  character: '3.5',
+  'choose-card': '3.6',
   bet: '4.1',
   'play-elephant': '4.2',
   'play-merchant': '4.3',
@@ -219,6 +220,14 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
         margin: { top: 10 }
       }),
       move: {}
+    },
+    {
+      popup: { text: text('character-piles'), position: { y: -20 } },
+      focus: (game) => ({
+        materials: [this.material(game, MaterialType.CharacterCard).location(LocationType.CharacterDeck)],
+        locations: [{ type: LocationType.CharacterDiscard }],
+        margin: { top: 12, left: 4, right: 4 }
+      })
     },
     {
       popup: { text: text('character'), position: { x: 15, y: -10 } },

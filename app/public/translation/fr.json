@@ -248,6 +248,7 @@
     "play-mouse": "À vous : jouez votre <b>Souris 1</b> !",
     "tiger-beats-mouse": "Le Tigre bat la Souris : votre adversaire remporte le duel. <b>Le gagnant résout toujours les effets du Palais en premier</b> : son Tigre lui rapporte 1 Faveur par Tigre dans sa Jungle, puis lui fait piocher une carte Personnage.",
     "mouse-jungle": "Perdre un duel n’est pas toujours mauvais : votre Souris va dans votre Jungle et vous fait <b>piocher une carte Personnage</b>.",
+    "character-piles": "Voici la <b>pioche des cartes Personnage</b> et sa <b>défausse</b>.",
     "character": "Vous avez remarqué la carte <b>Personnage</b> qui a rejoint votre main ? Vous pouvez l’associer à votre carte Animal pour parier sur l’issue du duel ! Je vous en dis plus au prochain duel.",
     "choose-card": "Cette fois, c’est vous qui avez perdu : vous choisissez en premier la carte qui complète votre main. Prenez l’<b>Éléphant 4</b>, votre adversaire prendra alors la Souris de force 6.",
     "bet": "Une carte Personnage se joue face cachée, en plus de l’animal. C’est un pari sur votre victoire <win></win> ou votre défaite <lose></lose>. Si vous gagnez votre pari, vous activez l’effet du Personnage ; sinon, la carte est défaussée. La <b>Marchande</b> vous fait par exemple gagner 2 Faveurs si vous remportez votre duel.",
