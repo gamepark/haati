@@ -10,6 +10,7 @@ import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import { haatiScoring } from './scoring/HaatiScoring'
 import { theme } from './theme'
+import { haatiTutorial } from './tutorial/Tutorial'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
       locators={Locators}
       animations={gameAnimations}
       scoring={haatiScoring}
+      tutorial={haatiTutorial}
       theme={theme}
     >
       <App />

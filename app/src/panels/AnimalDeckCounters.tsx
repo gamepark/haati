@@ -4,7 +4,7 @@ import { HaatiRules } from '@gamepark/haati/HaatiRules'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { animalPiles } from '@gamepark/haati/rules/NewRoundRule'
-import { useMaterialContext, useRules } from '@gamepark/react-game'
+import { useFocusContext, useMaterialContext, useRules } from '@gamepark/react-game'
 import { maxBy } from 'es-toolkit'
 import { Locators } from '../locators/Locators'
 import { ANIMAL_DECK_Y, CARD_HEIGHT, CARD_WIDTH, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
@@ -25,7 +25,12 @@ const COUNTER_INSET = COUNTER_SIZE / 2 + COUNTER_MARGIN
 export const AnimalDeckCounters = () => {
   const rules = useRules<HaatiRules>()
   const context = useMaterialContext()
+  const { focus } = useFocusContext()
   if (!rules) return null
+  // During a focus of the tutorial, a counter is darkened like the material, unless its pile is in the focus.
+  const isPlayedDown = (pile: number) =>
+    !!focus?.highlight &&
+    !focus.materials?.some((material) => material.getItems().some((item) => item.location.type === LocationType.AnimalDeck && item.location.id === pile))
   return (
     <>
       {animalPiles.map((pile) => {
@@ -43,7 +48,7 @@ export const AnimalDeckCounters = () => {
         const x = (centre.x ?? 0) + sx * (CARD_HEIGHT / 2 - COUNTER_INSET)
         const y = (centre.y ?? 0) + sy * (CARD_WIDTH / 2 - COUNTER_INSET)
         return (
-          <div key={pile} css={[counterCss, placeCss(x, y)]}>
+          <div key={pile} css={[counterCss, placeCss(x, y), isPlayedDown(pile) && playedDownCss]}>
             <span css={figureCss}>{pileCards.length}</span>
           </div>
         )
@@ -55,6 +60,10 @@ export const AnimalDeckCounters = () => {
 const placeCss = (x: number, y: number) => css`
   left: ${TABLE_WIDTH / 2 + x}em;
   top: ${TABLE_HEIGHT / 2 + y}em;
+`
+
+const playedDownCss = css`
+  filter: brightness(0.45);
 `
 
 const counterCss = css`

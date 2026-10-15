@@ -38,11 +38,15 @@ import {
   JUNGLE_SPOT_Y,
   PALACE_SPOT_Y,
   placeY,
+  PLAYER_BAND_BOTTOM,
   PLAYER_COLLECTION_GAP,
   PLAYER_COLLECTION_X,
   PLAYER_COLLECTION_Y,
   PLAYER_FAVOR_Y,
   PLAYER_HONOR_Y,
+  PLAYER_PANEL_HEIGHT,
+  PLAYER_PANEL_WIDTH,
+  PLAYER_PANEL_X,
   PLAYER_VICTORY,
   PRESTIGE_BANK,
   PRESTIGE_ROW_LENGTH,
@@ -183,7 +187,22 @@ class PrestigeTotalDescription extends LocationDescription {
   width = 0.01
   height = 0.01
   help = PrestigeTotalHelp
+
+  getLocationSize(location: Location) {
+    if (location.id === PLAYER_PANEL_AREA) return { width: PLAYER_PANEL_WIDTH, height: PLAYER_PANEL_HEIGHT }
+    if (location.id === PLAYER_PRESTIGE_AREA) return { width: PLAYER_PANEL_WIDTH, height: PRESTIGE_BAND_HEIGHT }
+    return { width: this.width, height: this.height }
+  }
 }
+
+/**
+ * The area of a player's panel, as a place of their Prestige (id): the panel is drawn by the interface,
+ * not as material, so this area lets the tutorial focus on it like on any other place.
+ */
+export const PLAYER_PANEL_AREA = 1
+/** The Prestige band at the bottom of the panel, about a third of its height. */
+export const PLAYER_PRESTIGE_AREA = 2
+const PRESTIGE_BAND_HEIGHT = 2.8
 
 /**
  * A player's Prestige, in two rows from the outer edge inwards, highest values first: Honor above,
@@ -193,6 +212,13 @@ class PrestigeTotalDescription extends LocationDescription {
 class PlayerPrestigeLocator extends Locator {
   /** The help about the whole Prestige of a player, opened from their panel. */
   locationDescription = new PrestigeTotalDescription()
+
+  getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
+    const x = side(location.player, context) * (PLAYER_PANEL_X + PLAYER_PANEL_WIDTH / 2)
+    if (location.id === PLAYER_PANEL_AREA) return { x, y: PLAYER_BAND_BOTTOM - PLAYER_PANEL_HEIGHT / 2 }
+    if (location.id === PLAYER_PRESTIGE_AREA) return { x, y: PLAYER_BAND_BOTTOM - PRESTIGE_BAND_HEIGHT / 2 }
+    return {}
+  }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
     const tokens = context.rules.material(context.type).location(LocationType.PlayerPrestige).player(item.location.player)

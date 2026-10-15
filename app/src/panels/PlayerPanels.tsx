@@ -4,7 +4,7 @@ import { HaatiRules } from '@gamepark/haati/HaatiRules'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { countPrestige, PrestigeType } from '@gamepark/haati/material/Prestige'
-import { StyledPlayerPanel, usePlay, usePlayers, useRules } from '@gamepark/react-game'
+import { StyledPlayerPanel, useFocusContext, usePlay, usePlayers, useRules } from '@gamepark/react-game'
 import { MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
 import { PLAYER_BAND_BOTTOM, PLAYER_PANEL_HEIGHT, PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
@@ -35,7 +35,11 @@ export const PlayerPanels = () => {
   const players = usePlayers<number>({ sortFromMe: true })
   const rules = useRules<HaatiRules>()
   const play = usePlay<MaterialMove>()
+  const { focus } = useFocusContext()
   if (!rules) return null
+  // During a focus of the tutorial, a panel is darkened like the material, unless the focus is on it.
+  const isPlayedDown = (player: number) =>
+    !!focus?.highlight && !focus.locations?.some((location) => location.type === LocationType.PlayerPrestige && location.player === player)
   const prestigeHelp = (type: PrestigeType, player: number) =>
     play(MaterialMoveBuilder.displayMaterialHelp(type, { id: 1, location: { type: LocationType.PlayerPrestige, player } }), { local: true })
   return (
@@ -44,7 +48,7 @@ export const PlayerPanels = () => {
         const favorTotal = countPrestige(rules, MaterialType.Favor, player.id)
         const honorTotal = countPrestige(rules, MaterialType.Honor, player.id)
         return (
-          <div key={player.id} css={[blockCss, blockPlace(index === 0)]}>
+          <div key={player.id} css={[blockCss, blockPlace(index === 0), isPlayedDown(player.id) && playedDownCss]}>
             <StyledPlayerPanel player={player} activeRing css={panelCss} />
             <div css={tilesCss}>
               <button css={[tileCss, favorCss]} onClick={() => prestigeHelp(MaterialType.Favor, player.id)} aria-label={t('help.prestige.favor.title')}>
@@ -87,6 +91,11 @@ const blockCss = css`
   background: linear-gradient(160deg, ${colors.parchment} 0%, ${colors.sand} 100%);
   border: 0.1em solid ${colors.gold};
   box-shadow: 0 0.15em 0.4em rgba(0, 0, 0, 0.35);
+  transition: filter 0.6s;
+`
+
+const playedDownCss = css`
+  filter: brightness(0.45);
 `
 
 const panelCss = css`
