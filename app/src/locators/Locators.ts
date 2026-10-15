@@ -3,46 +3,56 @@ import { Collection } from '@gamepark/haati/material/Collection'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { css } from '@emotion/react'
-import { prestigeUnits } from '@gamepark/haati/material/Prestige'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
-import { DeckLocator, DropAreaDescription, ItemContext, ListLocator, LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
+import {
+  DeckLocator,
+  DropAreaDescription,
+  HandLocator,
+  ItemContext,
+  ListLocator,
+  LocationDescription,
+  Locator,
+  MaterialContext,
+  PileLocator
+} from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { PrestigeTotalHelp } from '../material/help/PrestigeTotalHelp'
 import roundVictory1 from '../images/tokens/RoundVictory1.png'
 import roundVictory2 from '../images/tokens/RoundVictory2.png'
 import {
+  ANIMAL_DECK_ROTATE_Z,
+  ANIMAL_DECK_Y,
   ANIMAL_DISCARD,
   ANIMAL_SET_ASIDE,
-  BANK_FAN_ANGLE,
-  BANK_FAN_RADIUS,
-  BOTTOM_ROW_Y,
+  BANK_RADIUS,
   CARD_HEIGHT,
   CARD_WIDTH,
   CHARACTER_DECK,
   CHARACTER_DISCARD,
   DUEL_CHARACTER_X,
   DUEL_X,
-  FAVOR_BANK,
-  HAND_STEP,
-  HAND_X,
-  HONOR_BANK,
+  DUEL_Y,
+  HAND,
+  HAND_GAP_ANGLE,
+  HAND_RADIUS,
   JUNGLE_SPOT_Y,
   PALACE_SPOT_Y,
   placeY,
   PLAYER_COLLECTION_GAP,
   PLAYER_COLLECTION_X,
+  PLAYER_COLLECTION_Y,
   PLAYER_FAVOR_Y,
   PLAYER_HONOR_Y,
-  PLAYER_VICTORY_X,
+  PLAYER_VICTORY,
+  PRESTIGE_BANK,
   PRESTIGE_ROW_LENGTH,
   PRESTIGE_ROW_STEP,
   PRESTIGE_ROW_X,
   ROW_STEP,
   ROW_X,
-  SHARED_ROTATE_Z,
-  SHARED_ROW_Y,
   side,
   VICTORY_HEIGHT,
+  VICTORY_RESERVE,
   VICTORY_WIDTH
 } from './TableLayout'
 
@@ -83,7 +93,11 @@ class PlaceLocator extends Locator {
   }
 }
 
-/** The cards committed to the duel: the Animal card by the board, the Character card just behind. */
+/**
+ * The cards committed to the duel, at the outer edge of their owner's side: the Animal card, then the
+ * Character card beside it. Their reveal is played as a show in the middle of the screen (see the game
+ * animations), after which they wait here to be resolved.
+ */
 class DuelLocator extends Locator {
   locationDescription = new DropAreaDescription({ width: CARD_WIDTH, height: CARD_HEIGHT, borderRadius: 0.4 })
 
@@ -92,49 +106,60 @@ class DuelLocator extends Locator {
   }
 
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
-    return { x: side(location.player, context) * DUEL_X, y: 0 }
+    return { x: side(location.player, context) * DUEL_X, y: DUEL_Y }
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
     const x = context.type === MaterialType.CharacterCard ? DUEL_CHARACTER_X : DUEL_X
-    return { x: side(item.location.player, context) * x, y: 0 }
+    return { x: side(item.location.player, context) * x, y: DUEL_Y }
   }
 }
 
 /**
- * The hand: Animal cards first, then Character cards, from the duel outwards. While the cards of the
- * duel are being chosen, those already committed keep their place in the hand, so that the cards left
- * do not move under the pointer.
+ * The hand, fanned out in the bottom outer corner: Animal cards first, then Character cards. While the
+ * cards of the duel are being chosen, those already committed keep their place in the hand, so that the
+ * cards left do not move under the pointer. Only the viewer's own hand does so: a gap in the opponent's hand
+ * would tell which of their cards they played.
  */
-class HandLocator extends Locator {
-  getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
-    const choosing = context.rules.game.rule?.id === RuleId.ChooseCards
-    const hand = (type: MaterialType) =>
-      context.rules
-        .material(type)
-        .location((location) => location.type === LocationType.PlayerHand || (choosing && location.type === LocationType.PlayerDuel))
-        .player(item.location.player)
-    const animals = hand(MaterialType.AnimalCard)
+class PlayerHandLocator extends HandLocator {
+  radius = HAND_RADIUS
+  gapMaxAngle = HAND_GAP_ANGLE
+  maxAngle = 4 * HAND_GAP_ANGLE
+
+  getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
+    return { x: side(location.player, context) * HAND.x, y: HAND.y }
+  }
+
+  hand(type: MaterialType, player: number | undefined, context: MaterialContext) {
+    const choosing = context.rules.game.rule?.id === RuleId.ChooseCards && player === context.player
+    return context.rules
+      .material(type)
+      .location((location) => location.type === LocationType.PlayerHand || (choosing && location.type === LocationType.PlayerDuel))
+      .player(player)
+  }
+
+  countItems(location: Location, context: MaterialContext) {
+    return this.hand(MaterialType.AnimalCard, location.player, context).length + this.hand(MaterialType.CharacterCard, location.player, context).length
+  }
+
+  getItemIndex(item: MaterialItem, context: ItemContext) {
+    const animals = this.hand(MaterialType.AnimalCard, item.location.player, context)
     const index =
       context.type === MaterialType.AnimalCard
         ? animals.getIndexes().indexOf(context.index)
-        : animals.length + hand(MaterialType.CharacterCard).getIndexes().indexOf(context.index)
-    return { x: side(item.location.player, context) * (HAND_X + Math.max(0, index) * HAND_STEP), y: 0, z: index * 0.05 }
+        : animals.length + this.hand(MaterialType.CharacterCard, item.location.player, context).getIndexes().indexOf(context.index)
+    return Math.max(0, index)
   }
 }
 
-/** A pile of cards at one end of the board, lying sideways: a quarter turn above the board, the other way below. */
-class SharedDeckLocator extends DeckLocator {
-  constructor(readonly position?: Partial<Coordinates>) {
-    super()
-  }
-
+/** A pile of Animal cards lying sideways at one end of the board: a quarter turn above the board, the other way below. */
+class AnimalDeckLocator extends DeckLocator {
   getCoordinates(location: Location): Partial<Coordinates> {
-    return this.position ?? { x: 0, y: location.id === 1 ? -SHARED_ROW_Y : SHARED_ROW_Y }
+    return { x: 0, y: location.id === 1 ? -ANIMAL_DECK_Y : ANIMAL_DECK_Y }
   }
 
   getRotateZ(location: Location) {
-    return (this.getCoordinates(location).y ?? 0) < 0 ? SHARED_ROTATE_Z : -SHARED_ROTATE_Z
+    return location.id === 1 ? ANIMAL_DECK_ROTATE_Z : -ANIMAL_DECK_ROTATE_Z
   }
 }
 
@@ -144,21 +169,12 @@ class CollectionSpotLocator extends Locator {
   }
 }
 
-/** The tokens a player wins, along the bottom edge of their side, from the board outwards. */
-class PlayerTokensLocator extends ListLocator {
-  constructor(
-    readonly x: number,
-    readonly step: number
-  ) {
-    super()
-  }
+/** The Collection tokens a player won, one above the other, beside their Prestige. */
+class PlayerCollectionLocator extends ListLocator {
+  gap = { y: PLAYER_COLLECTION_GAP }
 
   getCoordinates(location: Location, context: MaterialContext) {
-    return { x: side(location.player, context) * this.x, y: BOTTOM_ROW_Y }
-  }
-
-  getGap(location: Location, context: MaterialContext) {
-    return { x: side(location.player, context) * this.step }
+    return { x: side(location.player, context) * PLAYER_COLLECTION_X, y: PLAYER_COLLECTION_Y }
   }
 }
 
@@ -220,26 +236,31 @@ export const victoryHalf = (item: MaterialItem, context: ItemContext): number =>
 }
 
 /**
- * The shared supply. The unlimited Favor and Honor tokens are fanned out, 6 at the back, then 3, then 1.
- * The Round victory tokens not won yet are kept out of sight, under the board: the players' places
- * show where they will go.
+ * The shared supply. The unlimited Favor and Honor tokens lie in one heap, white and black mixed, every
+ * token turned its own way. The Round victory tokens not won yet stand beside the pile of Animal cards
+ * below the board, each showing the half of the elephant still to be won.
  */
-class ReserveLocator extends Locator {
+class ReserveLocator extends PileLocator {
+  radius = BANK_RADIUS
+
+  getCoordinates() {
+    return PRESTIGE_BANK
+  }
+
+  getPileId() {
+    return 'prestige'
+  }
+
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
-    if (context.type === MaterialType.RoundVictoryToken) return { x: 0, y: 0, z: -2 }
-    const bank = context.type === MaterialType.Favor ? FAVOR_BANK : HONOR_BANK
-    const angle = this.getItemRotateZ(item, context) * (Math.PI / 180)
-    const rank = prestigeUnits.indexOf(item.id)
-    return {
-      x: bank.x + BANK_FAN_RADIUS * Math.sin(angle),
-      y: bank.y + BANK_FAN_RADIUS * (1 - Math.cos(angle)),
-      z: rank * 0.05
+    if (context.type === MaterialType.RoundVictoryToken) {
+      return { x: VICTORY_RESERVE.x + (victoryHalf(item, context) * VICTORY_WIDTH) / 2, y: VICTORY_RESERVE.y, z: 0.1 }
     }
+    return super.getItemCoordinates(item, context)
   }
 
   getItemRotateZ(item: MaterialItem, context: ItemContext) {
     if (context.type === MaterialType.RoundVictoryToken) return 0
-    return (prestigeUnits.indexOf(item.id) - 1) * BANK_FAN_ANGLE
+    return super.getItemRotateZ(item, context)
   }
 }
 
@@ -260,7 +281,7 @@ class VictorySlotDescription extends LocationDescription {
   }
 }
 
-/** The Round victory tokens a player won, in the outer corner of their side, halves side by side. */
+/** The Round victory tokens a player won, below their panel, halves side by side. */
 class PlayerVictoryLocator extends Locator {
   locationDescription = new VictorySlotDescription()
 
@@ -270,28 +291,28 @@ class PlayerVictoryLocator extends Locator {
   }
 
   getCoordinates(location: Location, context: MaterialContext) {
-    return { x: side(location.player, context) * PLAYER_VICTORY_X + ((location.x ?? 0) * VICTORY_WIDTH) / 2, y: BOTTOM_ROW_Y }
+    return { x: side(location.player, context) * PLAYER_VICTORY.x + ((location.x ?? 0) * VICTORY_WIDTH) / 2, y: PLAYER_VICTORY.y }
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
-    const x = side(item.location.player, context) * PLAYER_VICTORY_X + (victoryHalf(item, context) * VICTORY_WIDTH) / 2
-    return { x, y: BOTTOM_ROW_Y, z: 0.1 }
+    const x = side(item.location.player, context) * PLAYER_VICTORY.x + (victoryHalf(item, context) * VICTORY_WIDTH) / 2
+    return { x, y: PLAYER_VICTORY.y, z: 0.1 }
   }
 }
 
 export const Locators: Partial<Record<LocationType, Locator<number, MaterialType, LocationType>>> = {
   [LocationType.Board]: new BoardLocator(),
-  [LocationType.AnimalDeck]: new SharedDeckLocator(),
-  [LocationType.AnimalSetAside]: new SharedDeckLocator(ANIMAL_SET_ASIDE),
-  [LocationType.AnimalDiscard]: new SharedDeckLocator(ANIMAL_DISCARD),
-  [LocationType.CharacterDeck]: new SharedDeckLocator(CHARACTER_DECK),
-  [LocationType.CharacterDiscard]: new SharedDeckLocator(CHARACTER_DISCARD),
-  [LocationType.PlayerHand]: new HandLocator(),
+  [LocationType.AnimalDeck]: new AnimalDeckLocator(),
+  [LocationType.AnimalSetAside]: new DeckLocator({ coordinates: ANIMAL_SET_ASIDE }),
+  [LocationType.AnimalDiscard]: new DeckLocator({ coordinates: ANIMAL_DISCARD }),
+  [LocationType.CharacterDeck]: new DeckLocator({ coordinates: CHARACTER_DECK }),
+  [LocationType.CharacterDiscard]: new DeckLocator({ coordinates: CHARACTER_DISCARD }),
+  [LocationType.PlayerHand]: new PlayerHandLocator(),
   [LocationType.PlayerDuel]: new DuelLocator(),
   [LocationType.Palace]: new PlaceLocator(LocationType.Palace),
   [LocationType.Jungle]: new PlaceLocator(LocationType.Jungle),
   [LocationType.CollectionSpot]: new CollectionSpotLocator(),
-  [LocationType.PlayerCollection]: new PlayerTokensLocator(PLAYER_COLLECTION_X, PLAYER_COLLECTION_GAP),
+  [LocationType.PlayerCollection]: new PlayerCollectionLocator(),
   [LocationType.Reserve]: new ReserveLocator(),
   [LocationType.PlayerRoundVictory]: new PlayerVictoryLocator(),
   [LocationType.PlayerPrestige]: new PlayerPrestigeLocator()

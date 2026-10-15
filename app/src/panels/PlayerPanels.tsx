@@ -7,7 +7,7 @@ import { countPrestige, PrestigeType } from '@gamepark/haati/material/Prestige'
 import { StyledPlayerPanel, usePlay, usePlayers, useRules } from '@gamepark/react-game'
 import { MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
-import { PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, PLAYER_PANEL_Y, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
+import { PLAYER_BAND_BOTTOM, PLAYER_PANEL_HEIGHT, PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 import characterBack from '../images/cards/CharacterBack.jpg'
@@ -18,11 +18,10 @@ import honor from '../images/tokens/prestige/Honor1.png'
 const PANEL_EM_WIDTH = 28
 
 /**
- * The tiles of the Favor and Honor totals, and the Prestige token lying along them: wider than the tile,
- * and long enough for the value printed at its top to fall beyond the right edge.
+ * The Prestige token lying along the tiles of the Favor and Honor totals: wider than the tile, and long
+ * enough for the value printed at its top to fall beyond the right edge.
  */
-const TILE_HEIGHT = 1.7
-const TOKEN_WIDTH = 2
+const TOKEN_WIDTH = 2.6
 const TOKEN_LENGTH = (TOKEN_WIDTH * 5.76) / 1.63
 
 /**
@@ -70,13 +69,15 @@ export const PlayerPanels = () => {
 
 const blockPlace = (left: boolean) => css`
   left: ${(left ? -PLAYER_PANEL_X - PLAYER_PANEL_WIDTH : PLAYER_PANEL_X) + TABLE_WIDTH / 2}em;
-  top: ${PLAYER_PANEL_Y + TABLE_HEIGHT / 2}em;
+  top: ${PLAYER_BAND_BOTTOM + TABLE_HEIGHT / 2}em;
+  transform: translateY(-100%);
 `
 
 /** The whole block wears the parchment and the gold rim the panel alone wore before. */
 const blockCss = css`
   position: absolute;
   width: ${PLAYER_PANEL_WIDTH}em;
+  height: ${PLAYER_PANEL_HEIGHT}em;
   box-sizing: border-box;
   padding: 0.25em;
   display: flex;
@@ -90,15 +91,25 @@ const blockCss = css`
 
 const panelCss = css`
   position: relative;
+  flex: none;
   font-size: ${(PLAYER_PANEL_WIDTH - 0.7) / PANEL_EM_WIDTH}em;
   background: transparent;
   border: none;
   box-shadow: none;
   --gp-ring-color-1: ${colors.gold};
   --gp-ring-color-2: ${colors.plumLight};
+
+  /* A bigger avatar than the framework's, with its turn ring: the ring is the block just before the name. */
+  > div:first-of-type,
+  > div:has(+ h2) {
+    width: 7.2em;
+    height: 7.2em;
+  }
 `
 
+/** Below the name, the row of the Favor and Honor tiles and the Prestige band share the height left equally. */
 const tilesCss = css`
+  flex: 1;
   display: flex;
   gap: 0.25em;
 `
@@ -106,7 +117,7 @@ const tilesCss = css`
 const tileCss = css`
   position: relative;
   flex: 1;
-  height: ${TILE_HEIGHT}em;
+  min-height: 0;
   padding: 0;
   overflow: hidden;
   display: flex;
@@ -134,7 +145,7 @@ const lyingToken = (image: string, veil: string) => css`
     content: '';
     position: absolute;
     left: 0;
-    top: ${(TILE_HEIGHT - TOKEN_WIDTH) / 2}em;
+    top: calc(50% - ${TOKEN_WIDTH / 2}em);
     width: ${TOKEN_WIDTH}em;
     height: ${TOKEN_LENGTH}em;
     background: url(${image}) center / 100% 100% no-repeat;
@@ -172,8 +183,6 @@ const figureCss = css`
 
 /** The plum back of the Character cards, zoomed in past its white border and darkened. */
 const prestigeCss = css`
-  flex: none;
-  height: 1.4em;
   background: url(${characterBack}) center / 160% auto no-repeat;
   color: ${colors.parchment};
 
@@ -190,6 +199,9 @@ const prestigeTextCss = css`
   position: relative;
   z-index: 1;
   font-family: ${fontDisplay};
-  font-size: 0.85em;
+  font-size: 1.1em;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  white-space: nowrap;
   text-shadow: 0 0.05em 0.2em rgba(0, 0, 0, 0.6);
 `

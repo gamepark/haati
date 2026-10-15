@@ -92,5 +92,5 @@ export const helpLocation = css`
   border-top: 0.06em dashed rgba(140, 115, 84, 0.45);
 `
 
-/** Components given to every <Trans> of the help dialogs. */
-export const helpComponents = { b: <strong /> }
+/** Components given to every <Trans> of the help dialogs: bold, and superscript for ordinals (3<sup>e</sup>). */
+export const helpComponents = { b: <strong />, sup: <sup /> }

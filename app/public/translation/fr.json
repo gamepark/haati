@@ -218,8 +218,7 @@
     },
     "board": {
       "title": "Le duel des Maharajas",
-      "intro": "Une manche se joue en <b>9 tours</b> ({turns}). Chaque tour se déroule dans cet ordre :",
-      "turns-left": "{count, plural, one {dernier tour} other {# tours restants}}",
+      "intro": "Une manche se joue en <b>9 tours</b>. Chaque tour se déroule dans cet ordre :",
       "choose-title": "1. Choix des cartes (simultané)",
       "duel-title": "2. Résolution du duel",
       "effects-title": "3. Effets et Collections",

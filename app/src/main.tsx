@@ -8,6 +8,7 @@ import { gameAnimations } from './animations/GameAnimations'
 import { App } from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
+import { haatiScoring } from './scoring/HaatiScoring'
 import { theme } from './theme'
 
 createRoot(document.getElementById('root')!).render(
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
+      scoring={haatiScoring}
       theme={theme}
     >
       <App />

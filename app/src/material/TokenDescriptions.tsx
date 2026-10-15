@@ -5,7 +5,7 @@ import { prestigeUnits } from '@gamepark/haati/material/Prestige'
 import { BoardDescription, ItemContext, MaterialContext, MoneyDescription, RoundTokenDescription, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { victoryHalf } from '../locators/Locators'
-import { BOARD_HEIGHT, BOARD_WIDTH, VICTORY_HEIGHT, VICTORY_WIDTH } from '../locators/TableLayout'
+import { BOARD_HEIGHT, BOARD_WIDTH, COLLECTION_DIAMETER, PRESTIGE_HEIGHT, VICTORY_HEIGHT, VICTORY_WIDTH } from '../locators/TableLayout'
 import { BoardHelp } from './help/BoardHelp'
 import { CollectionTokenHelp } from './help/CollectionTokenHelp'
 import { PrestigeHelp } from './help/PrestigeHelp'
@@ -36,7 +36,7 @@ class HaatiBoardDescription extends BoardDescription {
 
 /** The face drawn at random is the rotation of the token: 0 shows image 1, 1 shows image 2. */
 class CollectionTokenDescription extends RoundTokenDescription<number, MaterialType, LocationType, Collection> {
-  diameter = 4.97
+  diameter = COLLECTION_DIAMETER
   transparency = true
   help = CollectionTokenHelp
 
@@ -77,18 +77,18 @@ class RoundVictoryTokenDescription extends TokenDescription {
 
 /**
  * Favor and Honor are money: one item per denomination (the id) and place, carrying a quantity. The
- * supply is unlimited, so it is drawn as one static token of each value in the reserve.
+ * supply is unlimited, so it is drawn as a static heap of 3 tokens of each value in the reserve.
  */
 class PrestigeDescription extends MoneyDescription<number, MaterialType, LocationType, number> {
   width = 1.63
-  height = 5.76
+  height = PRESTIGE_HEIGHT
   borderRadius = 0.8
   help = PrestigeHelp
   stockLocation = { type: LocationType.Reserve }
 
   constructor(readonly images: Record<number, string>) {
     super()
-    this.staticItems = prestigeUnits.map((id) => ({ id, location: this.stockLocation }))
+    this.staticItems = prestigeUnits.map((id) => ({ id, quantity: 3, location: this.stockLocation }))
   }
 }
 

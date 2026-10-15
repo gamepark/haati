@@ -1,15 +1,25 @@
+import { css, keyframes } from '@emotion/react'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { MaterialGameAnimations } from '@gamepark/react-game'
+import { RuleId } from '@gamepark/haati/rules/RuleId'
+import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
+import { isElephantCompleted, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
+import { DUEL_CHARACTER_X, DUEL_SHOW_CHARACTER_X, DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
 
 /**
  * Most moves keep the framework's pace. Faster are only the housekeeping a player does not need to
  * follow: the Character pile made again from its discard when it runs out, and the Animal cards
  * gathered and laid out in piles between two rounds (the top card of each pile still turns over at
  * the usual pace). The Favor and Honor tokens move at half the usual second.
+ *
+ * The reveal of the duel is a show: once the last card turns over, the duel cards leave the table for
+ * the middle of the screen, the two Animal cards clash, then all of them go back to their place, where
+ * the players resolve them. The last Round victory token is a show too (see VictoryShow).
  */
 export const gameAnimations = new MaterialGameAnimations()
+
+const DUEL_SHOW_DURATION = 5000
 
 const isPrestige = (move: MaterialMove) => 'itemType' in move && (move.itemType === MaterialType.Favor || move.itemType === MaterialType.Honor)
 
@@ -22,7 +32,78 @@ const isAnimalPileLaidOut = (move: MaterialMove) =>
   move.itemType === MaterialType.AnimalCard &&
   (move.location.type === LocationType.AnimalSetAside || (move.location.type === LocationType.AnimalDeck && !move.location.rotation))
 
+/** The duel cards still face down, before the move is played. */
+const hiddenDuelCards = ({ rules }: MaterialContext) =>
+  [MaterialType.AnimalCard, MaterialType.CharacterCard].reduce(
+    (count, type) =>
+      count +
+      rules
+        .material(type)
+        .location(LocationType.PlayerDuel)
+        .rotation((rotation) => !rotation).length,
+    0
+  )
+
+/** The rotation of the last duel card still face down: the one after which the duel is decided. */
+const isLastDuelReveal = (move: MaterialMove, context: MaterialContext) =>
+  context.rules.game.rule?.id === RuleId.RevealDuel &&
+  isMoveItem(move) &&
+  move.location.type === LocationType.PlayerDuel &&
+  !!move.location.rotation &&
+  hiddenDuelCards(context) === 1
+
+/**
+ * The path of a duel card during the show, as keyframes of its table transform followed by a shift, a
+ * scale and a tilt. The card revealed last is shown face up from the start: it does not turn over on the way.
+ */
+const duelShow = (context: ItemContext) => {
+  const item = context.rules.material(context.type).getItem(context.index)
+  const s = side(item.location.player, context)
+  const character = context.type === MaterialType.CharacterCard
+  const base = transformItem(context)
+    .filter((transform) => transform !== 'rotateY(180deg)')
+    .join(' ')
+  const centre = { x: s * ((character ? DUEL_SHOW_CHARACTER_X : DUEL_SHOW_X) - (character ? DUEL_CHARACTER_X : DUEL_X)), y: -DUEL_Y }
+  // Towards the opponent: the Animal cards draw back, strike, bounce off; the Character cards follow a little.
+  const inward = -s * (character ? 0.3 : 1)
+  const frame = (dx: number, dy: number, z: number, scale: number, tilt: number) =>
+    `transform: ${base} translate3d(${dx}em, ${dy}em, ${z}em) scale(${scale}) rotateZ(${tilt}deg);`
+  const at = (shift: number, tilt = 0) => frame(centre.x + shift * inward, centre.y, 10, DUEL_SHOW_SCALE, tilt * inward)
+  return keyframes`
+    0% { ${frame(0, 0, 0, 1, 0)} }
+    38% { ${at(0)} }
+    48% { ${at(-1.5)} }
+    54% { ${at(1.2, 5)} }
+    60% { ${at(-0.4, -2)} }
+    66%, 86% { ${at(0)} }
+    100% { ${frame(0, 0, 0, 1, 0)} }
+  `
+}
+
+/** The viewer's own hand, mixed after each draw: the opponent cannot follow it, so there is nothing to show. */
+const isOwnHandShuffled = (move: MaterialMove, context: MaterialContext) =>
+  isShuffle(move) &&
+  move.itemType === MaterialType.AnimalCard &&
+  context.rules.material(MaterialType.AnimalCard).getItem(move.indexes[0]).location.player === context.player
+
+gameAnimations
+  .configure(isElephantCompleted)
+  .duration(VICTORY_SHOW_DURATION)
+  .itemAnimation((context, animation) => victoryShow(context, animation.move, animation.duration))
+gameAnimations.configure(isOwnHandShuffled).skip()
 gameAnimations.configure(isPrestige).duration(500)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && !isShuffle(move)).duration(150)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && isShuffle(move)).duration(500)
 gameAnimations.configure(isAnimalPileLaidOut).duration(150)
+gameAnimations
+  .configure(isLastDuelReveal)
+  .duration(DUEL_SHOW_DURATION)
+  .itemAnimation((context, animation) => {
+    const item = context.rules.material(context.type).getItem(context.index)
+    if (item.location.type !== LocationType.PlayerDuel) return
+    return css`
+      > * {
+        animation: ${duelShow(context)} ${animation.duration}s ease-in-out forwards;
+      }
+    `
+  })
