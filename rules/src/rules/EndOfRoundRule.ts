@@ -2,7 +2,7 @@ import { isMoveItem, ItemMove, MaterialMove, MaterialRulesPart } from '@gamepark
 import { beats } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { countPrestige, gainPrestige, totalPrestige } from '../material/Prestige'
+import { countPrestige, prestigeLocation, totalPrestige } from '../material/Prestige'
 import { Memory } from '../Memory'
 import { RuleId } from './RuleId'
 
@@ -51,12 +51,13 @@ export class EndOfRoundRule extends MaterialRulesPart {
       moves.push(this.endGame())
       return moves
     }
+    // Each Honor token is turned over into a Favor token of the same value.
     for (const player of this.game.players) {
-      const honor = countPrestige(this, MaterialType.Honor, player)
+      const honor = this.material(MaterialType.Honor).location(LocationType.PlayerPrestige).player(player)
       moves.push(
         ...this.material(MaterialType.Favor).location(LocationType.PlayerPrestige).player(player).deleteItems(),
-        ...this.material(MaterialType.Honor).location(LocationType.PlayerPrestige).player(player).deleteItems(),
-        ...gainPrestige(this, MaterialType.Favor, player, honor)
+        ...honor.deleteItems(),
+        ...honor.getItems().map((token) => this.material(MaterialType.Favor).createItem({ id: token.id, location: prestigeLocation(player), quantity: token.quantity }))
       )
     }
     moves.push(...this.prepareNextRound(), this.startRule(RuleId.NewRound))

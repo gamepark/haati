@@ -44,6 +44,12 @@ const check = (game: Game) => {
     const characters = rules.material(MaterialType.CharacterCard).location(LocationType.PlayerHand).player(player).length
     if (game.rule?.id !== RuleId.DiscardCharacter) expect(characters).toBeLessThanOrEqual(CHARACTER_HAND_LIMIT)
     expect(rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length).toBeLessThanOrEqual(2)
+    // Prestige is always held in the fewest tokens: at most one 3 and two 1.
+    for (const type of [MaterialType.Favor, MaterialType.Honor]) {
+      const tokens = rules.material(type).location(LocationType.PlayerPrestige).player(player)
+      expect(tokens.id(3).getQuantity()).toBeLessThanOrEqual(1)
+      expect(tokens.id(1).getQuantity()).toBeLessThanOrEqual(2)
+    }
   }
 }
 

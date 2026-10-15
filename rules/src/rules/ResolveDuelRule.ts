@@ -1,3 +1,4 @@
+import { sumBy } from 'es-toolkit'
 import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Animal, getAnimal, hasCollection } from '../material/Animal'
 import { CharacterCard } from '../material/Character'
@@ -126,22 +127,29 @@ export class ResolveDuelRule extends HaatiRule {
     return moves
   }
 
-  /** A Collection is 4 consecutive values in the Palace or in the Jungle, rewarded once per round. */
+  /**
+   * A Collection is 4 consecutive values in the Palace or in the Jungle, rewarded once per round. The
+   * Collection token comes to the player first, then its reward, so that one sees where the tokens come
+   * from. Both Collections may be completed at once: their rewards are added up into a single gain of
+   * each kind.
+   */
   checkCollections(): MaterialMove[] {
-    return this.material(MaterialType.CollectionToken)
+    const tokens = this.material(MaterialType.CollectionToken)
       .location(LocationType.CollectionSpot)
       .getItems<Collection>()
-      .flatMap((token) => {
+      .filter((token) => {
         const cards = this.material(MaterialType.AnimalCard).location(collectionPlace[token.id]).player(this.player).getItems<number>()
-        if (!hasCollection(cards.map((card) => card.id))) return []
-        const reward = getCollectionReward(token.id, token.location.rotation)
-        return [
-          ...gainPrestige(this, MaterialType.Favor, this.player, reward.favor),
-          ...gainPrestige(this, MaterialType.Honor, this.player, reward.honor),
-          this.material(MaterialType.CollectionToken)
-            .id(token.id)
-            .moveItem({ type: LocationType.PlayerCollection, player: this.player, rotation: token.location.rotation })
-        ]
+        return hasCollection(cards.map((card) => card.id))
       })
+    const rewards = tokens.map((token) => getCollectionReward(token.id, token.location.rotation))
+    return [
+      ...tokens.map((token) =>
+        this.material(MaterialType.CollectionToken)
+          .id(token.id)
+          .moveItem({ type: LocationType.PlayerCollection, player: this.player, rotation: token.location.rotation })
+      ),
+      ...gainPrestige(this, MaterialType.Favor, this.player, sumBy(rewards, (reward) => reward.favor)),
+      ...gainPrestige(this, MaterialType.Honor, this.player, sumBy(rewards, (reward) => reward.honor))
+    ]
   }
 }
