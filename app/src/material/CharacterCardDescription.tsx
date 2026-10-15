@@ -10,6 +10,7 @@ import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
+import { handCardAngle, handCardCss } from './handHover'
 import { CharacterCardHelp } from './help/CharacterCardHelp'
 import characterBack from '../images/cards/CharacterBack.jpg'
 import hunterLose from '../images/cards/characters/HunterLose.jpg'
@@ -51,7 +52,12 @@ class CharacterCardDescription extends CardDescription<number, MaterialType, Loc
       })
     // In hand, the button goes at the bottom of the card, off the picture.
     const inHand = item.location.type === LocationType.PlayerHand
-    return actions.length ? <ItemActions actions={actions} y={inHand ? HAND_BUTTON_Y : 0} /> : null
+    return actions.length ? <ItemActions actions={actions} y={inHand ? HAND_BUTTON_Y : 0} angle={handCardAngle(item, context)} /> : null
+  }
+
+  getItemExtraCss(item: MaterialItem, context: ItemContext<number, MaterialType, LocationType>) {
+    const angle = handCardAngle(item, context)
+    return angle === undefined ? undefined : handCardCss(angle)
   }
 }
 

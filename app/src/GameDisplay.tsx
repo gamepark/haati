@@ -2,6 +2,7 @@ import { css } from '@emotion/react'
 import { DevToolsHub, GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { TABLE_HEIGHT, TABLE_WIDTH } from './locators/TableLayout'
 import { PlayerPanels } from './panels/PlayerPanels'
+import { HandHoverStyles } from './material/HandHoverStyles'
 import { TutorialFocusEffects } from './tutorial/TutorialFocusEffects'
 import { AnimalDeckCounters } from './panels/AnimalDeckCounters'
 
@@ -20,6 +21,7 @@ export function GameDisplay() {
         <GameTableNavigation />
         <PlayerPanels />
         <TutorialFocusEffects />
+        <HandHoverStyles />
         <AnimalDeckCounters />
         {process.env.NODE_ENV === 'development' && <DevToolsHub fabBottom="calc(5em)" />}
       </GameTable>

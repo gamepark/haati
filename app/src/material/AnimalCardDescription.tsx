@@ -10,6 +10,7 @@ import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y, side } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
+import { handCardAngle, handCardCss } from './handHover'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
 import animalBack from '../images/cards/AnimalBack.jpg'
 import elephant1 from '../images/cards/animals/Elephant1.jpg'
@@ -91,7 +92,19 @@ class AnimalCardDescription extends CardDescription<number, MaterialType, Locati
     // the family and the value printed in the corner. In hand, it goes at the bottom, off the picture.
     const inRow = item.location.type === LocationType.Palace || item.location.type === LocationType.Jungle
     const inHand = item.location.type === LocationType.PlayerHand
-    return <ItemActions actions={actions} x={inRow ? -side(item.location.player, context) * 1.9 : 0} y={inHand ? HAND_BUTTON_Y : 0} />
+    return (
+      <ItemActions
+        actions={actions}
+        x={inRow ? -side(item.location.player, context) * 1.9 : 0}
+        y={inHand ? HAND_BUTTON_Y : 0}
+        angle={handCardAngle(item, context)}
+      />
+    )
+  }
+
+  getItemExtraCss(item: MaterialItem<number, LocationType>, context: ItemContext<number, MaterialType, LocationType>) {
+    const angle = handCardAngle(item, context)
+    return angle === undefined ? undefined : handCardCss(angle)
   }
 }
 

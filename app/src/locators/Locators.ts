@@ -146,6 +146,11 @@ class PlayerHandLocator extends HandLocator {
     return this.hand(MaterialType.AnimalCard, location.player, context).length + this.hand(MaterialType.CharacterCard, location.player, context).length
   }
 
+  /** The hover of the cards in hand is HandHoverStyles', which keeps the card under the pointer and its buttons on it. */
+  getHoverTransform() {
+    return []
+  }
+
   getItemIndex(item: MaterialItem, context: ItemContext) {
     const animals = this.hand(MaterialType.AnimalCard, item.location.player, context)
     const index =
