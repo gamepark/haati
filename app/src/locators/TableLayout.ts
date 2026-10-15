@@ -22,6 +22,9 @@ export const BOARD_HEIGHT = 26
 export const PALACE_SPOT_Y = -6
 export const JUNGLE_SPOT_Y = 5.85
 
+/** Centre of the Elephant, Tiger, Mouse cycle printed on the board, where the turns left are shown. */
+export const CYCLE_Y = 0
+
 /** The Palace and Jungle rows of each player, as close to the duel as the cards lying sideways allow. */
 export const ROW_Y = 9.1
 export const ROW_X = 8.3
@@ -32,38 +35,60 @@ export const DUEL_X = 8.3
 export const DUEL_CHARACTER_X = 15.1
 export const HAND_X = 22.8
 export const HAND_STEP = 5
+/** The buttons of a card in hand, at its bottom, off the picture. */
+export const HAND_BUTTON_Y = CARD_HEIGHT / 2 - 1.6
 
 /**
  * The rows of shared material at both ends of the board. The cards there lie sideways (rotated by a
- * quarter turn), so the rows are only a card width high.
+ * quarter turn), so the rows are only a card width high, and they stand a little away from the Palace
+ * and Jungle rows: the same gap separates them from the board at both ends.
  */
-export const SHARED_ROW_Y = 16.8
+export const SHARED_ROW_Y = 17.4
 export const SHARED_ROTATE_Z = 90
 export const CHARACTER_DECK = { x: -10, y: -SHARED_ROW_Y }
 export const CHARACTER_DISCARD = { x: 10, y: -SHARED_ROW_Y }
 export const ANIMAL_SET_ASIDE = { x: -10, y: SHARED_ROW_Y }
 export const ANIMAL_DISCARD = { x: 10, y: SHARED_ROW_Y }
-export const FAVOR_BANK = { x: -19, y: -SHARED_ROW_Y }
-export const HONOR_BANK = { x: 19, y: -SHARED_ROW_Y }
-export const VICTORY_RESERVE = { x: -19.6, y: SHARED_ROW_Y }
+/**
+ * The unlimited supplies of Favor and Honor: one token of each value, fanned out from a point below
+ * them, 6 at the back, then 3, then 1. They stand in the outer top corners, beside the player panels
+ * and below the zoom buttons of the screen.
+ */
+export const FAVOR_BANK = { x: -38.5, y: -15.8 }
+export const HONOR_BANK = { x: 38.5, y: -15.8 }
+export const BANK_FAN_RADIUS = 4.5
+export const BANK_FAN_ANGLE = 16
 
-/** What a player owns: the Prestige in the bottom corner of their side, the tokens won along the bottom edge. */
-export const PLAYER_FAVOR_X = 37.9
-export const PLAYER_HONOR_X = 31.6
-export const PLAYER_PRESTIGE_Y = 7.9
-export const PRESTIGE_UNIT_STEP = 2.2
-export const PLAYER_COLLECTION_X = 28.5
-export const PLAYER_COLLECTION_GAP = 5.3
-export const PLAYER_VICTORY_X = 39.3
-export const PLAYER_VICTORY_GAP = 2.8
+/** The 2 Round victory tokens are the two halves of one elephant: they are laid side by side, upright. */
+export const VICTORY_WIDTH = 2.57
+export const VICTORY_HEIGHT = 6.56
+
+/**
+ * What a player wins lies along the bottom edge of their side, from the outer edge inwards: the Round
+ * victory tokens, the Prestige in two rows, then the Collection tokens beside the pile under the board.
+ */
+export const BOTTOM_ROW_Y = 17.45
+export const PLAYER_VICTORY_X = 41.6
+
+/**
+ * The Prestige: Honor in the upper row, Favor in the lower one, which covers the Honor tokens all but
+ * their value, printed at the top. Highest values first, from the outer edge inwards.
+ */
+export const PRESTIGE_ROW_X = 37.4
+export const PRESTIGE_ROW_STEP = 1.9
+export const PRESTIGE_ROW_LENGTH = 12
+export const PLAYER_HONOR_Y = BOTTOM_ROW_Y - 0.85
+export const PLAYER_FAVOR_Y = BOTTOM_ROW_Y + 0.85
+export const PLAYER_COLLECTION_X = 18.6
+export const PLAYER_COLLECTION_GAP = 3.6
 
 export const TABLE_WIDTH = 88.6
-export const TABLE_HEIGHT = 2 * (SHARED_ROW_Y + CARD_WIDTH / 2 + 0.3)
+export const TABLE_HEIGHT = 2 * 21.3
 
-/** The player panels, in the top corner of each side. */
+/** The player panels, against the top edge of each side, above the longest Palace rows. */
 export const PLAYER_PANEL_X = 23
 export const PLAYER_PANEL_WIDTH = 10.5
-export const PLAYER_PANEL_Y = -SHARED_ROW_Y - CARD_WIDTH / 2
+export const PLAYER_PANEL_Y = -TABLE_HEIGHT / 2 + 0.15
 
 /** -1 for the viewer's side, on the left; 1 for the opponent's side. Spectators see the first player on the left. */
 export const side = (player: number | undefined, context: MaterialContext): number => {

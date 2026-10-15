@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import { defaultTheme, GameTheme } from '@gamepark/react-game'
 import background from '../images/background.jpg'
 import { colors } from './colors'
@@ -84,6 +84,33 @@ const headerButtons = css`
   }
 `
 
+/** The help dialogs open and close almost at once: the framework's 0.3 s felt like a delay. */
+const dialogFadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
+const dialogFadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`
+
+const dialogOpen = css`
+  animation: ${dialogFadeIn} 0.08s ease-out forwards;
+`
+
+const dialogClose = css`
+  animation: ${dialogFadeOut} 0.08s ease-in forwards;
+`
+
 const dialogContainer = css`
   border: 0.1em solid ${colors.gold};
   box-shadow: 0 0.6em 1.5em rgba(62, 18, 48, 0.45);
@@ -164,7 +191,9 @@ export const theme: GameTheme = {
     backgroundColor: colors.parchment,
     color: colors.ink,
     container: dialogContainer,
-    buttons: buttonBase
+    buttons: buttonBase,
+    openAnimation: dialogOpen,
+    closeAnimation: dialogClose
   },
   header: {
     bar: headerBar,

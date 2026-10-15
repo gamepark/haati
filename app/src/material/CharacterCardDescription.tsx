@@ -8,7 +8,7 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { CARD_HEIGHT, CARD_WIDTH } from '../locators/TableLayout'
+import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
 import { CharacterCardHelp } from './help/CharacterCardHelp'
 import characterBack from '../images/cards/CharacterBack.jpg'
@@ -40,7 +40,7 @@ class CharacterCardDescription extends CardDescription<number, MaterialType, Loc
     [CharacterCard.HunterLose]: hunterLose
   }
 
-  getItemMenu(_item: MaterialItem, context: ItemContext<number, MaterialType, LocationType>, legalMoves: MaterialMove[]) {
+  getItemMenu(item: MaterialItem, context: ItemContext<number, MaterialType, LocationType>, legalMoves: MaterialMove[]) {
     const actions: ItemAction[] = legalMoves
       .filter(isMoveItemType(MaterialType.CharacterCard))
       .filter((move) => move.itemIndex === context.index)
@@ -49,7 +49,9 @@ class CharacterCardDescription extends CardDescription<number, MaterialType, Loc
         if (context.rules.game.rule?.id === RuleId.DiscardCharacter) return { move, icon: faTrashCan, title: 'button.discard' }
         return { move, icon: faBolt, title: 'button.activate' }
       })
-    return actions.length ? <ItemActions actions={actions} /> : null
+    // In hand, the button goes at the bottom of the card, off the picture.
+    const inHand = item.location.type === LocationType.PlayerHand
+    return actions.length ? <ItemActions actions={actions} y={inHand ? HAND_BUTTON_Y : 0} /> : null
   }
 }
 

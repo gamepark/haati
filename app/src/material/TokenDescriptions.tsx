@@ -1,9 +1,11 @@
 import { Collection } from '@gamepark/haati/material/Collection'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { BoardDescription, MaterialContext, MoneyDescription, RoundTokenDescription, TokenDescription } from '@gamepark/react-game'
+import { prestigeUnits } from '@gamepark/haati/material/Prestige'
+import { BoardDescription, ItemContext, MaterialContext, MoneyDescription, RoundTokenDescription, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
-import { BOARD_HEIGHT, BOARD_WIDTH } from '../locators/TableLayout'
+import { victoryHalf } from '../locators/Locators'
+import { BOARD_HEIGHT, BOARD_WIDTH, VICTORY_HEIGHT, VICTORY_WIDTH } from '../locators/TableLayout'
 import { BoardHelp } from './help/BoardHelp'
 import { CollectionTokenHelp } from './help/CollectionTokenHelp'
 import { PrestigeHelp } from './help/PrestigeHelp'
@@ -56,19 +58,26 @@ class CollectionTokenDescription extends RoundTokenDescription<number, MaterialT
   }
 }
 
-/** The 2 Round victory tokens are identical: the two files are their two faces. */
+/**
+ * The 2 Round victory tokens are identical: the two files are their two faces, the left and the
+ * right half of one elephant. Each token shows the half that its place on the table calls for.
+ */
 class RoundVictoryTokenDescription extends TokenDescription {
-  width = 2.57
-  height = 6.56
+  width = VICTORY_WIDTH
+  height = VICTORY_HEIGHT
   transparency = true
   image = roundVictory1
   backImage = roundVictory2
   help = RoundVictoryHelp
+
+  isFlippedOnTable(item: Partial<MaterialItem<number, LocationType>>, context: MaterialContext) {
+    return victoryHalf(item as MaterialItem, context as ItemContext) > 0
+  }
 }
 
 /**
  * Favor and Honor are money: one item per denomination (the id) and place, carrying a quantity. The
- * supply is unlimited, drawn as a static heap in the reserve.
+ * supply is unlimited, so it is drawn as one static token of each value in the reserve.
  */
 class PrestigeDescription extends MoneyDescription<number, MaterialType, LocationType, number> {
   width = 1.63
@@ -79,7 +88,7 @@ class PrestigeDescription extends MoneyDescription<number, MaterialType, Locatio
 
   constructor(readonly images: Record<number, string>) {
     super()
-    this.staticItems = [6, 3, 1].map((id) => ({ id, quantity: 3, location: this.stockLocation }))
+    this.staticItems = prestigeUnits.map((id) => ({ id, location: this.stockLocation }))
   }
 }
 

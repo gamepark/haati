@@ -1,62 +1,195 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { HaatiRules } from '@gamepark/haati/HaatiRules'
+import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { countPrestige } from '@gamepark/haati/material/Prestige'
-import { StyledPlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
+import { countPrestige, PrestigeType } from '@gamepark/haati/material/Prestige'
+import { StyledPlayerPanel, usePlay, usePlayers, useRules } from '@gamepark/react-game'
+import { MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { useTranslation } from 'react-i18next'
 import { PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, PLAYER_PANEL_Y, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
+import { fontDisplay } from '../theme'
+import characterBack from '../images/cards/CharacterBack.jpg'
 import favor from '../images/tokens/prestige/Favor1.png'
 import honor from '../images/tokens/prestige/Honor1.png'
-import roundVictory from '../images/tokens/RoundVictory1.png'
 
 /** The width of a StyledPlayerPanel in its own em. */
 const PANEL_EM_WIDTH = 28
 
 /**
+ * The tiles of the Favor and Honor totals, and the Prestige token lying along them: wider than the tile,
+ * and long enough for the value printed at its top to fall beyond the right edge.
+ */
+const TILE_HEIGHT = 1.7
+const TOKEN_WIDTH = 2
+const TOKEN_LENGTH = (TOKEN_WIDTH * 5.76) / 1.63
+
+/**
  * Each panel lies on the table, in the top corner of its owner's side: the viewer on the left, the
- * opponent on the right. Three counters: Favor, Honor, and Round victories.
+ * opponent on the right. Under the name of the player, the value of their Favor and of their Honor
+ * tokens, then their Prestige, the sum of both, which wins the round. A click on any of them opens
+ * its help.
  */
 export const PlayerPanels = () => {
+  const { t } = useTranslation()
   const players = usePlayers<number>({ sortFromMe: true })
   const rules = useRules<HaatiRules>()
+  const play = usePlay<MaterialMove>()
   if (!rules) return null
+  const prestigeHelp = (type: PrestigeType, player: number) =>
+    play(MaterialMoveBuilder.displayMaterialHelp(type, { id: 1, location: { type: LocationType.PlayerPrestige, player } }), { local: true })
   return (
     <>
-      {players.map((player, index) => (
-        <div key={player.id} css={panelPlace(index === 0)}>
-          <StyledPlayerPanel
-            player={player}
-            activeRing
-            css={panelCss}
-            counters={[
-              { image: favor, value: countPrestige(rules, MaterialType.Favor, player.id), imageCss: tokenImage },
-              { image: honor, value: countPrestige(rules, MaterialType.Honor, player.id), imageCss: tokenImage },
-              { image: roundVictory, value: `${rules.getScore(player.id)}/2`, imageCss: tokenImage }
-            ]}
-          />
-        </div>
-      ))}
+      {players.map((player, index) => {
+        const favorTotal = countPrestige(rules, MaterialType.Favor, player.id)
+        const honorTotal = countPrestige(rules, MaterialType.Honor, player.id)
+        return (
+          <div key={player.id} css={[blockCss, blockPlace(index === 0)]}>
+            <StyledPlayerPanel player={player} activeRing css={panelCss} />
+            <div css={tilesCss}>
+              <button css={[tileCss, favorCss]} onClick={() => prestigeHelp(MaterialType.Favor, player.id)} aria-label={t('help.prestige.favor.title')}>
+                <span css={figureCss}>{favorTotal}</span>
+              </button>
+              <button css={[tileCss, honorCss]} onClick={() => prestigeHelp(MaterialType.Honor, player.id)} aria-label={t('help.prestige.honor.title')}>
+                <span css={figureCss}>{honorTotal}</span>
+              </button>
+            </div>
+            <button
+              css={[tileCss, prestigeCss]}
+              onClick={() => play(MaterialMoveBuilder.displayLocationHelp({ type: LocationType.PlayerPrestige, player: player.id }), { local: true })}
+            >
+              <span css={prestigeTextCss}>{t('panel.prestige', { count: favorTotal + honorTotal })}</span>
+            </button>
+          </div>
+        )
+      })}
     </>
   )
 }
 
-const panelPlace = (left: boolean) => css`
-  position: absolute;
+const blockPlace = (left: boolean) => css`
   left: ${(left ? -PLAYER_PANEL_X - PLAYER_PANEL_WIDTH : PLAYER_PANEL_X) + TABLE_WIDTH / 2}em;
   top: ${PLAYER_PANEL_Y + TABLE_HEIGHT / 2}em;
+`
+
+/** The whole block wears the parchment and the gold rim the panel alone wore before. */
+const blockCss = css`
+  position: absolute;
   width: ${PLAYER_PANEL_WIDTH}em;
+  box-sizing: border-box;
+  padding: 0.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  border-radius: 0.6em;
+  background: linear-gradient(160deg, ${colors.parchment} 0%, ${colors.sand} 100%);
+  border: 0.1em solid ${colors.gold};
+  box-shadow: 0 0.15em 0.4em rgba(0, 0, 0, 0.35);
 `
 
 const panelCss = css`
   position: relative;
-  font-size: ${PLAYER_PANEL_WIDTH / PANEL_EM_WIDTH}em;
-  background: linear-gradient(160deg, ${colors.parchment} 0%, ${colors.sand} 100%);
-  border: 0.15em solid ${colors.gold};
+  font-size: ${(PLAYER_PANEL_WIDTH - 0.7) / PANEL_EM_WIDTH}em;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   --gp-ring-color-1: ${colors.gold};
   --gp-ring-color-2: ${colors.plumLight};
 `
 
-const tokenImage = css`
-  object-fit: contain;
+const tilesCss = css`
+  display: flex;
+  gap: 0.25em;
+`
+
+const tileCss = css`
+  position: relative;
+  flex: 1;
+  height: ${TILE_HEIGHT}em;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.35em;
+  border: 0.08em solid ${colors.gold};
+  font-size: 1em;
+  cursor: pointer;
+
+  &:hover {
+    border-color: ${colors.goldLight};
+    box-shadow: 0 0 0.3em ${colors.goldLight};
+  }
+`
+
+/**
+ * A Prestige token laid along the tile: its hands on the left, the value printed at its top cut off on
+ * the right. A veil of its own colour keeps the figure readable.
+ */
+const lyingToken = (image: string, veil: string) => css`
+  background-color: ${veil};
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: ${(TILE_HEIGHT - TOKEN_WIDTH) / 2}em;
+    width: ${TOKEN_WIDTH}em;
+    height: ${TOKEN_LENGTH}em;
+    background: url(${image}) center / 100% 100% no-repeat;
+    transform-origin: top left;
+    transform: translateX(${TOKEN_LENGTH}em) rotate(90deg);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: ${veil};
+    opacity: 0.45;
+  }
+`
+
+const favorCss = css`
+  ${lyingToken(favor, '#fffdf6')};
+  color: ${colors.ink};
+`
+
+const honorCss = css`
+  ${lyingToken(honor, '#1d1712')};
+  color: ${colors.goldLight};
+`
+
+const figureCss = css`
+  position: relative;
+  z-index: 1;
+  font-family: ${fontDisplay};
+  font-size: 1.3em;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+`
+
+/** The plum back of the Character cards, zoomed in past its white border and darkened. */
+const prestigeCss = css`
+  flex: none;
+  height: 1.4em;
+  background: url(${characterBack}) center / 160% auto no-repeat;
+  color: ${colors.parchment};
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: ${colors.plumDeep};
+    opacity: 0.35;
+  }
+`
+
+const prestigeTextCss = css`
+  position: relative;
+  z-index: 1;
+  font-family: ${fontDisplay};
+  font-size: 0.85em;
+  text-shadow: 0 0.05em 0.2em rgba(0, 0, 0, 0.6);
 `

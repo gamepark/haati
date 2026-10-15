@@ -1,7 +1,9 @@
 import { css } from '@emotion/react'
 import { DevToolsHub, GameTable, GameTableNavigation } from '@gamepark/react-game'
+import { VictoryElephant } from './animations/VictoryElephant'
 import { TABLE_HEIGHT, TABLE_WIDTH } from './locators/TableLayout'
 import { PlayerPanels } from './panels/PlayerPanels'
+import { TurnsLeft } from './panels/TurnsLeft'
 
 export function GameDisplay() {
   const margin = { top: 7, left: 0, right: 0, bottom: 0 }
@@ -17,6 +19,8 @@ export function GameDisplay() {
       >
         <GameTableNavigation />
         <PlayerPanels />
+        <TurnsLeft />
+        <VictoryElephant />
         {process.env.NODE_ENV === 'development' && <DevToolsHub fabBottom="calc(5em)" />}
       </GameTable>
     </>

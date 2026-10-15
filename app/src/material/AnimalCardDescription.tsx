@@ -8,7 +8,7 @@ import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { CARD_HEIGHT, CARD_WIDTH, side } from '../locators/TableLayout'
+import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y, side } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
 import animalBack from '../images/cards/AnimalBack.jpg'
@@ -87,9 +87,11 @@ class AnimalCardDescription extends CardDescription<number, MaterialType, Locati
       .filter((move) => move.itemIndex === context.index && destinations[move.location.type as LocationType])
       .map((move) => ({ move, ...destinations[move.location.type as LocationType]! }))
     if (!actions.length) return null
-    // In a row, only the edge of the card towards the board is uncovered: the button goes there.
+    // In a row, only the edge of the card towards the board is uncovered: the button goes there, below
+    // the family and the value printed in the corner. In hand, it goes at the bottom, off the picture.
     const inRow = item.location.type === LocationType.Palace || item.location.type === LocationType.Jungle
-    return <ItemActions actions={actions} x={inRow ? -side(item.location.player, context) * 1.9 : 0} y={inRow ? -2 : 0} />
+    const inHand = item.location.type === LocationType.PlayerHand
+    return <ItemActions actions={actions} x={inRow ? -side(item.location.player, context) * 1.9 : 0} y={inHand ? HAND_BUTTON_Y : 0} />
   }
 }
 

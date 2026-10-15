@@ -56,6 +56,9 @@
       "player": "{player} remporte la manche"
     }
   },
+  "panel": {
+    "prestige": "{count} de Prestige"
+  },
   "button": {
     "play": "Jouer",
     "bet": "Parier",
@@ -90,7 +93,7 @@
       },
       "elephant": {
         "title": "Éléphant {value}",
-        "duel": "L'<b>Éléphant bat le Tigre</b>, mais il est battu par la Souris.",
+        "duel": "L’<b>Éléphant bat le Tigre</b>, mais il est battu par la Souris.",
         "palace": "Gagnez <b>1 Faveur par Éléphant</b> dans votre Palais, y compris celui que vous venez de placer.",
         "jungle": "Vous pouvez <b>déplacer 1 animal de la Jungle vers le Palais</b>, chez vous ou chez l'adversaire. Ce peut être l'Éléphant que vous venez de jouer."
       },
@@ -168,17 +171,37 @@
       },
       "honor": {
         "title": "Honneur",
-        "intro": "Les jetons Prestige côté noir sont des points d'<b>Honneur</b>. Ils comptent dans votre Prestige, départagent les égalités, et deviennent des Faveurs pour la manche suivante."
+        "intro": "Les jetons Prestige côté noir sont des points d’<b>Honneur</b>. Ils comptent dans votre Prestige, départagent les égalités, et deviennent des Faveurs pour la manche suivante."
       },
       "end-of-round": "Fin de manche",
       "rule": {
         "total": "Faveurs + Honneurs = <b>Prestige</b>. Le joueur avec le plus de Prestige remporte la manche.",
-        "tie": "En cas d'égalité, le joueur avec le plus d'<b>Honneur</b> l'emporte. Si l'égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
+        "tie": "En cas d'égalité, le joueur avec le plus d’<b>Honneur</b> l'emporte. Si l'égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
         "after": "« Les Faveurs passent, mais l'Honneur demeure ! » Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs déjà acquises pour la manche suivante."
       },
       "change": "Les jetons valent 1, 3 ou 6 : la réserve est illimitée et la monnaie est rendue automatiquement.",
       "owned": "{player} a {favor} Faveur(s) et {honor} Honneur(s).",
       "owned.mine": "Vous avez {favor} Faveur(s) et {honor} Honneur(s)."
+    },
+    "prestige-total": {
+      "title": "Prestige",
+      "intro": "Le <b>Prestige</b> d'un joueur est la somme de ses <b>Faveurs</b> (jetons blancs) et de ses <b>Honneurs</b> (jetons noirs). C'est lui qui désigne le vainqueur de chaque manche.",
+      "gain-title": "Gagner du Prestige",
+      "gain": {
+        "palace": "Les <b>effets du Palais</b> : chaque duel gagné place votre carte au Palais, et son effet rapporte des Faveurs, et des Honneurs pour les paires de Souris.",
+        "characters": "Certaines cartes <b>Personnage</b>, comme le Marchand, rapportent directement des Faveurs ou des Honneurs.",
+        "collections": "Les <b>Collections</b> : 4 valeurs consécutives au Palais ou dans la Jungle rapportent la récompense du jeton Collection correspondant."
+      },
+      "round-title": "Fin de manche",
+      "round": {
+        "win": "Après 9 tours, le joueur avec le plus de Prestige remporte la manche.",
+        "tie": "En cas d'égalité, le joueur avec le plus d’<b>Honneur</b> l'emporte. Si l'égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
+        "after": "« Les Faveurs passent, mais l'Honneur demeure ! » Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs pour la manche suivante."
+      },
+      "game-title": "Remporter la partie",
+      "game": "Le vainqueur d'une manche reçoit une moitié de l'éléphant d'or. Le premier joueur qui réunit les <b>deux moitiés</b>, en deux manches gagnées, remporte la partie.",
+      "owned": "{player} a {total} de Prestige ({favor} Faveur(s) + {honor} Honneur(s)).",
+      "owned.mine": "Vous avez {total} de Prestige ({favor} Faveur(s) + {honor} Honneur(s))."
     },
     "round-victory": {
       "title": "Victoire de Manche",
@@ -195,14 +218,15 @@
     },
     "board": {
       "title": "Le duel des Maharajas",
-      "intro": "Une manche se joue en <b>9 tours</b>. Chaque tour se déroule dans cet ordre :",
+      "intro": "Une manche se joue en <b>9 tours</b> ({turns}). Chaque tour se déroule dans cet ordre :",
+      "turns-left": "{count, plural, one {dernier tour} other {# tours restants}}",
       "choose-title": "1. Choix des cartes (simultané)",
       "duel-title": "2. Résolution du duel",
       "effects-title": "3. Effets et Collections",
       "refill-title": "4. Compléter sa main : le perdant choisit !",
       "end-title": "Fin de manche",
       "choose": "Chaque joueur choisit une de ses deux cartes Animal et ajoute éventuellement une carte Personnage, face cachée.",
-      "duel": "L'<b>Éléphant bat le Tigre</b>, le <b>Tigre bat la Souris</b>, la <b>Souris bat l'Éléphant</b>. Entre deux animaux de la même famille, la valeur la plus élevée l'emporte.",
+      "duel": "L’<b>Éléphant bat le Tigre</b>, le <b>Tigre bat la Souris</b>, la <b>Souris bat l'Éléphant</b>. Entre deux animaux de la même famille, la valeur la plus élevée l'emporte.",
       "effects": "Le gagnant place sa carte dans son <b>Palais</b> et doit en appliquer l'effet. Puis le perdant place la sienne dans sa <b>Jungle</b> et peut en appliquer l'effet. Chacun vérifie ensuite ses Collections (4 valeurs consécutives).",
       "refill": "Le <b>perdant choisit</b> une des deux cartes visibles et laisse l'autre à son adversaire.",
       "end": "Après 9 tours, le joueur avec le plus de <b>Prestige</b> (Faveurs + Honneurs) remporte la manche. Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs. La partie se joue en deux manches gagnantes."
