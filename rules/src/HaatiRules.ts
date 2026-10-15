@@ -23,11 +23,7 @@ import { ResolveDuelRule } from './rules/ResolveDuelRule'
 import { RevealDuelRule } from './rules/RevealDuelRule'
 import { RuleId } from './rules/RuleId'
 
-/**
- * A card in hand or committed to the duel is only seen by its owner, unless it is rotated: in hand,
- * that is a card the opponent saw arrive (the winner receives the card the loser left); in the duel,
- * a card that was revealed.
- */
+/** A card committed to the duel is only seen by its owner, until it is revealed (rotated). */
 const hideUnlessRotated: HidingSecretsStrategy<number, LocationType> = (item: MaterialItem<number, LocationType>, player?: number) =>
   item.location.rotation ? [] : hideItemIdToOthers(item, player)
 
@@ -60,7 +56,8 @@ export class HaatiRules
     [MaterialType.AnimalCard]: {
       [LocationType.AnimalDeck]: hideItemIdUnlessRotated,
       [LocationType.AnimalSetAside]: hideItemId,
-      [LocationType.PlayerHand]: hideUnlessRotated,
+      // The hand is only seen by its owner, even the cards the opponent saw arrive: they have to remember them.
+      [LocationType.PlayerHand]: hideItemIdToOthers,
       [LocationType.PlayerDuel]: hideUnlessRotated
     },
     [MaterialType.CharacterCard]: {
