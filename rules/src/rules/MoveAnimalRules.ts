@@ -29,8 +29,10 @@ abstract class MoveAnimalRule extends HaatiRule {
     return move.type === CustomMoveType.Pass ? this.resume() : []
   }
 
+  /** The animals in a place, of both players unless one is given. */
   animals(place: LocationType, player?: number) {
-    return this.material(MaterialType.AnimalCard).location(place).player(player)
+    const animals = this.material(MaterialType.AnimalCard).location(place)
+    return player === undefined ? animals : animals.player(player)
   }
 }
 
