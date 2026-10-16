@@ -120,7 +120,7 @@ class DuelLocator extends Locator {
 }
 
 /**
- * The hand, fanned out in the bottom outer corner: Animal cards first, then Character cards. While the
+ * The hand, fanned out in the bottom outer corner: Character cards first, then Animal cards. While the
  * cards of the duel are being chosen, those already committed keep their place in the hand, so that the
  * cards left do not move under the pointer. Only the viewer's own hand does so: a gap in the opponent's hand
  * would tell which of their cards they played.
@@ -151,13 +151,26 @@ class PlayerHandLocator extends HandLocator {
     return []
   }
 
+  /**
+   * Character cards on the left, then Animal cards. The viewer's own Animal cards are sorted by value, as
+   * in the Palace and the Jungle: a card drawn goes straight to its place, and the shuffle of the hand after
+   * each draw (rules) moves nothing. The opponent's hand is hidden: it keeps the order of the material,
+   * which the shuffle keeps telling nothing.
+   */
   getItemIndex(item: MaterialItem, context: ItemContext) {
-    const animals = this.hand(MaterialType.AnimalCard, item.location.player, context)
-    const index =
-      context.type === MaterialType.AnimalCard
-        ? animals.getIndexes().indexOf(context.index)
-        : animals.length + this.hand(MaterialType.CharacterCard, item.location.player, context).getIndexes().indexOf(context.index)
-    return Math.max(0, index)
+    const player = item.location.player
+    const characters = this.hand(MaterialType.CharacterCard, player, context)
+    if (context.type === MaterialType.CharacterCard) return Math.max(0, characters.getIndexes().indexOf(context.index))
+    const animals = this.hand(MaterialType.AnimalCard, player, context)
+    const order =
+      player === context.player
+        ? animals.getIndexes().sort((a, b) => {
+            const idA = animals.getItem<number>(a).id
+            const idB = animals.getItem<number>(b).id
+            return getValue(idA) - getValue(idB) || idA - idB
+          })
+        : animals.getIndexes()
+    return characters.length + Math.max(0, order.indexOf(context.index))
   }
 }
 
