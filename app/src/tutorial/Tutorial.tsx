@@ -16,8 +16,8 @@ import { Elephant, Favor, Honor, Lose, Win } from './TutorialPictures'
 /** A tutorial step, with what the Haati tutorial adds: zooming out before zooming in on its focus. */
 export type HaatiTutorialStep = TutorialStep & { zoomOutFirst?: boolean }
 
-/** What the texts of the popups may contain besides bold: the Prestige tokens, the Character bets, the elephant. */
-const components = { b: <strong />, favor: <Favor />, honor: <Honor />, win: <Win />, lose: <Lose />, elephant: <Elephant /> }
+/** What the texts of the popups may contain besides bold and italics: the Prestige tokens, the Character bets, the elephant. */
+const components = { b: <strong />, i: <em />, favor: <Favor />, honor: <Honor />, win: <Win />, lose: <Lose />, elephant: <Elephant /> }
 
 const text = (key: string) => () => <Trans i18nKey={`tuto.${key}`} components={components} />
 
@@ -62,7 +62,22 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
   version = 1
   options = { players: 2 }
   setup = new TutorialSetup()
-  players = [{ id: me }, { id: opponent }]
+  /** The opponent is named after one of the two authors (Johannes Goupy and Joachim Thôme). */
+  players = [
+    { id: me },
+    {
+      id: opponent,
+      name: 'Johannes',
+      avatar: {
+        topType: 'ShortHairShortFlat',
+        facialHairType: 'BeardLight',
+        clotheType: 'CollarSweater',
+        eyeType: 'Happy',
+        eyebrowType: 'DefaultNatural',
+        mouthType: 'Smile'
+      }
+    }
+  ]
 
   steps: HaatiTutorialStep[] = [
     // 1. Introduction
@@ -186,8 +201,8 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
       })
     },
     {
-      popup: { text: text('choose-card'), position: { y: -22 } },
-      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).id(card(Animal.Elephant, 4))], margin: { top: 14 } }),
+      popup: { text: text('choose-card'), position: { y: 25 } },
+      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).id(card(Animal.Elephant, 4))], margin: { bottom: 14 } }),
       move: { filter: moveAnimal(card(Animal.Elephant, 4), LocationType.PlayerHand) }
     },
 
