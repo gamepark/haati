@@ -9,6 +9,7 @@ import favorImage from '../../images/tokens/prestige/Favor1.png'
 import honorImage from '../../images/tokens/prestige/Honor1.png'
 import roundVictory1 from '../../images/tokens/RoundVictory1.png'
 import roundVictory2 from '../../images/tokens/RoundVictory2.png'
+import { ElephantIcon, EndOfRoundIcon, FavorIcon } from './HelpIcons'
 import { helpBlock, helpComponents, helpIntro, helpLocation, helpSection, helpTitle } from './helpStyles'
 
 /**
@@ -33,7 +34,10 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
       <p css={helpIntro}>
         <Trans i18nKey="help.prestige-total.intro" components={helpComponents} />
       </p>
-      <div css={helpSection}>{t('help.prestige-total.gain-title')}</div>
+      <div css={helpSection}>
+        <FavorIcon />
+        {t('help.prestige-total.gain-title')}
+      </div>
       <div css={helpBlock}>
         <ul>
           {['palace', 'characters', 'collections'].map((source) => (
@@ -43,7 +47,10 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
           ))}
         </ul>
       </div>
-      <div css={helpSection}>{t('help.prestige-total.round-title')}</div>
+      <div css={helpSection}>
+        <EndOfRoundIcon />
+        {t('help.prestige-total.round-title')}
+      </div>
       <div css={helpBlock}>
         <ul>
           {['win', 'tie', 'after'].map((rule) => (
@@ -53,7 +60,10 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
           ))}
         </ul>
       </div>
-      <div css={helpSection}>{t('help.prestige-total.game-title')}</div>
+      <div css={helpSection}>
+        <ElephantIcon />
+        {t('help.prestige-total.game-title')}
+      </div>
       <div css={helpBlock}>
         <div css={elephantCss}>
           <img src={roundVictory1} alt="" />

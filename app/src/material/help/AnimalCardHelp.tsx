@@ -6,6 +6,7 @@ import { MaterialHelpProps } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
 import { animalColors } from '../../theme/colors'
 import { CardLocation } from './CardLocation'
+import { JungleIcon, PalaceIcon } from './HelpIcons'
 import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpSection, helpTitle } from './helpStyles'
 
 const animalKeys: Record<Animal, string> = {
@@ -44,11 +45,17 @@ export const AnimalCardHelp = ({ item }: MaterialHelpProps) => {
       <p css={helpIntro}>
         <Trans i18nKey="help.animal.same-family" components={helpComponents} />
       </p>
-      <div css={helpSection}>{t('help.animal.palace')}</div>
+      <div css={helpSection}>
+        <PalaceIcon />
+        {t('help.animal.palace')}
+      </div>
       <div css={[helpBlock, place === LocationType.Palace && helpBlockActive]}>
         <Trans i18nKey={`help.animal.${key}.palace`} components={helpComponents} />
       </div>
-      <div css={helpSection}>{t('help.animal.jungle')}</div>
+      <div css={helpSection}>
+        <JungleIcon />
+        {t('help.animal.jungle')}
+      </div>
       <div css={[helpBlock, place === LocationType.Jungle && helpBlockActive]}>
         <Trans i18nKey={`help.animal.${key}.jungle`} components={helpComponents} />
       </div>

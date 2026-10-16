@@ -3,8 +3,9 @@ import { defaultTheme, GameTheme } from '@gamepark/react-game'
 import background from '../images/background.jpg'
 import { colors } from './colors'
 
-// Yatra One echoes the Devanagari-inspired lettering of the box; Nunito stays for body text.
-export const fontDisplay = `'Yatra One', Georgia, serif`
+// Yatra One echoes the Devanagari-inspired lettering of the box; Nunito stays for body text. 'Yatra Spaces'
+// (index.html) only gives the non-breaking spaces a width, which Yatra One does not.
+export const fontDisplay = `'Yatra Spaces', 'Yatra One', Georgia, serif`
 export const fontBody = `'Nunito', 'Segoe UI', sans-serif`
 
 const buttonBase = css`

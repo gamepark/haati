@@ -2,7 +2,9 @@
 import { Bet, Character, CharacterCard, getBet, getCharacter } from '@gamepark/haati/material/Character'
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
+import { Lose, Win } from '../../tutorial/TutorialPictures'
 import { CardLocation } from './CardLocation'
+import { RulesIcon } from './HelpIcons'
 import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpSection, helpTitle } from './helpStyles'
 
 const characterKeys: Record<Character, string> = {
@@ -24,13 +26,19 @@ export const CharacterCardHelp = ({ item }: MaterialHelpProps<number, number, nu
       <h2 css={helpTitle}>{card === undefined ? t('help.character.hidden') : t(`help.character.${characterKeys[getCharacter(card)]}`)}</h2>
       {card !== undefined && (
         <>
-          <div css={helpSection}>{t(getBet(card) === Bet.Win ? 'help.character.bet.win' : 'help.character.bet.lose')}</div>
+          <div css={helpSection}>
+            {getBet(card) === Bet.Win ? <Win /> : <Lose />}
+            {t(getBet(card) === Bet.Win ? 'help.character.bet.win' : 'help.character.bet.lose')}
+          </div>
           <div css={[helpBlock, helpBlockActive]}>
             <Trans i18nKey={`help.character.effect.${card}`} components={helpComponents} />
           </div>
         </>
       )}
-      <div css={helpSection}>{t('help.character.rules')}</div>
+      <div css={helpSection}>
+        <RulesIcon />
+        {t('help.character.rules')}
+      </div>
       <div css={helpBlock}>
         <ul>
           <li>

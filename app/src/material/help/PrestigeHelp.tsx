@@ -5,6 +5,7 @@ import { countPrestige } from '@gamepark/haati/material/Prestige'
 import { MaterialHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { Trans, useTranslation } from 'react-i18next'
+import { EndOfRoundIcon } from './HelpIcons'
 import { helpBlock, helpComponents, helpIntro, helpLocation, helpSection, helpTitle } from './helpStyles'
 
 /**
@@ -24,7 +25,10 @@ export const PrestigeHelp = ({ item, itemType }: MaterialHelpProps) => {
       <p css={helpIntro}>
         <Trans i18nKey={`help.prestige.${key}.intro`} components={helpComponents} />
       </p>
-      <div css={helpSection}>{t('help.prestige.end-of-round')}</div>
+      <div css={helpSection}>
+        <EndOfRoundIcon />
+        {t('help.prestige.end-of-round')}
+      </div>
       <div css={helpBlock}>
         <ul>
           <li>

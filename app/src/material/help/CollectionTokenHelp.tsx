@@ -3,6 +3,7 @@ import { Collection, getCollectionReward } from '@gamepark/haati/material/Collec
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
+import { FavorIcon, RulesIcon } from './HelpIcons'
 import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpLocation, helpSection, helpTitle } from './helpStyles'
 
 /**
@@ -23,11 +24,17 @@ export const CollectionTokenHelp = ({ item }: MaterialHelpProps) => {
       <p css={helpIntro}>
         <Trans i18nKey={`help.collection.${key}.intro`} components={helpComponents} />
       </p>
-      <div css={helpSection}>{t('help.collection.reward')}</div>
+      <div css={helpSection}>
+        <FavorIcon />
+        {t('help.collection.reward')}
+      </div>
       <div css={[helpBlock, !won && helpBlockActive]}>
         <Trans i18nKey="help.collection.gain" values={reward} components={helpComponents} />
       </div>
-      <div css={helpSection}>{t('help.collection.rules')}</div>
+      <div css={helpSection}>
+        <RulesIcon />
+        {t('help.collection.rules')}
+      </div>
       <div css={helpBlock}>
         <ul>
           <li>

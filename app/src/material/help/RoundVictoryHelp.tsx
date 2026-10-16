@@ -2,6 +2,7 @@
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
+import { VictoryIcon } from './HelpIcons'
 import { helpBlock, helpComponents, helpIntro, helpLocation, helpSection, helpTitle } from './helpStyles'
 
 /** Haati is played in 2 winning rounds: the Round victory tokens are the score. */
@@ -16,7 +17,10 @@ export const RoundVictoryHelp = ({ item }: MaterialHelpProps) => {
       <p css={helpIntro}>
         <Trans i18nKey="help.round-victory.intro" components={helpComponents} />
       </p>
-      <div css={helpSection}>{t('help.round-victory.winning')}</div>
+      <div css={helpSection}>
+        <VictoryIcon />
+        {t('help.round-victory.winning')}
+      </div>
       <div css={helpBlock}>
         <ul>
           <li>
