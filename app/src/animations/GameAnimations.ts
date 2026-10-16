@@ -4,6 +4,7 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
+import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
 import { isElephantCompleted, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
 
@@ -17,7 +18,8 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
  * table for the middle of the screen, clash, then go back to their place, where the players resolve
  * them. The Character cards stay on the table: right after the show, a lost bet goes to the discard
  * (the rules discard it as soon as the duel is decided), a won one waits to be activated. The last
- * Round victory token is a show too (see VictoryShow).
+ * Round victory token is a show too (see VictoryShow). An Animal card entering or leaving a Palace or
+ * a Jungle row moves in two steps: the rows make room, then the card flies to its place (see RowMove).
  */
 export const gameAnimations = new MaterialGameAnimations()
 
@@ -111,6 +113,7 @@ gameAnimations.configure(isPrestige).duration(500)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && !isShuffle(move)).duration(150)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && isShuffle(move)).duration(500)
 gameAnimations.configure(isAnimalPileLaidOut).duration(150)
+gameAnimations.configure(isRowMove).duration(ROW_MOVE_DURATION).itemAnimation(rowMove)
 gameAnimations
   .configure(isLastDuelReveal)
   .duration(DUEL_SHOW_DURATION)
