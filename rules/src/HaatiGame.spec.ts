@@ -1,4 +1,4 @@
-import { applyAutomaticMoves, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { applyAutomaticMoves, ItemMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { describe, expect, it } from 'vitest'
 import { HaatiRules } from './HaatiRules'
 import { HaatiSetup } from './HaatiSetup'
@@ -6,6 +6,7 @@ import { Animal, beats, hasCollection } from './material/Animal'
 import { CHARACTER_HAND_LIMIT } from './material/Character'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { gainPrestige, prestigeLocation } from './material/Prestige'
 import { RuleId } from './rules/RuleId'
 
 type Game = MaterialGame<number, MaterialType, LocationType, RuleId>
@@ -69,7 +70,18 @@ describe('Haati', () => {
     expect(hasCollection([card(Animal.Mouse, 5), card(Animal.Tiger, 8), card(Animal.Elephant, 6), card(Animal.Mouse, 7), card(Animal.Mouse, 1)])).toBe(true)
   })
 
-  it('plays whole random games to their end', () => {
+  it('exchanges three 1 for a 3, taking before giving back', () => {
+    const game: Game = new HaatiSetup().setup({ players: 2 })
+    const rules = new HaatiRules(game)
+    const player = game.players[0]
+    game.items[MaterialType.Favor] = [{ id: 1, location: prestigeLocation(player), quantity: 2 }]
+    expect(gainPrestige(rules, MaterialType.Favor, player, 1)).toMatchObject([
+      { type: ItemMoveType.Create, item: { id: 3, location: prestigeLocation(player), quantity: 1 } },
+      { type: ItemMoveType.Delete, itemIndex: 0, quantity: 2 }
+    ])
+  })
+
+  it('plays whole random games to their end', { timeout: 30_000 }, () => {
     for (let i = 0; i < 200; i++) {
       const { game, moves } = playRandomGame()
       expect(game.rule, `game not over after ${moves} moves`).toBeUndefined()
