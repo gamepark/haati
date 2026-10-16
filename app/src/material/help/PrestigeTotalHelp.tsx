@@ -5,13 +5,16 @@ import { countPrestige } from '@gamepark/haati/material/Prestige'
 import { LocationHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { Trans, useTranslation } from 'react-i18next'
+import favorImage from '../../images/tokens/prestige/Favor1.png'
+import honorImage from '../../images/tokens/prestige/Honor1.png'
 import roundVictory1 from '../../images/tokens/RoundVictory1.png'
 import roundVictory2 from '../../images/tokens/RoundVictory2.png'
 import { helpBlock, helpComponents, helpIntro, helpLocation, helpSection, helpTitle } from './helpStyles'
 
 /**
  * A player's Prestige, the sum of their Favor and Honor: what it is, where it comes from, how it wins
- * a round, and how 2 rounds won complete the elephant that wins the game.
+ * a round, and how 2 rounds won complete the elephant that wins the game. A Favor and an Honor token head
+ * the help; the two halves of the elephant illustrate the section about winning the game.
  */
 export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
   const { t } = useTranslation()
@@ -23,9 +26,9 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
   return (
     <>
       <h2 css={helpTitle}>{t('help.prestige-total.title')}</h2>
-      <div css={elephantCss}>
-        <img src={roundVictory1} alt="" />
-        <img src={roundVictory2} alt="" />
+      <div css={tokensCss}>
+        <img src={favorImage} alt="" />
+        <img src={honorImage} alt="" />
       </div>
       <p css={helpIntro}>
         <Trans i18nKey="help.prestige-total.intro" components={helpComponents} />
@@ -52,6 +55,10 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
       </div>
       <div css={helpSection}>{t('help.prestige-total.game-title')}</div>
       <div css={helpBlock}>
+        <div css={elephantCss}>
+          <img src={roundVictory1} alt="" />
+          <img src={roundVictory2} alt="" />
+        </div>
         <Trans i18nKey="help.prestige-total.game" components={helpComponents} />
       </div>
       {location.player !== undefined && (
@@ -67,13 +74,26 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
   )
 }
 
+/** A Favor token and an Honor token, the two parts of the Prestige. */
+const tokensCss = css`
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin: 0 0 0.8em 0;
+
+  img {
+    height: 4.5em;
+    filter: drop-shadow(0 0.1em 0.2em rgba(0, 0, 0, 0.4));
+  }
+`
+
 /** The two halves of the elephant side by side, as a player who wins 2 rounds gathers them. */
 const elephantCss = css`
   display: flex;
   justify-content: center;
-  margin: 0 0 0.8em 0;
+  margin: 0 0 0.6em 0;
 
   img {
-    height: 7em;
+    height: 5em;
   }
 `

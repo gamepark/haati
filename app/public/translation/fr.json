@@ -1,7 +1,7 @@
 {
   "header": {
     "choose-cards": {
-      "you": "Choisissez une carte Animal pour le duel, et une carte Personnage si vous le souhaitez",
+      "you": "Choisissez votre animal pour le duel (et un Personnage si vous voulez)",
       "player": "{player} choisit ses cartes pour le duel",
       "players": "Les joueurs choisissent leurs cartes pour le duel"
     },
@@ -11,19 +11,19 @@
     },
     "reveal-duel": "Les cartes du duel sont révélées",
     "resolve-palace": {
-      "you": "Duel gagné ! Placez votre carte au Palais, ou activez d'abord votre Personnage",
+      "you": "Duel gagné ! Placez votre carte au Palais, ou activez d’abord votre Personnage",
       "player": "{player} a gagné le duel et résout son Palais"
     },
     "resolve-jungle": {
-      "you": "Duel perdu : placez votre carte dans la Jungle, ou activez d'abord votre Personnage",
+      "you": "Duel perdu : placez votre carte dans la Jungle, ou activez d’abord votre Personnage",
       "player": "{player} a perdu le duel et résout sa Jungle"
     },
     "jungle-elephant": {
-      "you": "Éléphant : déplacez un animal de la Jungle vers le Palais (chez vous ou chez l'adversaire), ou <pass>passez</pass>",
+      "you": "Éléphant : déplacez un animal de la Jungle vers le Palais (chez vous ou chez l’adversaire), ou <pass>passez</pass>",
       "player": "{player} peut déplacer un animal de la Jungle vers le Palais"
     },
     "jungle-tiger": {
-      "you": "Tigre : déplacez un animal du Palais vers la Jungle (chez vous ou chez l'adversaire), ou <pass>passez</pass>",
+      "you": "Tigre : déplacez un animal du Palais vers la Jungle (chez vous ou chez l’adversaire), ou <pass>passez</pass>",
       "player": "{player} peut déplacer un animal du Palais vers la Jungle"
     },
     "maharaja": {
@@ -47,8 +47,8 @@
       "player": "{player} défausse une carte Personnage"
     },
     "refill-hand": {
-      "you": "Choisissez une des deux cartes visibles : votre adversaire recevra l'autre",
-      "player": "{player} choisit la carte qu'il prend et celle qu'il vous laisse"
+      "you": "Choisissez une des deux cartes visibles : votre adversaire recevra l’autre",
+      "player": "{player} choisit sa carte parmi les deux visibles"
     },
     "end-of-round": "Fin de la manche",
     "round-won": {
@@ -72,7 +72,7 @@
   "help": {
     "location": {
       "animal-deck": "Dans une pioche Animal, face cachée.",
-      "animal-offer": "Visible au sommet d'une pioche : le perdant du prochain duel choisira entre les deux cartes visibles.",
+      "animal-offer": "Visible au sommet d’une pioche : le perdant du prochain duel choisira entre les deux cartes visibles.",
       "animal-set-aside": "Écartée face cachée : elle ne sert pas pendant cette manche.",
       "animal-discard": "Éliminée par le Chasseur.",
       "character-deck": "Dans la pioche des cartes Personnage.",
@@ -95,24 +95,24 @@
         "title": "Éléphant {value}",
         "duel": "L’<b>Éléphant bat le Tigre</b>, mais il est battu par la Souris.",
         "palace": "Gagnez <b>1 Faveur par Éléphant</b> dans votre Palais, y compris celui que vous venez de placer.",
-        "jungle": "Vous pouvez <b>déplacer 1 animal de la Jungle vers le Palais</b>, chez vous ou chez l'adversaire. Ce peut être l'Éléphant que vous venez de jouer."
+        "jungle": "Vous pouvez <b>déplacer 1 animal de la Jungle vers le Palais</b>, chez vous ou chez l’adversaire. Ce peut être l’Éléphant que vous venez de jouer."
       },
       "tiger": {
         "title": "Tigre {value}",
-        "duel": "Le <b>Tigre bat la Souris</b>, mais il est battu par l'Éléphant.",
+        "duel": "Le <b>Tigre bat la Souris</b>, mais il est battu par l’Éléphant.",
         "palace": "Gagnez <b>1 Faveur par Tigre</b> dans votre Jungle. Puis, <b>piochez 1 carte Personnage</b>.",
-        "jungle": "Vous pouvez <b>déplacer 1 animal du Palais vers la Jungle</b>, chez vous ou chez l'adversaire."
+        "jungle": "Vous pouvez <b>déplacer 1 animal du Palais vers la Jungle</b>, chez vous ou chez l’adversaire."
       },
       "mouse": {
         "title": "Souris {value}",
-        "duel": "La <b>Souris bat l'Éléphant</b>, mais elle est battue par le Tigre.",
+        "duel": "La <b>Souris bat l’Éléphant</b>, mais elle est battue par le Tigre.",
         "palace": "Gagnez <b>1 Honneur et 1 Faveur par paire de Souris</b> dans votre Palais, y compris celle que vous venez de placer.",
         "jungle": "<b>Piochez 1 carte Personnage</b>."
       },
       "same-family": "Si les deux animaux sont de la même famille, <b>la valeur la plus élevée</b> remporte le duel.",
       "palace": "Au Palais (duel gagné)",
       "jungle": "Dans la Jungle (duel perdu)",
-      "collection": "Un animal déplacé ne déclenche pas l'effet du lieu où il arrive. Réunissez <b>4 valeurs consécutives</b> dans votre Palais ou votre Jungle pour remporter une Collection."
+      "collection": "Un animal déplacé ne déclenche pas l’effet du lieu où il arrive. Réunissez <b>4 valeurs consécutives</b> dans votre Palais ou votre Jungle pour remporter une Collection."
     },
     "character": {
       "hidden": "Carte Personnage",
@@ -128,10 +128,10 @@
       "effect": {
         "11": "Duel remporté : gagnez <b>2 Faveurs</b>.",
         "12": "Duel perdu : gagnez <b>1 Faveur et 1 Honneur</b>.",
-        "21": "Duel remporté : <b>déplacez l'animal de votre choix</b> du Palais vers la Jungle, ou inversement (chez vous ou chez l'adversaire). L'animal déplacé ne déclenche pas l'effet du lieu.",
-        "22": "Duel perdu : gagnez <b>1 Faveur</b>, puis <b>déplacez l'animal de votre choix</b> du Palais vers la Jungle, ou inversement (chez vous ou chez l'adversaire). L'animal déplacé ne déclenche pas l'effet du lieu.",
-        "31": "Duel remporté : prenez <b>1 animal de la Jungle adverse</b> et placez-le dans votre propre Jungle, sans déclencher l'effet du lieu.",
-        "32": "Duel perdu : prenez <b>1 animal du Palais adverse</b> et placez-le dans votre propre Palais, sans déclencher l'effet du lieu.",
+        "21": "Duel remporté : <b>déplacez l’animal de votre choix</b> du Palais vers la Jungle, ou inversement (chez vous ou chez l’adversaire). L’animal déplacé ne déclenche pas l’effet du lieu.",
+        "22": "Duel perdu : gagnez <b>1 Faveur</b>, puis <b>déplacez l’animal de votre choix</b> du Palais vers la Jungle, ou inversement (chez vous ou chez l’adversaire). L’animal déplacé ne déclenche pas l’effet du lieu.",
+        "31": "Duel remporté : prenez <b>1 animal de la Jungle adverse</b> et placez-le dans votre propre Jungle, sans déclencher l’effet du lieu.",
+        "32": "Duel perdu : prenez <b>1 animal du Palais adverse</b> et placez-le dans votre propre Palais, sans déclencher l’effet du lieu.",
         "41": "Duel remporté : gagnez <b>1 Faveur</b> et <b>éliminez 1 animal adverse</b> (dans son Palais ou sa Jungle). Cet animal est défaussé.",
         "42": "Duel perdu : gagnez <b>1 Honneur</b> et <b>éliminez 1 animal adverse</b> (dans son Palais ou sa Jungle). Cet animal est défaussé."
       },
@@ -140,7 +140,7 @@
         "play": "Vous pouvez jouer <b>une seule carte Personnage</b>, face cachée, par duel, en plus de votre carte Animal.",
         "reveal": "<b>Pari gagné</b> : activez la carte avant ou après votre carte Animal, puis défaussez-la. <b>Pari perdu</b> : défaussez-la sans effet.",
         "limit": "Vous ne pouvez conserver que <b>deux cartes Personnage</b> en main : si vous en piochez une 3<sup>e</sup>, défaussez-en une.",
-        "draw": "Les cartes Personnage non jouées restent en main d'une manche à l'autre."
+        "draw": "Les cartes Personnage non jouées restent en main d’une manche à l’autre."
       }
     },
     "collection": {
@@ -157,12 +157,12 @@
       "rules": "Rappels",
       "rule": {
         "check": "Chaque joueur vérifie ses Collections après avoir résolu ses effets. Le gagnant du duel vérifie avant le perdant.",
-        "once": "Un jeton remporté n'est plus disponible pour le reste de la manche.",
+        "once": "Un jeton remporté n’est plus disponible pour le reste de la manche.",
         "faces": "Au début de chaque manche, le côté visible du jeton est tiré à pile ou face."
       },
       "available": "Encore disponible sur le plateau.",
       "won": "Remporté par {player} pour cette manche.",
-      "won.mine": "Vous l'avez remporté pour cette manche."
+      "won.mine": "Vous l’avez remporté pour cette manche."
     },
     "prestige": {
       "favor": {
@@ -176,45 +176,45 @@
       "end-of-round": "Fin de manche",
       "rule": {
         "total": "Faveurs + Honneurs = <b>Prestige</b>. Le joueur avec le plus de Prestige remporte la manche.",
-        "tie": "En cas d'égalité, le joueur avec le plus d’<b>Honneur</b> l'emporte. Si l'égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
-        "after": "« Les Faveurs passent, mais l'Honneur demeure ! » Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs déjà acquises pour la manche suivante."
+        "tie": "En cas d’égalité, le joueur avec le plus d’<b>Honneur</b> l’emporte. Si l’égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
+        "after": "« Les Faveurs passent, mais l’Honneur demeure ! » Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs déjà acquises pour la manche suivante."
       },
       "change": "Les jetons valent 1, 3 ou 6 : la réserve est illimitée et la monnaie est rendue automatiquement.",
-      "owned": "{player} a {favor} Faveur(s) et {honor} Honneur(s).",
-      "owned.mine": "Vous avez {favor} Faveur(s) et {honor} Honneur(s)."
+      "owned": "{player} a {favor, plural, one {# Faveur} other {# Faveurs}} et {honor, plural, one {# Honneur} other {# Honneurs}}.",
+      "owned.mine": "Vous avez {favor, plural, one {# Faveur} other {# Faveurs}} et {honor, plural, one {# Honneur} other {# Honneurs}}."
     },
     "prestige-total": {
       "title": "Prestige",
-      "intro": "Le <b>Prestige</b> d'un joueur est la somme de ses <b>Faveurs</b> (jetons blancs) et de ses <b>Honneurs</b> (jetons noirs). C'est lui qui désigne le vainqueur de chaque manche.",
+      "intro": "Le <b>Prestige</b> d’un joueur est la somme de ses <b>Faveurs</b> (jetons blancs) et de ses <b>Honneurs</b> (jetons noirs). C’est lui qui désigne le vainqueur de chaque manche.",
       "gain-title": "Gagner du Prestige",
       "gain": {
         "palace": "Les <b>effets du Palais</b> : chaque duel gagné place votre carte au Palais, et son effet rapporte des Faveurs, et des Honneurs pour les paires de Souris.",
-        "characters": "Certaines cartes <b>Personnage</b>, comme le Marchand, rapportent directement des Faveurs ou des Honneurs.",
+        "characters": "Certaines cartes <b>Personnage</b>, comme la Marchande, rapportent directement des Faveurs ou des Honneurs.",
         "collections": "Les <b>Collections</b> : 4 valeurs consécutives au Palais ou dans la Jungle rapportent la récompense du jeton Collection correspondant."
       },
       "round-title": "Fin de manche",
       "round": {
         "win": "Après 9 tours, le joueur avec le plus de Prestige remporte la manche.",
-        "tie": "En cas d'égalité, le joueur avec le plus d’<b>Honneur</b> l'emporte. Si l'égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
-        "after": "« Les Faveurs passent, mais l'Honneur demeure ! » Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs pour la manche suivante."
+        "tie": "En cas d’égalité, le joueur avec le plus d’<b>Honneur</b> l’emporte. Si l’égalité persiste, les joueurs révèlent leur dernière carte en main : le vainqueur de ce dernier duel gagne la manche.",
+        "after": "« Les Faveurs passent, mais l’Honneur demeure ! » Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs pour la manche suivante."
       },
       "game-title": "Remporter la partie",
-      "game": "Le vainqueur d'une manche reçoit une moitié de l'éléphant d'or. Le premier joueur qui réunit les <b>deux moitiés</b>, en deux manches gagnées, remporte la partie.",
-      "owned": "{player} a {total} de Prestige ({favor} Faveur(s) + {honor} Honneur(s)).",
-      "owned.mine": "Vous avez {total} de Prestige ({favor} Faveur(s) + {honor} Honneur(s))."
+      "game": "Le vainqueur d’une manche reçoit une moitié de l’éléphant d’or. Le premier joueur qui réunit les <b>deux moitiés</b>, en deux manches gagnées, remporte la partie.",
+      "owned": "{player} a {total} de Prestige ({favor, plural, one {# Faveur} other {# Faveurs}} + {honor, plural, one {# Honneur} other {# Honneurs}}).",
+      "owned.mine": "Vous avez {total} de Prestige ({favor, plural, one {# Faveur} other {# Faveurs}} + {honor, plural, one {# Honneur} other {# Honneurs}})."
     },
     "round-victory": {
       "title": "Victoire de Manche",
       "intro": "Haati se joue en <b>deux manches gagnantes</b>.",
       "winning": "Remporter la partie",
       "rule": {
-        "round": "Le vainqueur d'une manche reçoit un jeton Victoire de Manche.",
+        "round": "Le vainqueur d’une manche reçoit un jeton Victoire de Manche.",
         "two": "Un joueur qui remporte les deux premières manches gagne la partie.",
         "third": "Sinon, une 3<sup>e</sup> manche départage les joueurs : son gagnant récupère le jeton de son adversaire et remporte la partie."
       },
       "reserve": "Dans la réserve.",
       "owned": "Remporté par {player}.",
-      "owned.mine": "Vous l'avez remporté."
+      "owned.mine": "Vous l’avez remporté."
     },
     "board": {
       "title": "Le duel des Maharajas",
@@ -225,9 +225,9 @@
       "refill-title": "4. Compléter sa main : le perdant choisit !",
       "end-title": "Fin de manche",
       "choose": "Chaque joueur choisit une de ses deux cartes Animal et ajoute éventuellement une carte Personnage, face cachée.",
-      "duel": "L’<b>Éléphant bat le Tigre</b>, le <b>Tigre bat la Souris</b>, la <b>Souris bat l'Éléphant</b>. Entre deux animaux de la même famille, la valeur la plus élevée l'emporte.",
-      "effects": "Le gagnant place sa carte dans son <b>Palais</b> et doit en appliquer l'effet. Puis le perdant place la sienne dans sa <b>Jungle</b> et peut en appliquer l'effet. Chacun vérifie ensuite ses Collections (4 valeurs consécutives).",
-      "refill": "Le <b>perdant choisit</b> une des deux cartes visibles et laisse l'autre à son adversaire.",
+      "duel": "L’<b>Éléphant bat le Tigre</b>, le <b>Tigre bat la Souris</b>, la <b>Souris bat l’Éléphant</b>. Entre deux animaux de la même famille, la valeur la plus élevée l’emporte.",
+      "effects": "Le gagnant place sa carte dans son <b>Palais</b> et doit en appliquer l’effet. Puis le perdant place la sienne dans sa <b>Jungle</b> et peut en appliquer l’effet. Chacun vérifie ensuite ses Collections (4 valeurs consécutives).",
+      "refill": "Le <b>perdant choisit</b> une des deux cartes visibles et laisse l’autre à son adversaire.",
       "end": "Après 9 tours, le joueur avec le plus de <b>Prestige</b> (Faveurs + Honneurs) remporte la manche. Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs. La partie se joue en deux manches gagnantes."
     }
   },

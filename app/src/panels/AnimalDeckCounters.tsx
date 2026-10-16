@@ -7,7 +7,7 @@ import { animalPiles } from '@gamepark/haati/rules/NewRoundRule'
 import { useFocusContext, useMaterialContext, useRules } from '@gamepark/react-game'
 import { maxBy } from 'es-toolkit'
 import { Locators } from '../locators/Locators'
-import { ANIMAL_DECK_Y, CARD_HEIGHT, CARD_WIDTH, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
+import { CARD_HEIGHT, CARD_WIDTH, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 
@@ -40,9 +40,14 @@ export const AnimalDeckCounters = () => {
           pileCards.getIndexes().map((index) => ({ index, item: pileCards.getItem(index) })),
           ({ item }) => item.location.x ?? 0
         )
-        const centre = top
-          ? Locators[LocationType.AnimalDeck]!.getItemCoordinates(top.item, { ...context, type: MaterialType.AnimalCard, index: top.index, displayIndex: 0 })
-          : { x: 0, y: pile === 1 ? -ANIMAL_DECK_Y : ANIMAL_DECK_Y }
+        // An empty pile speaks for itself: a counter showing 0 would float alone on the table.
+        if (!top) return null
+        const centre = Locators[LocationType.AnimalDeck]!.getItemCoordinates(top.item, {
+          ...context,
+          type: MaterialType.AnimalCard,
+          index: top.index,
+          displayIndex: 0
+        })
         const sx = pile === 1 ? -1 : 1
         const sy = pile === 1 ? 1 : -1
         const x = (centre.x ?? 0) + sx * (CARD_HEIGHT / 2 - COUNTER_INSET)
