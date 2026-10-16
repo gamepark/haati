@@ -8,10 +8,8 @@ import { CustomMoveType } from '@gamepark/haati/rules/CustomMoveType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemType, isStartPlayerTurn, MaterialGame, MaterialMove } from '@gamepark/rules-api'
-import { css } from '@emotion/react'
 import { Trans } from 'react-i18next'
 import { PLAYER_PANEL_AREA, PLAYER_PRESTIGE_AREA } from '../locators/Locators'
-import { colors } from '../theme/colors'
 import { card, me, opponent, TutorialSetup } from './TutorialSetup'
 import { Elephant, Favor, Honor, Lose, Win } from './TutorialPictures'
 
@@ -21,56 +19,7 @@ export type HaatiTutorialStep = TutorialStep & { zoomOutFirst?: boolean }
 /** What the texts of the popups may contain besides bold: the Prestige tokens, the Character bets, the elephant. */
 const components = { b: <strong />, favor: <Favor />, honor: <Honor />, win: <Win />, lose: <Lose />, elephant: <Elephant /> }
 
-/**
- * The number of each popup in the Notion script ("step.order"). It is shown in front of the text while
- * the game is developed, so that the popups can be pointed at when testing; never in production.
- */
-const scriptNumbers: Record<string, string> = {
-  welcome: '1.1',
-  universe: '1.2',
-  'favor-honor': '1.3',
-  prestige: '1.4',
-  'end-of-game': '1.5',
-  turns: '2.1',
-  hand: '2.2',
-  play: '2.3',
-  cycle: '2.4',
-  palace: '2.5',
-  jungle: '2.6',
-  'change-place': '2.7',
-  refill: '2.8',
-  'play-mouse': '3.1',
-  'tiger-beats-mouse': '3.2',
-  'mouse-jungle': '3.3',
-  'character-piles': '3.4',
-  character: '3.5',
-  'choose-card': '3.6',
-  bet: '4.1',
-  'play-elephant': '4.2',
-  'play-merchant': '4.3',
-  'same-family': '4.4',
-  'resolution-order': '4.5',
-  'activate-merchant': '4.6',
-  collections: '5.1',
-  'play-tiger': '5.2',
-  'lose-to-win': '5.3',
-  'tiger-effect': '5.4',
-  'collection-won': '5.5',
-  honor: '5.6',
-  'prestige-total': '6.1',
-  'your-turn': '6.2'
-}
-
-const text = (key: string) => () => (
-  <>
-    {import.meta.env.DEV && <strong css={numberCss}>[{scriptNumbers[key]}] </strong>}
-    <Trans i18nKey={`tuto.${key}`} components={components} />
-  </>
-)
-
-const numberCss = css`
-  color: ${colors.plum};
-`
+const text = (key: string) => () => <Trans i18nKey={`tuto.${key}`} components={components} />
 
 /** The area of a player's panel (Favor, Honor and Prestige totals), which the interface draws. */
 const panel = (player: number) => ({ type: LocationType.PlayerPrestige, player, id: PLAYER_PANEL_AREA })
