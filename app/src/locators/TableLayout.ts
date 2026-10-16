@@ -40,12 +40,11 @@ export const DUEL_X = 33.5
 export const DUEL_CHARACTER_X = 40.5
 
 /**
- * When the duel is revealed, its cards leave the table for the middle of the screen, enlarged, the
- * Character card beside its Animal card, and the two Animal cards clash.
+ * When the duel is revealed, the two Animal cards leave the table for the middle of the screen, enlarged,
+ * and clash. The Character cards stay on the table.
  */
 export const DUEL_SHOW_SCALE = 1.5
 export const DUEL_SHOW_X = 5.6
-export const DUEL_SHOW_CHARACTER_X = 15.8
 
 /** The hand, fanned out in the bottom outer corner. */
 export const HAND = { x: 33, y: 15.6 }

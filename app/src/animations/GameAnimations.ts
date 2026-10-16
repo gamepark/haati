@@ -5,7 +5,7 @@ import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
 import { isElephantCompleted, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
-import { DUEL_CHARACTER_X, DUEL_SHOW_CHARACTER_X, DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
+import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
 
 /**
  * Most moves keep the framework's pace. Faster are only the housekeeping a player does not need to
@@ -13,13 +13,17 @@ import { DUEL_CHARACTER_X, DUEL_SHOW_CHARACTER_X, DUEL_SHOW_SCALE, DUEL_SHOW_X, 
  * gathered and laid out in piles between two rounds (the top card of each pile still turns over at
  * the usual pace). The Favor and Honor tokens move at half the usual second.
  *
- * The reveal of the duel is a show: once the last card turns over, the duel cards leave the table for
- * the middle of the screen, the two Animal cards clash, then all of them go back to their place, where
- * the players resolve them. The last Round victory token is a show too (see VictoryShow).
+ * The reveal of the duel is a show: once the last card turns over, the two Animal cards leave the
+ * table for the middle of the screen, clash, then go back to their place, where the players resolve
+ * them. The Character cards stay on the table: right after the show, a lost bet goes to the discard
+ * (the rules discard it as soon as the duel is decided), a won one waits to be activated. The last
+ * Round victory token is a show too (see VictoryShow).
  */
 export const gameAnimations = new MaterialGameAnimations()
 
-const DUEL_SHOW_DURATION = 5000
+const DUEL_SHOW_DURATION = 3750
+/** When the card revealed last is a Character card, it turns over at the usual pace: this share of the show. */
+const CHARACTER_FLIP_SHARE = 0.12
 
 const isPrestige = (move: MaterialMove) => 'itemType' in move && (move.itemType === MaterialType.Favor || move.itemType === MaterialType.Honor)
 
@@ -52,20 +56,23 @@ const isLastDuelReveal = (move: MaterialMove, context: MaterialContext) =>
   !!move.location.rotation &&
   hiddenDuelCards(context) === 1
 
+/** The table transform of a duel card, face up: the card revealed last is shown face up from the start. */
+const faceUp = (context: ItemContext) =>
+  transformItem(context)
+    .filter((transform) => transform !== 'rotateY(180deg)')
+    .join(' ')
+
 /**
- * The path of a duel card during the show, as keyframes of its table transform followed by a shift, a
- * scale and a tilt. The card revealed last is shown face up from the start: it does not turn over on the way.
+ * The path of a duel Animal card during the show, as keyframes of its table transform followed by a
+ * shift, a scale and a tilt.
  */
 const duelShow = (context: ItemContext) => {
   const item = context.rules.material(context.type).getItem(context.index)
   const s = side(item.location.player, context)
-  const character = context.type === MaterialType.CharacterCard
-  const base = transformItem(context)
-    .filter((transform) => transform !== 'rotateY(180deg)')
-    .join(' ')
-  const centre = { x: s * ((character ? DUEL_SHOW_CHARACTER_X : DUEL_SHOW_X) - (character ? DUEL_CHARACTER_X : DUEL_X)), y: -DUEL_Y }
-  // Towards the opponent: the Animal cards draw back, strike, bounce off; the Character cards follow a little.
-  const inward = -s * (character ? 0.3 : 1)
+  const base = faceUp(context)
+  const centre = { x: s * (DUEL_SHOW_X - DUEL_X), y: -DUEL_Y }
+  // Towards the opponent: the Animal cards draw back, strike, bounce off.
+  const inward = -s
   const frame = (dx: number, dy: number, z: number, scale: number, tilt: number) =>
     `transform: ${base} translate3d(${dx}em, ${dy}em, ${z}em) scale(${scale}) rotateZ(${tilt}deg);`
   const at = (shift: number, tilt = 0) => frame(centre.x + shift * inward, centre.y, 10, DUEL_SHOW_SCALE, tilt * inward)
@@ -77,6 +84,15 @@ const duelShow = (context: ItemContext) => {
     60% { ${at(-0.4, -2)} }
     66%, 86% { ${at(0)} }
     100% { ${frame(0, 0, 0, 1, 0)} }
+  `
+}
+
+/** A Character card revealed last: it turns over in place at the start of the show, then stays still. */
+const characterFlip = (context: ItemContext) => {
+  const base = faceUp(context)
+  return keyframes`
+    0% { transform: ${base} rotateY(180deg); }
+    ${CHARACTER_FLIP_SHARE * 100}%, 100% { transform: ${base}; }
   `
 }
 
@@ -101,9 +117,19 @@ gameAnimations
   .itemAnimation((context, animation) => {
     const item = context.rules.material(context.type).getItem(context.index)
     if (item.location.type !== LocationType.PlayerDuel) return
+    if (context.type === MaterialType.AnimalCard) {
+      return css`
+        > * {
+          animation: ${duelShow(context)} ${animation.duration}s ease-in-out forwards;
+        }
+      `
+    }
+    // A Character card stays on the table. The one revealed last turns over at the usual pace, not during the whole show.
+    const move = animation.move
+    if (!isMoveItem(move) || move.itemType !== MaterialType.CharacterCard || move.itemIndex !== context.index) return
     return css`
       > * {
-        animation: ${duelShow(context)} ${animation.duration}s ease-in-out forwards;
+        animation: ${characterFlip(context)} ${animation.duration}s ease-in-out forwards;
       }
     `
   })
