@@ -4,7 +4,7 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
-import { BET_LOST_DURATION, betLost, isBetLost, isWonBetPlayed, wonBetPlayed } from './BetShow'
+import { BET_VERDICT_DURATION, betLost, isBetLost, isWonBetPlayed, wonBetPlayed } from './BetShow'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
 import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
@@ -120,7 +120,7 @@ gameAnimations.configure((move, context) => isPrestige(move) && context.rules.ga
 gameAnimations.configure((move) => isCharacterPileRemade(move) && !isShuffle(move)).duration(150)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && isShuffle(move)).duration(500)
 gameAnimations.configure(isAnimalPileLaidOut).duration(150)
-gameAnimations.configure(isBetLost).duration(BET_LOST_DURATION).itemAnimation(betLost)
+gameAnimations.configure(isBetLost).duration(BET_VERDICT_DURATION).itemAnimation(betLost)
 gameAnimations.configure(isWonBetPlayed).itemAnimation(wonBetPlayed)
 gameAnimations.configure(isRowMove).duration(ROW_MOVE_DURATION).itemAnimation(rowMove)
 gameAnimations

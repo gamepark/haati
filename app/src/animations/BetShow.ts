@@ -12,11 +12,14 @@ import { futureRules, MoveAnimation } from './RowMove'
  * The verdict on the Character bets, once the Animal cards are back from the duel show. A won bet grows a
  * little under a golden shine, and keeps the shine as long as it waits to be activated. A lost bet turns to
  * ash where it is, then goes to the discard. Either way, the card is back to normal by the time it lands
- * in the discard: the verdict belongs to the duel, not to the card.
+ * in the discard: the verdict belongs to the duel, not to the card. Both verdicts last as long, so that
+ * both players are ready to go on at the same time.
  */
-export const BET_LOST_DURATION = 1300
+export const BET_VERDICT_DURATION = 1000
 /** The share of the lost bet's animation in which it turns to ash in place, before it flies to the discard. */
-const ASH_SHARE = 0.6
+const ASH_SHARE = 0.4
+/** The share of the lost bet's animation after which the ash fades: only when the card is close to the discard. */
+const ASH_FADE_SHARE = 0.85
 
 /** The duel is decided once no duel card is face down any more: the winner is then the one of this duel. */
 const isDuelDecided = (rules: MaterialRules) =>
@@ -49,7 +52,7 @@ const goldPulse = keyframes`
 export const wonBetCss = css`
   > * > :first-child {
     overflow: hidden;
-    animation: ${goldPulse} 1s ease-in-out;
+    animation: ${goldPulse} ${BET_VERDICT_DURATION / 1000}s ease-in-out;
 
     &:after {
       content: '';
@@ -85,11 +88,11 @@ export const isWonBetPlayed = (move: MaterialMove, context: MaterialContext) =>
 
 const ashes = keyframes`
   0% { filter: none; }
-  45%, ${ASH_SHARE * 100}% { filter: grayscale(1) brightness(0.3); }
+  ${ASH_SHARE * 75}%, ${ASH_FADE_SHARE * 100}% { filter: grayscale(1) brightness(0.3); }
   100% { filter: none; }
 `
 
-/** The lost bet turns to ash in place, then flies to the discard while the ash fades. */
+/** The lost bet turns to ash in place, then flies to the discard, the ash fading as it gets there. */
 export const betLost = (context: ItemContext, animation: MoveAnimation) => {
   const move = animation.move as MoveItem
   if (context.type !== MaterialType.CharacterCard || context.index !== move.itemIndex) return
