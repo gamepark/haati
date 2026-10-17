@@ -67,8 +67,11 @@ export const CHARACTER_DISCARD = { x: 15.5, y: 16.5 }
 export const VICTORY_WIDTH = 2.57
 export const VICTORY_HEIGHT = 6.56
 
-/** The Round victory tokens not won yet, beside the pile of Animal cards below the board. */
-export const VICTORY_RESERVE = { x: -7.6, y: ANIMAL_DECK_Y }
+/**
+ * The Round victory tokens not won yet, beside the pile of Animal cards below the board: under the pile of
+ * Animal cards set aside, facing the pile of Character cards, their bottom level with its bottom.
+ */
+export const VICTORY_RESERVE = { x: ANIMAL_SET_ASIDE.x, y: CHARACTER_DECK.y + CARD_HEIGHT / 2 - VICTORY_HEIGHT / 2 }
 
 /** At the end of the game, the elephant completed by the winner stands in the middle of the table, this many times bigger. */
 export const VICTORY_SHOW_SCALE = 3
