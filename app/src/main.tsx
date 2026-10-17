@@ -6,6 +6,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { gameAnimations } from './animations/GameAnimations'
 import { App } from './App'
+import { HaatiHistory } from './history/HaatiHistory'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import { haatiScoring } from './scoring/HaatiScoring'
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
+      logs={new HaatiHistory()}
       scoring={haatiScoring}
       tutorial={haatiTutorial}
       theme={theme}

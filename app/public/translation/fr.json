@@ -69,6 +69,51 @@
       "player": "{player} a gagné la manche {round}"
     }
   },
+  "log": {
+    "hidden-animal": "une carte Animal",
+    "hidden-character": "une carte Personnage",
+    "reveal": "{player} révèle <animal/>",
+    "reveal-bet": "{player} révèle <animal/> et <character/>",
+    "reveal-bet-lost": "{player} révèle <animal/> et <character/> : pari perdu, carte défaussée sans effet",
+    "duel-won": "{player} gagne le duel",
+    "place": {
+      "palace": "{player} place <animal/> dans son Palais",
+      "jungle": "{player} place <animal/> dans sa Jungle"
+    },
+    "activate": "{player} active <character/>",
+    "draw-character": "{player} pioche une carte Personnage",
+    "discard-character": "{player} défausse <character/>",
+    "from": {
+      "palace": "de son Palais",
+      "palace.other": "du Palais de {owner}",
+      "jungle": "de sa Jungle",
+      "jungle.other": "de la Jungle de {owner}"
+    },
+    "to": {
+      "palace": "vers son Palais",
+      "palace.other": "vers le Palais de {owner}",
+      "jungle": "vers sa Jungle",
+      "jungle.other": "vers la Jungle de {owner}"
+    },
+    "move": "{player} déplace <animal/> {from} {to}",
+    "hunt": "{player} élimine <animal/> {from}",
+    "pass": "{player} renonce à l’effet",
+    "collection": {
+      "palace": "{player} complète la Collection du Palais",
+      "jungle": "{player} complète la Collection de la Jungle"
+    },
+    "gain": "{player} gagne {gain}",
+    "favor": "{count, plural, one {# Faveur} other {# Faveurs}}",
+    "honor": "{count, plural, one {# Honneur} other {# Honneurs}}",
+    "and": " et ",
+    "choose": "{player} choisit <animal/>",
+    "receive": "{player} reçoit <animal/>",
+    "last-card": "Égalité parfaite : {player} révèle sa dernière carte, <animal/>",
+    "round-won": "{player} remporte la manche : {winner} de Prestige contre {loser}",
+    "round-won.honor": "{player} remporte la manche : égalité à {prestige} de Prestige, mais {winner} Honneurs contre {loser}",
+    "round-won.duel": "{player} remporte la manche grâce au duel de départage",
+    "honor-to-favor": "Les Faveurs sont défaussées, les Honneurs deviennent des Faveurs"
+  },
   "button": {
     "play": "Jouer",
     "bet": "Parier",
