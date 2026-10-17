@@ -51,6 +51,7 @@ const fade = keyframes`
 
 /** A sand-coloured plate with the gold rim of the player panels. */
 const plateCss = css`
+  font-size: 0.8em;
   padding: 1em 2.5em;
   white-space: nowrap;
   opacity: 0;
