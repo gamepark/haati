@@ -132,9 +132,11 @@ gameAnimations
         }
       `
     }
-    // A Character card stays on the table. The one revealed last turns over at the usual pace, not during the whole show.
+    // A Character card stays on the table. The one revealed last turns over at the usual pace, not during the whole show,
+    // unless the viewer already sees it face up: their own card, which then stays still.
     const move = animation.move
     if (!isMoveItem(move) || move.itemType !== MaterialType.CharacterCard || move.itemIndex !== context.index) return
+    if (!transformItem(context).includes('rotateY(180deg)')) return
     return css`
       > * {
         animation: ${characterFlip(context)} ${animation.duration}s ease-in-out forwards;
