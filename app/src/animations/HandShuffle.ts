@@ -14,9 +14,10 @@ import { MoveAnimation } from './RowMove'
  * the packet that was on top goes under. Then the cards spread out. The Character cards are not mixed and
  * do not move.
  *
- * The cards of a pile are only a few hundredths of an em apart: a card only changes its height in the pile
- * while the two packets are apart, never while it covers another, or the browser would hesitate over which
- * one is in front.
+ * In the fan, the cards are only a few hundredths of an em apart in height: too close for the browser, which
+ * draws the edges of two moving cards cutting through each other. In the pile they are spaced far wider (the
+ * table has no perspective, so it does not show), and a card only changes its height in the pile while the
+ * two packets are apart, never while it covers another.
  */
 const GATHER = 300
 const PART = 200
@@ -27,6 +28,8 @@ const SPREAD = 300
 export const HAND_SHUFFLE_DURATION = GATHER + MIXES * (PART + HOLD + CLOSE) + SPREAD
 /** Where the two packets go, from the middle of the pile, along the card: a little gap between them. */
 const PACKET_X = 0.55 * CARD_WIDTH
+/** The height between two cards of the pile, in em. */
+const PILE_GAP = 1
 
 const isHandShuffle = (move: MaterialMove): move is Shuffle => isShuffle(move) && move.itemType === MaterialType.AnimalCard
 
@@ -90,7 +93,6 @@ export const handShuffle = (context: ItemContext, animation: MoveAnimation) => {
   const angle = locator.getRotateZ(item.location, context, middle)
   const cos = Math.cos((angle * Math.PI) / 180)
   const sin = Math.sin((angle * Math.PI) / 180)
-  const deltaZ = locator.getDeltaZ(item.location, context)
   const description = context.material[context.type]
   // The same locator, with the card placed at the middle of the fan, with the tilt of the middle card, moved
   // along the card, at its height in the pile.
@@ -101,7 +103,7 @@ export const handShuffle = (context: ItemContext, animation: MoveAnimation) => {
       return {
         x: (middleSpot.x ?? 0) + x * cos,
         y: (middleSpot.y ?? 0) + x * sin,
-        z: (middleSpot.z ?? 0) + (height + 1) * deltaZ
+        z: (middleSpot.z ?? 0) + (height + 1) * PILE_GAP
       }
     }
     pile.getItemRotateZ = () => angle
