@@ -77,7 +77,7 @@ class RoundVictoryTokenDescription extends TokenDescription {
 
 /**
  * Favor and Honor are money: one item per denomination (the id) and place, carrying a quantity. The
- * supply is unlimited, so it is drawn as a static heap of 3 tokens of each value in the reserve.
+ * supply is unlimited, so it is drawn as a static pile of 3 tokens of each value in the reserve.
  */
 class PrestigeDescription extends MoneyDescription<number, MaterialType, LocationType, number> {
   width = 1.63

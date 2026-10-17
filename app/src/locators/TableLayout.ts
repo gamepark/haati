@@ -63,10 +63,6 @@ export const ANIMAL_DISCARD = { x: 8.5, y: -16.5 }
 export const CHARACTER_DECK = { x: 8.5, y: 16.5 }
 export const CHARACTER_DISCARD = { x: 15.5, y: 16.5 }
 
-/** The unlimited supply of Favor and Honor, below the board on the viewer's side: one heap of white and black tokens. */
-export const PRESTIGE_BANK = { x: -15.5, y: 17 }
-export const BANK_RADIUS = 1.2
-
 /** The 2 Round victory tokens are the two halves of one elephant: they are laid side by side, upright. */
 export const VICTORY_WIDTH = 2.57
 export const VICTORY_HEIGHT = 6.56
@@ -105,6 +101,30 @@ export const PLAYER_COLLECTION_Y = PLAYER_BAND_BOTTOM - COLLECTION_DIAMETER / 2 
 
 export const TABLE_WIDTH = 88.6
 export const TABLE_HEIGHT = 2 * 21.3
+
+/**
+ * The unlimited supply of Favor and Honor, below the board on the viewer's side, in a frame so that it does
+ * not read as anybody's tokens; its title lies in a cartouche over the bottom of the Favor tokens. The
+ * tokens are drawn smaller than the players' ones, and the frame is never bigger than a card. Its bottom
+ * is level with the bottom of the pile of Character cards. Inside: Honor above, Favor below, covering the
+ * Honor tokens all but their value; a pile of each value, highest first, its tokens slightly offset up and right.
+ */
+const RESERVE_BOTTOM = CHARACTER_DECK.y + CARD_HEIGHT / 2
+export const RESERVE_SCALE = 0.75
+const RESERVE_PADDING = 0.65
+const RESERVE_TOKEN_HEIGHT = PRESTIGE_HEIGHT * RESERVE_SCALE
+export const RESERVE_PILE_STEP = 2.3 * RESERVE_SCALE
+export const RESERVE_PILE_OFFSET = 0.15
+/** The part of an Honor token left uncovered by the Favor token below it: its value. */
+const RESERVE_HONOR_VISIBLE = 2.1 * RESERVE_SCALE
+export const RESERVE_FAVOR_Y = RESERVE_BOTTOM - RESERVE_PADDING - RESERVE_TOKEN_HEIGHT / 2
+export const RESERVE_HONOR_Y = RESERVE_FAVOR_Y - RESERVE_HONOR_VISIBLE
+const RESERVE_TOP = RESERVE_HONOR_Y - RESERVE_TOKEN_HEIGHT / 2 - 2 * RESERVE_PILE_OFFSET - RESERVE_PADDING
+export const RESERVE_WIDTH = 2 * RESERVE_PILE_STEP + 1.63 * RESERVE_SCALE + 2 * RESERVE_PILE_OFFSET + 2 * RESERVE_PADDING
+export const RESERVE_HEIGHT = RESERVE_BOTTOM - RESERVE_TOP
+export const RESERVE = { x: -15.5, y: (RESERVE_TOP + RESERVE_BOTTOM) / 2 }
+/** The cartouche of the title, as wide as the tokens, level with the bottom of the Favor tokens. */
+export const RESERVE_TITLE_INSET = RESERVE_PADDING
 
 /** The player panels, near the top outer corner of each side, clear of the zoom buttons, their bottom on the band line. */
 export const PLAYER_PANEL_X = 28.25

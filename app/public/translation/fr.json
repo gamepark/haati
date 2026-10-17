@@ -275,5 +275,8 @@
     "honor": "Votre premier <b>Honneur</b> ! Les Honneurs (jetons noirs) comptent dans votre Prestige comme les Faveurs et départagent les égalités. À la fin de la manche, les Faveurs sont perdues, mais les Honneurs deviennent des Faveurs pour la manche suivante.",
     "prestige-total": "Votre total de <b>Prestige</b> est donc de 8 : 7 Faveurs + 1 Honneur. Celui qui a le plus de Prestige remporte la manche !",
     "your-turn": "À vous de jouer la fin de la manche : il reste <b>5 tours</b> !\n\n<i>N’oubliez pas : cliquez sur n’importe quel élément du jeu (carte, jeton, plateau, compteur) pour afficher son aide.</i>"
+  },
+  "table": {
+    "reserve": "Réserve"
   }
 }

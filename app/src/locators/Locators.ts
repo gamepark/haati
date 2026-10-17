@@ -12,11 +12,12 @@ import {
   ListLocator,
   LocationDescription,
   Locator,
-  MaterialContext,
-  PileLocator
+  MaterialContext
 } from '@gamepark/react-game'
+import { prestigeUnits } from '@gamepark/haati/material/Prestige'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { PrestigeTotalHelp } from '../material/help/PrestigeTotalHelp'
+import { ReserveTitle } from './ReserveTitle'
 import roundVictory1 from '../images/tokens/RoundVictory1.png'
 import roundVictory2 from '../images/tokens/RoundVictory2.png'
 import {
@@ -24,7 +25,6 @@ import {
   ANIMAL_DECK_Y,
   ANIMAL_DISCARD,
   ANIMAL_SET_ASIDE,
-  BANK_RADIUS,
   CARD_HEIGHT,
   CARD_WIDTH,
   CHARACTER_DECK,
@@ -48,10 +48,17 @@ import {
   PLAYER_PANEL_WIDTH,
   PLAYER_PANEL_X,
   PLAYER_VICTORY,
-  PRESTIGE_BANK,
   PRESTIGE_ROW_LENGTH,
   PRESTIGE_ROW_STEP,
   PRESTIGE_ROW_X,
+  RESERVE,
+  RESERVE_FAVOR_Y,
+  RESERVE_HEIGHT,
+  RESERVE_HONOR_Y,
+  RESERVE_PILE_OFFSET,
+  RESERVE_PILE_STEP,
+  RESERVE_SCALE,
+  RESERVE_WIDTH,
   ROW_STEP,
   ROW_X,
   side,
@@ -279,32 +286,52 @@ export const victoryHalf = (item: MaterialItem, context: ItemContext): number =>
   return holder === undefined ? -1 : -side(holder, context)
 }
 
-/**
- * The shared supply. The unlimited Favor and Honor tokens lie in one heap, white and black mixed, every
- * token turned its own way. The Round victory tokens not won yet stand beside the pile of Animal cards
- * below the board, each showing the half of the elephant still to be won.
- */
-class ReserveLocator extends PileLocator {
-  radius = BANK_RADIUS
+/** The frame of the reserve of Favor and Honor, titled, so that its tokens do not read as anybody's. */
+class ReserveDescription extends LocationDescription {
+  width = RESERVE_WIDTH
+  height = RESERVE_HEIGHT
+  borderRadius = 0.6
+  content = ReserveTitle
+  extraCss = css`
+    background: rgba(62, 18, 48, 0.35);
+    border: 0.08em solid rgba(242, 212, 144, 0.7);
+  `
+}
 
-  getCoordinates() {
-    return PRESTIGE_BANK
+/**
+ * The shared supply. The unlimited Favor and Honor tokens lie in a frame (see TableLayout), a pile of
+ * each value. The Round victory tokens not won yet stand beside the pile of Animal cards below the
+ * board, each showing the half of the elephant still to be won.
+ */
+class ReserveLocator extends Locator {
+  locationDescription = new ReserveDescription()
+
+  getLocations() {
+    return [{ type: LocationType.Reserve }]
   }
 
-  getPileId() {
-    return 'prestige'
+  getCoordinates() {
+    return RESERVE
+  }
+
+  /** The Favor and Honor tokens of the reserve are drawn smaller than the players' ones. */
+  placeItem(item: MaterialItem, context: ItemContext): string[] {
+    const transform = super.placeItem(item, context)
+    return context.type === MaterialType.RoundVictoryToken ? transform : [...transform, `scale(${RESERVE_SCALE})`]
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
     if (context.type === MaterialType.RoundVictoryToken) {
       return { x: VICTORY_RESERVE.x + (victoryHalf(item, context) * VICTORY_WIDTH) / 2, y: VICTORY_RESERVE.y, z: 0.1 }
     }
-    return super.getItemCoordinates(item, context)
-  }
-
-  getItemRotateZ(item: MaterialItem, context: ItemContext) {
-    if (context.type === MaterialType.RoundVictoryToken) return 0
-    return super.getItemRotateZ(item, context)
+    const rank = prestigeUnits.indexOf(item.id)
+    const offset = context.displayIndex * RESERVE_PILE_OFFSET
+    const favor = context.type === MaterialType.Favor
+    return {
+      x: RESERVE.x + (rank - 1) * RESERVE_PILE_STEP - RESERVE_PILE_OFFSET + offset,
+      y: (favor ? RESERVE_FAVOR_Y : RESERVE_HONOR_Y) - offset,
+      z: (favor ? 1 : 0) + context.displayIndex * 0.05 + 0.1
+    }
   }
 }
 
