@@ -21,6 +21,7 @@ import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
 import { COLLECTION_SHOW_DURATION, collectionShow, isCollectionWon } from './CollectionShow'
 import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
+import { isDuelShowNext } from '../tutorial/Tutorial'
 
 /**
  * Most moves keep the framework's pace. Faster are only the housekeeping a player does not need to
@@ -87,7 +88,8 @@ const faceUp = (context: ItemContext) =>
 
 /**
  * The path of a duel Animal card during the show, as keyframes of its table transform followed by a
- * shift, a scale and a tilt.
+ * shift, a scale and a tilt. When the tutorial pauses on the duel next, the card stays in the middle of the
+ * screen, where the tutorial keeps it (see the DuelShow effect).
  */
 const duelShow = (context: ItemContext) => {
   const item = context.rules.material(context.type).getItem(context.index)
@@ -106,7 +108,7 @@ const duelShow = (context: ItemContext) => {
     54% { ${at(1.2, 5)} }
     60% { ${at(-0.4, -2)} }
     66%, 86% { ${at(0)} }
-    100% { ${frame(0, 0, 0, 1, 0)} }
+    100% { ${isDuelShowNext(context) ? at(0) : frame(0, 0, 0, 1, 0)} }
   `
 }
 

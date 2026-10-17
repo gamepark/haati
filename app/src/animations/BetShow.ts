@@ -48,13 +48,16 @@ const goldPulse = keyframes`
   40% { scale: 1.1; }
 `
 
-/** On the item: its front face grows once, then keeps a golden shine. */
+/**
+ * On the item: its front face grows once, then keeps a golden shine. The shine is drawn before the face's
+ * content, so that the veil the framework draws after it, out of a focus of the tutorial, still darkens the card.
+ */
 export const wonBetCss = css`
   > * > :first-child {
     overflow: hidden;
     animation: ${goldPulse} ${BET_VERDICT_DURATION / 1000}s ease-in-out;
 
-    &:after {
+    &:before {
       content: '';
       position: absolute;
       pointer-events: none;
@@ -127,7 +130,7 @@ export const wonBetPlayed = (context: ItemContext, animation: MoveAnimation, bou
   return [
     frameworkAnimations.getItemAnimation(context, animation, boundaries),
     css`
-      && > * > * > :first-child:after {
+      && > * > * > :first-child:before {
         animation:
           ${goldSlide} 2s linear infinite,
           ${goldFade} ${animation.duration}s ease-in forwards;

@@ -7,7 +7,7 @@ import { countPrestige, PrestigeType } from '@gamepark/haati/material/Prestige'
 import { StyledPlayerPanel, useFocusContext, usePlay, usePlayers, useRules } from '@gamepark/react-game'
 import { MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
-import { PLAYER_BAND_BOTTOM, PLAYER_PANEL_HEIGHT, PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
+import { PanelArea, PLAYER_BAND_BOTTOM, PLAYER_PANEL_HEIGHT, PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 import { getTurn } from './RoundProgress'
@@ -38,21 +38,32 @@ export const PlayerPanels = () => {
   const play = usePlay<MaterialMove>()
   const { focus } = useFocusContext()
   if (!rules) return null
-  // During a focus of the tutorial, a panel is darkened like the material, unless the focus is on it.
-  const isPlayedDown = (player: number) =>
-    !!focus?.highlight && !focus.locations?.some((location) => location.type === LocationType.PlayerPrestige && location.player === player)
+  // During a focus of the tutorial, a panel is darkened like the material, but for the areas the focus is on.
+  const litAreas = (player: number): PanelArea[] =>
+    !focus?.highlight
+      ? [PanelArea.Whole]
+      : (focus.locations ?? [])
+          .filter((location) => location.type === LocationType.PlayerPrestige && location.player === player)
+          .map((location) => location.id as PanelArea)
   const prestigeHelp = (type: PrestigeType, player: number) =>
     play(MaterialMoveBuilder.displayMaterialHelp(type, { id: 1, location: { type: LocationType.PlayerPrestige, player } }), { local: true })
-  const turnCounter = { image: '', value: t('panel.turn', { turn: getTurn(rules) }), imageCss: noImageCss, extraCss: turnCounterCss }
   return (
     <>
       {players.map((player, index) => {
         const favorTotal = countPrestige(rules, MaterialType.Favor, player.id)
         const honorTotal = countPrestige(rules, MaterialType.Honor, player.id)
+        const lit = litAreas(player.id)
+        const isLit = (area: PanelArea) => lit.includes(area)
+        const turnCounter = {
+          image: '',
+          value: t('panel.turn', { turn: getTurn(rules) }),
+          imageCss: noImageCss,
+          extraCss: [turnCounterCss, isLit(PanelArea.Turn) && litTurnCss]
+        }
         return (
-          <div key={player.id} css={[blockCss, blockPlace(index === 0), isPlayedDown(player.id) && playedDownCss]}>
+          <div key={player.id} css={[blockCss, blockPlace(index === 0), !isLit(PanelArea.Whole) && playedDownCss]}>
             <StyledPlayerPanel player={player} activeRing mainCounter={turnCounter} css={panelCss} />
-            <div css={tilesCss}>
+            <div css={[tilesCss, isLit(PanelArea.Tiles) && litAreaCss]}>
               <button css={[tileCss, favorCss]} onClick={() => prestigeHelp(MaterialType.Favor, player.id)} aria-label={t('help.prestige.favor.title')}>
                 <span css={figureCss}>{favorTotal}</span>
               </button>
@@ -61,7 +72,7 @@ export const PlayerPanels = () => {
               </button>
             </div>
             <button
-              css={[tileCss, prestigeCss]}
+              css={[tileCss, prestigeCss, isLit(PanelArea.Prestige) && litAreaCss]}
               onClick={() => play(MaterialMoveBuilder.displayLocationHelp({ type: LocationType.PlayerPrestige, player: player.id }), { local: true })}
             >
               <span css={prestigeTextCss}>{t('panel.prestige', { count: favorTotal + honorTotal })}</span>
@@ -93,11 +104,39 @@ const blockCss = css`
   background: linear-gradient(160deg, ${colors.parchment} 0%, ${colors.sand} 100%);
   border: 0.1em solid ${colors.gold};
   box-shadow: 0 0.15em 0.4em rgba(0, 0, 0, 0.35);
-  transition: filter 0.6s;
+
+  /* A veil over the whole block, as dark as the material out of the focus (playedDownCss): the areas of the
+     panel the focus is on rise above it (litAreaCss). It lies above the layers of the framework's panel (z-index up to 3). */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -0.1em;
+    z-index: 10;
+    border-radius: inherit;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.6s;
+    pointer-events: none;
+  }
 `
 
 const playedDownCss = css`
-  filter: brightness(0.45);
+  &::after {
+    opacity: 1;
+  }
+`
+
+const litAreaCss = css`
+  position: relative;
+  z-index: 11;
+`
+
+/**
+ * The turn counter is a flex item of the framework's panel: its z-index applies as it is. Made relative, it would
+ * move by the offsets the framework gives it (top: 1.7em).
+ */
+const litTurnCss = css`
+  z-index: 11;
 `
 
 const panelCss = css`

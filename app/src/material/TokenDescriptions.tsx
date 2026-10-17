@@ -2,10 +2,14 @@ import { Collection } from '@gamepark/haati/material/Collection'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { prestigeUnits } from '@gamepark/haati/material/Prestige'
+import { css } from '@emotion/react'
 import { BoardDescription, ItemContext, MaterialContext, MoneyDescription, RoundTokenDescription, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { victoryHalf } from '../locators/Locators'
 import { BOARD_HEIGHT, BOARD_WIDTH, COLLECTION_DIAMETER, PRESTIGE_HEIGHT, VICTORY_HEIGHT, VICTORY_WIDTH } from '../locators/TableLayout'
+import { getTutorialEffect } from '../tutorial/Tutorial'
+import { TutorialEffect } from '../tutorial/TutorialEffect'
+import { tutorialShineCss } from '../tutorial/TutorialShine'
 import { BoardHelp } from './help/BoardHelp'
 import { CollectionTokenHelp } from './help/CollectionTokenHelp'
 import { PrestigeHelp } from './help/PrestigeHelp'
@@ -32,7 +36,25 @@ class HaatiBoardDescription extends BoardDescription {
   image = board
   help = BoardHelp
   staticItem = { location: { type: LocationType.Board } }
+
+  /** In the tutorial, the board can be lit in a circle on its cycle of the animals only, a little wider than the drawn circle. */
+  getItemExtraCss(item: MaterialItem, context: ItemContext) {
+    if (getTutorialEffect(context) !== TutorialEffect.AnimalCycle) return super.getItemExtraCss(item, context)
+    return css`
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle at 50% 50%, transparent ${CYCLE_LIT_RADIUS}em, rgba(0, 0, 0, 0.55) ${CYCLE_LIT_RADIUS + 0.15}em);
+        pointer-events: none;
+      }
+    `
+  }
 }
+
+/** The radius lit in the tutorial around the cycle of the animals, drawn in the middle of the board (radius 2.5). */
+const CYCLE_LIT_RADIUS = 2.8
 
 /** The face drawn at random is the rotation of the token: 0 shows image 1, 1 shows image 2. */
 class CollectionTokenDescription extends RoundTokenDescription<number, MaterialType, LocationType, Collection> {
@@ -89,6 +111,13 @@ class PrestigeDescription extends MoneyDescription<number, MaterialType, Locatio
   constructor(readonly images: Record<number, string>) {
     super()
     this.staticItems = prestigeUnits.map((id) => ({ id, quantity: 3, location: this.stockLocation }))
+  }
+
+  /** In the tutorial, the Honor tokens of a player shine while they come in front of the Favor tokens (see PlayerPrestigeLocator). */
+  getItemExtraCss(item: MaterialItem, context: ItemContext) {
+    const extraCss = super.getItemExtraCss(item, context)
+    const shines = context.type === MaterialType.Honor && item.location.type === LocationType.PlayerPrestige && getTutorialEffect(context) === TutorialEffect.Honor
+    return shines ? [extraCss, tutorialShineCss] : extraCss
   }
 }
 

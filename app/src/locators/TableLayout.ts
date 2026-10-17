@@ -108,6 +108,29 @@ export const PLAYER_PANEL_WIDTH = 10.5
 export const PLAYER_PANEL_HEIGHT = CARD_HEIGHT
 export const PLAYER_PANEL_X = TABLE_WIDTH / 2 - PLAYER_PANEL_MARGIN - PLAYER_PANEL_WIDTH
 
+/**
+ * The areas of a player's panel, as places of their Prestige (the location id): the panel is drawn by the
+ * interface, not as material, so these areas let the tutorial focus on the whole panel or on a part of it.
+ */
+export enum PanelArea {
+  Whole = 1,
+  Prestige,
+  Turn,
+  Tiles
+}
+
+/**
+ * The centre of each area from the centre of the panel, and its size, as the panel lays them out (measured
+ * on PlayerPanels): the turn in progress under the name, the row of the Favor and Honor tiles, then the
+ * Prestige band at the bottom.
+ */
+export const PANEL_AREAS: Record<PanelArea, { dx: number; dy: number; width: number; height: number }> = {
+  [PanelArea.Whole]: { dx: 0, dy: 0, width: PLAYER_PANEL_WIDTH, height: PLAYER_PANEL_HEIGHT },
+  [PanelArea.Prestige]: { dx: 0, dy: 2.89, width: 9.8, height: 2.43 },
+  [PanelArea.Turn]: { dx: 0.2, dy: -1.93, width: 3.05, height: 1.27 },
+  [PanelArea.Tiles]: { dx: 0, dy: 0.28, width: 9.8, height: 2.29 }
+}
+
 /** The places of the Round victory tokens, beside the panel, their top level with its top: x is the line between the two halves. */
 export const PLAYER_VICTORY = { x: PLAYER_PANEL_X - BAND_GAP - VICTORY_WIDTH, y: PLAYER_BAND_BOTTOM - PLAYER_PANEL_HEIGHT + VICTORY_HEIGHT / 2 }
 

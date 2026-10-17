@@ -10,6 +10,7 @@ import {
   HandLocator,
   ItemContext,
   ListLocator,
+  LocationContext,
   LocationDescription,
   Locator,
   MaterialContext
@@ -17,6 +18,9 @@ import {
 import { prestigeUnits } from '@gamepark/haati/material/Prestige'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { PrestigeTotalHelp } from '../material/help/PrestigeTotalHelp'
+import { getTutorialEffect } from '../tutorial/Tutorial'
+import { TutorialEffect } from '../tutorial/TutorialEffect'
+import { tutorialFillInCss } from '../tutorial/TutorialShine'
 import { ReserveTitle } from './ReserveTitle'
 import roundVictory1 from '../images/tokens/RoundVictory1.png'
 import roundVictory2 from '../images/tokens/RoundVictory2.png'
@@ -31,6 +35,8 @@ import {
   CHARACTER_DECK,
   CHARACTER_DISCARD,
   DUEL_CHARACTER_X,
+  DUEL_SHOW_SCALE,
+  DUEL_SHOW_X,
   DUEL_X,
   DUEL_Y,
   HAND,
@@ -38,6 +44,8 @@ import {
   HAND_RADIUS,
   JUNGLE_SPOT_Y,
   PALACE_SPOT_Y,
+  PANEL_AREAS,
+  PanelArea,
   placeY,
   PLAYER_BAND_BOTTOM,
   PLAYER_COLLECTION_GAP,
@@ -122,10 +130,19 @@ class DuelLocator extends Locator {
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
+    if (isDuelShown(context)) return { x: side(item.location.player, context) * DUEL_SHOW_X, y: 0, z: 10 }
     const x = context.type === MaterialType.CharacterCard ? DUEL_CHARACTER_X : DUEL_X
     return { x: side(item.location.player, context) * x, y: DUEL_Y }
   }
+
+  placeItem(item: MaterialItem, context: ItemContext): string[] {
+    const transform = super.placeItem(item, context)
+    return isDuelShown(context) ? [...transform, `scale(${DUEL_SHOW_SCALE})`] : transform
+  }
 }
+
+/** In the tutorial, the Animal cards of the duel can stay in the middle of the screen, where their reveal shows them, for a popup to explain the duel. */
+const isDuelShown = (context: ItemContext) => context.type === MaterialType.AnimalCard && getTutorialEffect(context) === TutorialEffect.DuelShow
 
 /**
  * The hand, fanned out in the bottom outer corner: Character cards first, then Animal cards. While the
@@ -237,20 +254,10 @@ class PrestigeTotalDescription extends LocationDescription {
   help = PrestigeTotalHelp
 
   getLocationSize(location: Location) {
-    if (location.id === PLAYER_PANEL_AREA) return { width: PLAYER_PANEL_WIDTH, height: PLAYER_PANEL_HEIGHT }
-    if (location.id === PLAYER_PRESTIGE_AREA) return { width: PLAYER_PANEL_WIDTH, height: PRESTIGE_BAND_HEIGHT }
-    return { width: this.width, height: this.height }
+    const area = PANEL_AREAS[location.id as PanelArea]
+    return area ? { width: area.width, height: area.height } : { width: this.width, height: this.height }
   }
 }
-
-/**
- * The area of a player's panel, as a place of their Prestige (id): the panel is drawn by the interface,
- * not as material, so this area lets the tutorial focus on it like on any other place.
- */
-export const PLAYER_PANEL_AREA = 1
-/** The Prestige band at the bottom of the panel, about a third of its height. */
-export const PLAYER_PRESTIGE_AREA = 2
-const PRESTIGE_BAND_HEIGHT = 2.8
 
 /**
  * A player's Prestige, in two rows from the outer edge inwards, highest values first: Honor above,
@@ -261,11 +268,11 @@ class PlayerPrestigeLocator extends Locator {
   /** The help about the whole Prestige of a player, opened from their panel. */
   locationDescription = new PrestigeTotalDescription()
 
+  /** An area of the panel (id, see PanelArea), which the panel lays out the same way on both sides. */
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
-    const x = side(location.player, context) * (PLAYER_PANEL_X + PLAYER_PANEL_WIDTH / 2)
-    if (location.id === PLAYER_PANEL_AREA) return { x, y: PLAYER_BAND_BOTTOM - PLAYER_PANEL_HEIGHT / 2 }
-    if (location.id === PLAYER_PRESTIGE_AREA) return { x, y: PLAYER_BAND_BOTTOM - PRESTIGE_BAND_HEIGHT / 2 }
-    return {}
+    const area = PANEL_AREAS[location.id as PanelArea]
+    if (!area) return {}
+    return { x: side(location.player, context) * (PLAYER_PANEL_X + PLAYER_PANEL_WIDTH / 2) + area.dx, y: PLAYER_BAND_BOTTOM - PLAYER_PANEL_HEIGHT / 2 + area.dy }
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
@@ -273,10 +280,12 @@ class PlayerPrestigeLocator extends Locator {
     const rank = tokens.id((id: number) => id > item.id).getQuantity() + context.displayIndex
     const step = Math.min(PRESTIGE_ROW_STEP, PRESTIGE_ROW_LENGTH / Math.max(1, tokens.getQuantity() - 1))
     const favor = context.type === MaterialType.Favor
+    // In the tutorial, the Honor row can come in front of the Favor row, to be seen whole.
+    const front = favor !== (getTutorialEffect(context) === TutorialEffect.Honor)
     return {
       x: side(item.location.player, context) * (PRESTIGE_ROW_X - rank * step),
       y: favor ? PLAYER_FAVOR_Y : PLAYER_HONOR_Y,
-      z: (favor ? 1 : 0) + rank * 0.05
+      z: (front ? 1 : 0) + rank * 0.05
     }
   }
 }
@@ -385,6 +394,13 @@ class VictorySlotDescription extends LocationDescription {
 
   getImage(location: Location) {
     return location.x !== undefined && location.x < 0 ? roundVictory1 : roundVictory2
+  }
+
+  /** In the tutorial, the viewer's elephant can fill in and shine, to show what wins the game. */
+  getExtraCss(location: Location, context: LocationContext) {
+    const extraCss = super.getExtraCss(location, context)
+    if (location.player !== context.player || getTutorialEffect(context) !== TutorialEffect.RoundVictory) return extraCss
+    return [extraCss, tutorialFillInCss]
   }
 }
 

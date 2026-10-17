@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { faBan } from '@fortawesome/free-solid-svg-icons/faBan'
 import { faHand } from '@fortawesome/free-solid-svg-icons/faHand'
 import { faHandPointUp } from '@fortawesome/free-solid-svg-icons/faHandPointUp'
@@ -104,9 +105,15 @@ class AnimalCardDescription extends CardDescription<number, MaterialType, Locati
   }
 
   getItemExtraCss(item: MaterialItem<number, LocationType>, context: ItemContext<number, MaterialType, LocationType>) {
+    // In the tutorial, the cards of the duel glide back to their place when a pause in the middle of the screen ends.
+    if (item.location.type === LocationType.PlayerDuel && context.rules.game.tutorial) return duelGlideCss
     const angle = handCardAngle(item, context)
     return angle === undefined ? undefined : handCardCss(angle)
   }
 }
+
+const duelGlideCss = css`
+  transition: transform 0.6s ease-in-out;
+`
 
 export const animalCardDescription = new AnimalCardDescription()

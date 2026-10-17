@@ -9,7 +9,9 @@ import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 import { getRound, getTurn, ROUND_TURNS } from './RoundProgress'
 
-const DURATION = 2
+/** How long the announcement of a turn lasts (s). */
+export const TURN_ANNOUNCEMENT_DURATION = 2
+const DURATION = TURN_ANNOUNCEMENT_DURATION
 
 /**
  * At the start of each turn, a sand-coloured plate fades in and out in the middle of the table to
