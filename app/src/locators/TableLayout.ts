@@ -67,11 +67,14 @@ export const CHARACTER_DISCARD = { x: 15.5, y: 16.5 }
 export const VICTORY_WIDTH = 2.57
 export const VICTORY_HEIGHT = 6.56
 
+/** The top of the pile of Animal cards below the board: the Round victory tokens and the supply of Favor and Honor start on that line. */
+const BELOW_BOARD_TOP = ANIMAL_DECK_Y - CARD_WIDTH / 2
+
 /**
  * The Round victory tokens not won yet, beside the pile of Animal cards below the board: under the pile of
- * Animal cards set aside, facing the pile of Character cards, their bottom level with its bottom.
+ * Animal cards set aside, facing the pile of Character cards, their top level with the top of the Animal pile.
  */
-export const VICTORY_RESERVE = { x: ANIMAL_SET_ASIDE.x, y: CHARACTER_DECK.y + CARD_HEIGHT / 2 - VICTORY_HEIGHT / 2 }
+export const VICTORY_RESERVE = { x: ANIMAL_SET_ASIDE.x, y: BELOW_BOARD_TOP + VICTORY_HEIGHT / 2 }
 
 /** At the end of the game, the elephant completed by the winner stands in the middle of the table, this many times bigger. */
 export const VICTORY_SHOW_SCALE = 3
@@ -108,13 +111,14 @@ export const TABLE_HEIGHT = 2 * 21.3
 /**
  * The unlimited supply of Favor and Honor, below the board on the viewer's side, in a frame so that it does
  * not read as anybody's tokens; its title lies in a cartouche over the bottom of the Favor tokens. The
- * tokens are drawn smaller than the players' ones, and the frame is never bigger than a card. Its bottom
- * is level with the bottom of the pile of Character cards. Inside: Honor above, Favor below, covering the
- * Honor tokens all but their value; a pile of each value, highest first, its tokens slightly offset up and right.
+ * tokens are drawn smaller than the players' ones, and the frame is never bigger than a card. Its top is
+ * level with the top of the pile of Animal cards below the board, its bottom with the bottom of the pile of
+ * Character cards. Inside: Honor above, Favor below, covering the Honor tokens all but their value; a pile
+ * of each value, highest first, its tokens slightly offset up and right.
  */
 const RESERVE_BOTTOM = CHARACTER_DECK.y + CARD_HEIGHT / 2
-export const RESERVE_SCALE = 0.75
-const RESERVE_PADDING = 0.65
+export const RESERVE_SCALE = 0.7
+const RESERVE_PADDING = 0.45
 const RESERVE_TOKEN_HEIGHT = PRESTIGE_HEIGHT * RESERVE_SCALE
 export const RESERVE_PILE_STEP = 2.3 * RESERVE_SCALE
 export const RESERVE_PILE_OFFSET = 0.15
@@ -122,7 +126,8 @@ export const RESERVE_PILE_OFFSET = 0.15
 const RESERVE_HONOR_VISIBLE = 2.1 * RESERVE_SCALE
 export const RESERVE_FAVOR_Y = RESERVE_BOTTOM - RESERVE_PADDING - RESERVE_TOKEN_HEIGHT / 2
 export const RESERVE_HONOR_Y = RESERVE_FAVOR_Y - RESERVE_HONOR_VISIBLE
-const RESERVE_TOP = RESERVE_HONOR_Y - RESERVE_TOKEN_HEIGHT / 2 - 2 * RESERVE_PILE_OFFSET - RESERVE_PADDING
+/** The scale and the padding are chosen so that the tokens fill that height. */
+const RESERVE_TOP = BELOW_BOARD_TOP
 export const RESERVE_WIDTH = 2 * RESERVE_PILE_STEP + 1.63 * RESERVE_SCALE + 2 * RESERVE_PILE_OFFSET + 2 * RESERVE_PADDING
 export const RESERVE_HEIGHT = RESERVE_BOTTOM - RESERVE_TOP
 export const RESERVE = { x: -15.5, y: (RESERVE_TOP + RESERVE_BOTTOM) / 2 }
