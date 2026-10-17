@@ -130,7 +130,9 @@ export const RESERVE_HONOR_Y = RESERVE_FAVOR_Y - RESERVE_HONOR_VISIBLE
 const RESERVE_TOP = BELOW_BOARD_TOP
 export const RESERVE_WIDTH = 2 * RESERVE_PILE_STEP + 1.63 * RESERVE_SCALE + 2 * RESERVE_PILE_OFFSET + 2 * RESERVE_PADDING
 export const RESERVE_HEIGHT = RESERVE_BOTTOM - RESERVE_TOP
-export const RESERVE = { x: -15.5, y: (RESERVE_TOP + RESERVE_BOTTOM) / 2 }
+/** The frame stands this far from the Round victory tokens, on their left. */
+const RESERVE_GAP = 0.82
+export const RESERVE = { x: VICTORY_RESERVE.x - VICTORY_WIDTH - RESERVE_GAP - RESERVE_WIDTH / 2, y: (RESERVE_TOP + RESERVE_BOTTOM) / 2 }
 /** The cartouche of the title, as wide as the tokens, level with the bottom of the Favor tokens. */
 export const RESERVE_TITLE_INSET = RESERVE_PADDING
 
