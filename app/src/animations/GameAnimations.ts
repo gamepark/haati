@@ -18,6 +18,7 @@ import {
   pileShuffle
 } from './ResetPiles'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
+import { COLLECTION_SHOW_DURATION, collectionShow, isCollectionWon } from './CollectionShow'
 import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
 
@@ -36,7 +37,8 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
  * the discard (the rules discard it as soon as the duel is decided), a won one shines in gold until it is
  * activated (see BetShow). Each
  * Round victory token is a show too, the last one completing the elephant (see VictoryShow). An Animal card entering or leaving a Palace or
- * a Jungle row moves in two steps: the rows make room, then the card flies to its place (see RowMove).
+ * a Jungle row moves in two steps: the rows make room, then the card flies to its place (see RowMove). Before a
+ * Collection token goes to its winner, the run of Animal cards that wins it shines in gold (see CollectionShow).
  */
 export const gameAnimations = new MaterialGameAnimations()
 
@@ -130,6 +132,7 @@ gameAnimations.configure(isAnimalDealEnded).itemAnimation(animalPileGlide)
 gameAnimations.configure(isAnimalPileShuffled).duration(ANIMAL_PILE_SHUFFLE_DURATION).itemAnimation(pileShuffle)
 gameAnimations.configure(isCharacterPileShuffled).duration(CHARACTER_PILE_SHUFFLE_DURATION).itemAnimation(pileShuffle)
 gameAnimations.configure(isRollItemType(MaterialType.CollectionToken)).duration(COLLECTION_FLIP_DURATION)
+gameAnimations.configure(isCollectionWon).duration(COLLECTION_SHOW_DURATION).itemAnimation(collectionShow)
 gameAnimations.configure(isHandShuffleSkipped).skip()
 gameAnimations.configure(isOpponentHandShuffled).duration(HAND_SHUFFLE_DURATION).itemAnimation(handShuffle)
 gameAnimations.configure((move, context) => isPrestige(move) && context.rules.game.rule?.id !== RuleId.EndOfRound).duration(500)

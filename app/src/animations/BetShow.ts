@@ -38,7 +38,7 @@ export const isWonBet = (item: MaterialItem, rules: MaterialRules) =>
   (getBet(item.id as CharacterCard) === Bet.Win) === (item.location.player === rules.remind<number>(Memory.DuelWinner))
 
 /** The framework's shine on the cards one can play, in gold. */
-const goldSlide = keyframes`
+export const goldSlide = keyframes`
   0% { transform: translate(-33%, -33%); }
   50%, 100% { transform: translate(33%, 33%); }
 `
