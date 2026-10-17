@@ -4,6 +4,7 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
+import { HAND_SHUFFLE_DURATION, handShuffle, isOpponentHandShuffled } from './HandShuffle'
 import { BET_VERDICT_DURATION, betLost, isBetLost, isWonBetPlayed, wonBetPlayed } from './BetShow'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
 import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
@@ -13,7 +14,8 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
  * Most moves keep the framework's pace. Faster are only the housekeeping a player does not need to
  * follow: the Character pile made again from its discard when it runs out, and the Animal cards
  * gathered and laid out in piles between two rounds (the top card of each pile still turns over at
- * the usual pace). The Favor and Honor tokens move at half the usual second, except between two rounds,
+ * the usual pace). The opponent's hand, mixed after each draw, gathers then spreads out again (see
+ * HandShuffle); the viewer's own hand is not animated. The Favor and Honor tokens move at half the usual second, except between two rounds,
  * when the Honor tokens turn into Favor tokens at the usual pace.
  *
  * The reveal of the duel is a show: once the last card turns over, the two Animal cards leave the
@@ -116,6 +118,7 @@ gameAnimations
   .duration(ROUND_WON_SHOW_DURATION)
   .itemAnimation((context, animation) => roundWonShow(context, animation.move, animation.duration))
 gameAnimations.configure(isOwnHandShuffled).skip()
+gameAnimations.configure(isOpponentHandShuffled).duration(HAND_SHUFFLE_DURATION).itemAnimation(handShuffle)
 gameAnimations.configure((move, context) => isPrestige(move) && context.rules.game.rule?.id !== RuleId.EndOfRound).duration(500)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && !isShuffle(move)).duration(150)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && isShuffle(move)).duration(500)
