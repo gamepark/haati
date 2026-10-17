@@ -7,14 +7,18 @@ import { MaterialContext } from '@gamepark/react-game'
  * Jungle rows out from the board towards their own edge, level with the Palace and Jungle printed on
  * the board.
  *
- * Along the top edge, each player's information: their panel in the outer corner, then the Favor and
- * Honor tokens they hold, their Collection tokens and the places of their Round victory tokens. Along
- * the bottom edge, their hand in the outer corner. The duel cards wait at the outer edge, between the
- * rows and the hand, and come to the middle of the table, enlarged, once revealed.
+ * Along the top edge, each player's information, in one row: their panel in the outer corner, then the
+ * places of their Round victory tokens, the Favor and Honor tokens they hold and their Collection tokens;
+ * the zoom buttons stand below the viewer's panel. Along the bottom edge, their hand in the outer corner.
+ * The duel cards wait at the outer edge, between the rows and the hand, and come to the middle of the
+ * table, enlarged, once revealed.
  *
  * Above and below the board, the two piles of Animal cards, lying sideways, flanked by the other piles
  * of cards and by the supplies of Favor and Honor. Every measure is in centimetres.
  */
+export const TABLE_WIDTH = 88.6
+export const TABLE_HEIGHT = 2 * 21.3
+
 export const CARD_WIDTH = 6.35
 export const CARD_HEIGHT = 8.89
 
@@ -88,33 +92,48 @@ export const VICTORY_RESERVE = { x: ANIMAL_SET_ASIDE.x, y: BELOW_BOARD_TOP + VIC
 export const VICTORY_SHOW_SCALE = 3
 
 /**
- * What a player holds lies along the top edge of their side, from the outer edge inwards: the panel,
- * the Prestige in two rows, then the Collection tokens one above the other. The panel stands clear of
- * the zoom buttons in the top left corner of the screen. All of them end on one line: the bottom of the
- * panel, of the Favor tokens and of the second Collection token are level with the bottom of the piles
- * of Animal cards set aside and eliminated, and the top of the panel and of the Honor tokens with their top. The Round victory tokens stand just below that line, under
- * the panel.
+ * What a player holds lies in one row along the top edge of their side, from the outer edge inwards: the
+ * panel, the Round victory tokens, the Prestige in two rows, then the Collection tokens one above the
+ * other, each clear of the next by BAND_GAP. The bottom of the panel, of the Favor tokens and of the
+ * second Collection token are level with the bottom of the piles of Animal cards set aside and
+ * eliminated, and the top of the panel, of the Round victory tokens and of the Honor tokens with their
+ * top. Below the viewer's panel, the zoom buttons (see ZOOM_BUTTONS_TOP).
  */
 export const PLAYER_BAND_BOTTOM = ANIMAL_SET_ASIDE.y + CARD_HEIGHT / 2
-export const PLAYER_VICTORY = { x: 33.5, y: PLAYER_BAND_BOTTOM + 0.4 + VICTORY_HEIGHT / 2 }
+const BAND_GAP = 0.6
+
+/** The player panels in the top outer corner of each side: PLAYER_PANEL_X is their inner edge. */
+const PLAYER_PANEL_MARGIN = 0.5
+export const PLAYER_PANEL_WIDTH = 10.5
+export const PLAYER_PANEL_HEIGHT = CARD_HEIGHT
+export const PLAYER_PANEL_X = TABLE_WIDTH / 2 - PLAYER_PANEL_MARGIN - PLAYER_PANEL_WIDTH
+
+/** The places of the Round victory tokens, beside the panel, their top level with its top: x is the line between the two halves. */
+export const PLAYER_VICTORY = { x: PLAYER_PANEL_X - BAND_GAP - VICTORY_WIDTH, y: PLAYER_BAND_BOTTOM - PLAYER_PANEL_HEIGHT + VICTORY_HEIGHT / 2 }
 
 /**
  * The Prestige: Honor in the upper row, Favor in the lower one, which covers the Honor tokens all but
- * their value, printed at the top. Highest values first, from the outer edge inwards.
+ * their value, printed at the top. Highest values first, from the outer edge inwards: PRESTIGE_ROW_X is
+ * the centre of the outermost token.
  */
-export const PRESTIGE_ROW_X = 26.7
+const PRESTIGE_WIDTH = 1.63
 export const PRESTIGE_ROW_STEP = 2.3
 export const PRESTIGE_ROW_LENGTH = 6.9
+export const PRESTIGE_ROW_X = PLAYER_VICTORY.x - VICTORY_WIDTH - BAND_GAP - PRESTIGE_WIDTH / 2
 export const PRESTIGE_HEIGHT = 5.76
 export const PLAYER_FAVOR_Y = PLAYER_BAND_BOTTOM - PRESTIGE_HEIGHT / 2
 export const PLAYER_HONOR_Y = PLAYER_BAND_BOTTOM - CARD_HEIGHT + PRESTIGE_HEIGHT / 2
 export const COLLECTION_DIAMETER = 4.97
-export const PLAYER_COLLECTION_X = 15.6
+export const PLAYER_COLLECTION_X = PRESTIGE_ROW_X - PRESTIGE_ROW_LENGTH - PRESTIGE_WIDTH / 2 - BAND_GAP - COLLECTION_DIAMETER / 2
 export const PLAYER_COLLECTION_GAP = 4.2
 export const PLAYER_COLLECTION_Y = PLAYER_BAND_BOTTOM - COLLECTION_DIAMETER / 2 - PLAYER_COLLECTION_GAP
 
-export const TABLE_WIDTH = 88.6
-export const TABLE_HEIGHT = 2 * 21.3
+/**
+ * The top of the zoom buttons, from the top of the table: below the viewer's panel. They are drawn by the
+ * framework over the screen, not on the table.
+ */
+export const ZOOM_BUTTONS_TOP = PLAYER_BAND_BOTTOM + TABLE_HEIGHT / 2 + BAND_GAP
+export const ZOOM_BUTTONS_LEFT = PLAYER_PANEL_MARGIN
 
 /**
  * The unlimited supply of Favor and Honor, below the board on the viewer's side, in a frame so that it does
@@ -143,11 +162,6 @@ const RESERVE_GAP = 0.82
 export const RESERVE = { x: VICTORY_RESERVE.x - VICTORY_WIDTH - RESERVE_GAP - RESERVE_WIDTH / 2, y: (RESERVE_TOP + RESERVE_BOTTOM) / 2 }
 /** The cartouche of the title, as wide as the tokens, level with the bottom of the Favor tokens. */
 export const RESERVE_TITLE_INSET = RESERVE_PADDING
-
-/** The player panels, near the top outer corner of each side, clear of the zoom buttons, their bottom on the band line. */
-export const PLAYER_PANEL_X = 28.25
-export const PLAYER_PANEL_WIDTH = 10.5
-export const PLAYER_PANEL_HEIGHT = CARD_HEIGHT
 
 /** -1 for the viewer's side, on the left; 1 for the opponent's side. Spectators see the first player on the left. */
 export const side = (player: number | undefined, context: MaterialContext): number => {
