@@ -4,6 +4,7 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
+import { BET_LOST_DURATION, betLost, isBetLost, isWonBetPlayed, wonBetPlayed } from './BetShow'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
 import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
@@ -17,8 +18,9 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
  *
  * The reveal of the duel is a show: once the last card turns over, the two Animal cards leave the
  * table for the middle of the screen, clash, then go back to their place, where the players resolve
- * them. The Character cards stay on the table: right after the show, a lost bet goes to the discard
- * (the rules discard it as soon as the duel is decided), a won one waits to be activated. Each
+ * them. The Character cards stay on the table: right after the show, a lost bet turns to ash and goes to
+ * the discard (the rules discard it as soon as the duel is decided), a won one shines in gold until it is
+ * activated (see BetShow). Each
  * Round victory token is a show too, the last one completing the elephant (see VictoryShow). An Animal card entering or leaving a Palace or
  * a Jungle row moves in two steps: the rows make room, then the card flies to its place (see RowMove).
  */
@@ -118,6 +120,8 @@ gameAnimations.configure((move, context) => isPrestige(move) && context.rules.ga
 gameAnimations.configure((move) => isCharacterPileRemade(move) && !isShuffle(move)).duration(150)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && isShuffle(move)).duration(500)
 gameAnimations.configure(isAnimalPileLaidOut).duration(150)
+gameAnimations.configure(isBetLost).duration(BET_LOST_DURATION).itemAnimation(betLost)
+gameAnimations.configure(isWonBetPlayed).itemAnimation(wonBetPlayed)
 gameAnimations.configure(isRowMove).duration(ROW_MOVE_DURATION).itemAnimation(rowMove)
 gameAnimations
   .configure(isLastDuelReveal)

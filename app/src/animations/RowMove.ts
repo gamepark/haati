@@ -5,7 +5,7 @@ import { ItemContext, MaterialAnimations, MaterialContext, transformItem } from 
 import { GridBoundaries, isMoveItemType, MaterialGame, MaterialMove, MaterialRules, MoveItem } from '@gamepark/rules-api'
 
 /** What this file reads of the framework's animation (react-client's Animation type, not a dependency of the app). */
-type MoveAnimation = Parameters<MaterialAnimations['getItemAnimation']>[1]
+export type MoveAnimation = Parameters<MaterialAnimations['getItemAnimation']>[1]
 
 /**
  * An Animal card that enters a Palace or a Jungle row, or leaves one, in two steps. The rows are sorted
@@ -32,7 +32,7 @@ const frameworkAnimations = new MaterialAnimations()
 type RulesCreator = new (game: MaterialGame, options: { player?: number }) => MaterialRules
 
 /** The rules once the move is played, as the framework computes them for the card it moves. */
-const futureRules = (context: ItemContext, move: MaterialMove) => {
+export const futureRules = (context: ItemContext, move: MaterialMove) => {
   const Rules = context.rules.constructor as unknown as RulesCreator
   const rules = new Rules(JSON.parse(JSON.stringify(context.rules.game)), { player: context.player })
   rules.play(move)

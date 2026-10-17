@@ -8,6 +8,7 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isWonBet, wonBetCss } from '../animations/BetShow'
 import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
 import { handCardAngle, handCardCss } from './handHover'
@@ -55,7 +56,13 @@ class CharacterCardDescription extends CardDescription<number, MaterialType, Loc
     return actions.length ? <ItemActions actions={actions} y={inHand ? HAND_BUTTON_Y : 0} angle={handCardAngle(item, context)} /> : null
   }
 
+  /** A won bet shines in gold instead (see BetShow). */
+  highlight(item: MaterialItem, context: ItemContext<number, MaterialType, LocationType>) {
+    return isWonBet(item, context.rules) ? false : undefined
+  }
+
   getItemExtraCss(item: MaterialItem, context: ItemContext<number, MaterialType, LocationType>) {
+    if (isWonBet(item, context.rules)) return wonBetCss
     const angle = handCardAngle(item, context)
     return angle === undefined ? undefined : handCardCss(angle)
   }
