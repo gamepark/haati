@@ -63,7 +63,11 @@
   "announce": {
     "round": "Manche {round}",
     "turns-left": "{count} tours restants",
-    "last-turn": "Dernier tour"
+    "last-turn": "Dernier tour",
+    "round-won": {
+      "you": "Vous avez gagné la manche {round}",
+      "player": "{player} a gagné la manche {round}"
+    }
   },
   "button": {
     "play": "Jouer",

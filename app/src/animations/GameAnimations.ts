@@ -5,20 +5,21 @@ import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
 import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
-import { isElephantCompleted, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
+import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
 
 /**
  * Most moves keep the framework's pace. Faster are only the housekeeping a player does not need to
  * follow: the Character pile made again from its discard when it runs out, and the Animal cards
  * gathered and laid out in piles between two rounds (the top card of each pile still turns over at
- * the usual pace). The Favor and Honor tokens move at half the usual second.
+ * the usual pace). The Favor and Honor tokens move at half the usual second, except between two rounds,
+ * when the Honor tokens turn into Favor tokens at the usual pace.
  *
  * The reveal of the duel is a show: once the last card turns over, the two Animal cards leave the
  * table for the middle of the screen, clash, then go back to their place, where the players resolve
  * them. The Character cards stay on the table: right after the show, a lost bet goes to the discard
- * (the rules discard it as soon as the duel is decided), a won one waits to be activated. The last
- * Round victory token is a show too (see VictoryShow). An Animal card entering or leaving a Palace or
+ * (the rules discard it as soon as the duel is decided), a won one waits to be activated. Each
+ * Round victory token is a show too, the last one completing the elephant (see VictoryShow). An Animal card entering or leaving a Palace or
  * a Jungle row moves in two steps: the rows make room, then the card flies to its place (see RowMove).
  */
 export const gameAnimations = new MaterialGameAnimations()
@@ -108,8 +109,12 @@ gameAnimations
   .configure(isElephantCompleted)
   .duration(VICTORY_SHOW_DURATION)
   .itemAnimation((context, animation) => victoryShow(context, animation.move, animation.duration))
+gameAnimations
+  .configure(isRoundWon)
+  .duration(ROUND_WON_SHOW_DURATION)
+  .itemAnimation((context, animation) => roundWonShow(context, animation.move, animation.duration))
 gameAnimations.configure(isOwnHandShuffled).skip()
-gameAnimations.configure(isPrestige).duration(500)
+gameAnimations.configure((move, context) => isPrestige(move) && context.rules.game.rule?.id !== RuleId.EndOfRound).duration(500)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && !isShuffle(move)).duration(150)
 gameAnimations.configure((move) => isCharacterPileRemade(move) && isShuffle(move)).duration(500)
 gameAnimations.configure(isAnimalPileLaidOut).duration(150)
