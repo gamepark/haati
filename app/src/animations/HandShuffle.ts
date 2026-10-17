@@ -3,32 +3,30 @@ import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { HandLocator, ItemContext, MaterialContext, transformItem } from '@gamepark/react-game'
 import { isShuffle, MaterialItem, MaterialMove, Shuffle } from '@gamepark/rules-api'
-import { CARD_HEIGHT, CARD_WIDTH } from '../locators/TableLayout'
+import { CARD_WIDTH } from '../locators/TableLayout'
 import { MoveAnimation } from './RowMove'
 
 /**
  * The opponent's hand, mixed after each draw. The cards never change place on screen (the hand is
  * hidden, the mix happens on the server), so the eye would keep following the card drawn. Instead, the
- * Animal cards gather into one pile in the middle of the fan, which is what loses the eye. The pile is cut
- * into two packets side by side, one card out of two in each, that swap places twice, one packet going
- * over the other, well above it, then under it. The packets close up into one pile again and the cards
- * spread out. The Character cards are not mixed and do not move.
+ * Animal cards gather into one pile in the middle of the fan, one on the other. Twice, the pile parts in
+ * two, one card out of two to the right, the others to the left, and closes up again the other way round:
+ * the packet that was on top goes under. Then the cards spread out. The Character cards are not mixed and
+ * do not move.
  *
- * The cards of a pile are only a few hundredths of an em apart: none ever changes its height in a pile
- * while it covers another, or the browser would hesitate over which one is in front.
+ * The cards of a pile are only a few hundredths of an em apart: a card only changes its height in the pile
+ * while the two packets are apart, never while it covers another, or the browser would hesitate over which
+ * one is in front.
  */
-const GATHER = 250
-const CUT = 150
-const CROSS = 350
-const CROSSES = 2
-const CLOSE = 150
-const SPREAD = 250
-export const HAND_SHUFFLE_DURATION = GATHER + CUT + CROSSES * CROSS + CLOSE + SPREAD
-/** Where the two packets lie, from the middle of the pile, along the card: a little gap between them. */
+const GATHER = 300
+const PART = 200
+const HOLD = 50
+const CLOSE = 200
+const MIXES = 2
+const SPREAD = 300
+export const HAND_SHUFFLE_DURATION = GATHER + MIXES * (PART + HOLD + CLOSE) + SPREAD
+/** Where the two packets go, from the middle of the pile, along the card: a little gap between them. */
 const PACKET_X = 0.55 * CARD_WIDTH
-/** How high the packet going over is lifted, in em, and how far apart the two packets pass, along the card. */
-const LIFT = 2
-const ARC = 0.12 * CARD_HEIGHT
 
 const isHandShuffle = (move: MaterialMove): move is Shuffle => isShuffle(move) && move.itemType === MaterialType.AnimalCard
 
@@ -41,32 +39,37 @@ export const isHandShuffleSkipped = (move: MaterialMove, context: MaterialContex
 
 export const isOpponentHandShuffled = (move: MaterialMove, context: MaterialContext) => isHandShuffle(move) && !isHandShuffleSkipped(move, context)
 
-/** Where a card is, from the middle of the pile: along the card and across it (in em), and how high it is lifted (in em). */
-type Spot = { x: number; y: number; lift: number }
+/** Where a card is: from the middle of the pile along the card (in em), and its height in the pile (in cards). */
+type Spot = { x: number; height: number }
 
 /**
- * The spots of a card at each step, in %. The card at the given height in the pile goes to the left packet
- * (-1) or to the right one (1), every other card. The left packet goes over first.
+ * The spots of every card at each step, in %, the cards listed in the order of the fan. The pile starts
+ * in that order, the last card on top. At each mix, the cards at an even height go to one side, the others to
+ * the other side, the top card's packet first to the right then to the left; it comes back under the other.
  */
-const shuffleSteps = (height: number): [number, Spot][] => {
-  const packet = height % 2 === 0 ? -1 : 1
-  const steps: [number, Spot][] = []
+const mixSteps = (cards: number[]): Map<number, [number, Spot][]> => {
+  const steps = new Map(cards.map((card) => [card, [] as [number, Spot][]]))
+  let pile = [...cards]
   let time = GATHER
-  const at = (spot: Spot) => steps.push([(time / HAND_SHUFFLE_DURATION) * 100, spot])
-  at({ x: 0, y: 0, lift: 0 })
-  time += CUT
-  let x = packet * PACKET_X
-  at({ x, y: 0, lift: 0 })
-  for (let cross = 0; cross < CROSSES; cross++) {
-    const over = (cross % 2 === 0) === (packet === -1)
-    time += CROSS / 2
-    at({ x: 0, y: over ? -ARC : ARC, lift: over ? LIFT : 0 })
-    time += CROSS / 2
-    x = -x
-    at({ x, y: 0, lift: 0 })
+  const at = (spot: (card: number, height: number) => Spot) =>
+    pile.forEach((card, height) => steps.get(card)!.push([(time / HAND_SHUFFLE_DURATION) * 100, spot(card, height)]))
+  at((_, height) => ({ x: 0, height }))
+  for (let mix = 0; mix < MIXES; mix++) {
+    const topParity = (pile.length - 1) % 2
+    const topSide = mix % 2 === 0 ? 1 : -1
+    const sideOf = (height: number) => (height % 2 === topParity ? topSide : -topSide)
+    const sides = new Map(pile.map((card, height) => [card, sideOf(height)]))
+    time += PART
+    at((card, height) => ({ x: sides.get(card)! * PACKET_X, height }))
+    // Apart, the top card's packet goes under the other one.
+    const top = pile.filter((_, height) => height % 2 === topParity)
+    const other = pile.filter((_, height) => height % 2 !== topParity)
+    pile = [...top, ...other]
+    time += HOLD
+    at((card, height) => ({ x: sides.get(card)! * PACKET_X, height }))
+    time += CLOSE
+    at((_, height) => ({ x: 0, height }))
   }
-  time += CLOSE
-  at({ x: 0, y: 0, lift: 0 })
   return steps
 }
 
@@ -80,7 +83,8 @@ export const handShuffle = (context: ItemContext, animation: MoveAnimation) => {
   // The opponent's Animal cards are fanned in the order of the material, after the Character cards.
   const characters = context.rules.material(MaterialType.CharacterCard).location(LocationType.PlayerHand).player(player).length
   const cards = context.rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).getIndexes()
-  const height = cards.indexOf(context.index)
+  const steps = mixSteps(cards).get(context.index)
+  if (!steps) return
   const middle = characters + (cards.length - 1) / 2
 
   const angle = locator.getRotateZ(item.location, context, middle)
@@ -89,28 +93,26 @@ export const handShuffle = (context: ItemContext, animation: MoveAnimation) => {
   const deltaZ = locator.getDeltaZ(item.location, context)
   const description = context.material[context.type]
   // The same locator, with the card placed at the middle of the fan, with the tilt of the middle card, moved
-  // along and across the card, and at its own height in the pile.
-  const inPile = ({ x, y, lift }: Spot) => {
+  // along the card, at its height in the pile.
+  const inPile = ({ x, height }: Spot) => {
     const pile = Object.create(locator) as HandLocator
     pile.getItemCoordinates = (item: MaterialItem, context: ItemContext) => {
       const middleSpot = locator.getLocationCoordinates(item.location, context, middle)
       return {
-        x: (middleSpot.x ?? 0) + x * cos - y * sin,
-        y: (middleSpot.y ?? 0) + x * sin + y * cos,
-        z: (middleSpot.z ?? 0) + (height + 1) * deltaZ + lift
+        x: (middleSpot.x ?? 0) + x * cos,
+        y: (middleSpot.y ?? 0) + x * sin,
+        z: (middleSpot.z ?? 0) + (height + 1) * deltaZ
       }
     }
     pile.getItemRotateZ = () => angle
     return (description?.getItemTransform(item, { ...context, locators: { ...context.locators, [LocationType.PlayerHand]: pile } }) ?? []).join(' ')
   }
 
-  // From the fan to the pile, the cut and the crosses, then back to the fan.
+  // From the fan to the pile, the mixes, then back to the fan.
   const fan = transformItem(context).join(' ')
   const shuffle = keyframes`
     0%, 100% { transform: ${fan}; }
-    ${shuffleSteps(height)
-      .map(([at, spot]) => `${at}% { transform: ${inPile(spot)}; }`)
-      .join('\n')}
+    ${steps.map(([at, spot]) => `${at}% { transform: ${inPile(spot)}; }`).join('\n')}
   `
   return css`
     > * {
