@@ -5,6 +5,7 @@ import { PlayerPanels } from './panels/PlayerPanels'
 import { HandHoverStyles } from './material/HandHoverStyles'
 import { TutorialFocusEffects } from './tutorial/TutorialFocusEffects'
 import { AnimalDeckCounters } from './panels/AnimalDeckCounters'
+import { TurnAnnouncement } from './panels/TurnAnnouncement'
 
 export function GameDisplay() {
   const margin = { top: 7, left: 0, right: 0, bottom: 0 }
@@ -23,6 +24,7 @@ export function GameDisplay() {
         <TutorialFocusEffects />
         <HandHoverStyles />
         <AnimalDeckCounters />
+        <TurnAnnouncement />
         {process.env.NODE_ENV === 'development' && <DevToolsHub fabBottom="calc(5em)" />}
       </GameTable>
     </>

@@ -57,7 +57,13 @@
     }
   },
   "panel": {
-    "prestige": "{count} de Prestige"
+    "prestige": "{count} de Prestige",
+    "turn": "Tour {turn}"
+  },
+  "announce": {
+    "round": "Manche {round}",
+    "turns-left": "{count} tours restants",
+    "last-turn": "Dernier tour"
   },
   "button": {
     "play": "Jouer",

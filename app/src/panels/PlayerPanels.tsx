@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { PLAYER_BAND_BOTTOM, PLAYER_PANEL_HEIGHT, PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
+import { getTurn } from './RoundProgress'
 import characterBack from '../images/cards/CharacterBack.jpg'
 import favor from '../images/tokens/prestige/Favor1.png'
 import honor from '../images/tokens/prestige/Honor1.png'
@@ -26,7 +27,7 @@ const TOKEN_LENGTH = (TOKEN_WIDTH * 5.76) / 1.63
 
 /**
  * Each panel lies on the table, in the top corner of its owner's side: the viewer on the left, the
- * opponent on the right. Under the name of the player, the value of their Favor and of their Honor
+ * opponent on the right. Under the name of the player, the turn in progress beside their time left, the value of their Favor and of their Honor
  * tokens, then their Prestige, the sum of both, which wins the round. A click on any of them opens
  * its help.
  */
@@ -42,6 +43,7 @@ export const PlayerPanels = () => {
     !!focus?.highlight && !focus.locations?.some((location) => location.type === LocationType.PlayerPrestige && location.player === player)
   const prestigeHelp = (type: PrestigeType, player: number) =>
     play(MaterialMoveBuilder.displayMaterialHelp(type, { id: 1, location: { type: LocationType.PlayerPrestige, player } }), { local: true })
+  const turnCounter = { image: '', value: t('panel.turn', { turn: getTurn(rules) }), imageCss: noImageCss, extraCss: turnCounterCss }
   return (
     <>
       {players.map((player, index) => {
@@ -49,7 +51,7 @@ export const PlayerPanels = () => {
         const honorTotal = countPrestige(rules, MaterialType.Honor, player.id)
         return (
           <div key={player.id} css={[blockCss, blockPlace(index === 0), isPlayedDown(player.id) && playedDownCss]}>
-            <StyledPlayerPanel player={player} activeRing css={panelCss} />
+            <StyledPlayerPanel player={player} activeRing mainCounter={turnCounter} css={panelCss} />
             <div css={tilesCss}>
               <button css={[tileCss, favorCss]} onClick={() => prestigeHelp(MaterialType.Favor, player.id)} aria-label={t('help.prestige.favor.title')}>
                 <span css={figureCss}>{favorTotal}</span>
@@ -114,6 +116,20 @@ const panelCss = css`
     width: 7.2em;
     height: 7.2em;
   }
+`
+
+/** The turn, in the badge style of the timer, on its left: the framework puts the main counter on its right. */
+const turnCounterCss = css`
+  order: -1;
+  width: auto;
+
+  > span {
+    width: auto;
+  }
+`
+
+const noImageCss = css`
+  display: none;
 `
 
 /** Below the name, the row of the Favor and Honor tiles and the Prestige band share the height left equally. */
