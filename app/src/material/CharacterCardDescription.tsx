@@ -51,9 +51,9 @@ class CharacterCardDescription extends CardDescription<number, MaterialType, Loc
         if (context.rules.game.rule?.id === RuleId.DiscardCharacter) return { move, icon: faTrashCan, title: 'button.discard' }
         return { move, icon: faBolt, title: 'button.activate' }
       })
-    // In hand, the button goes at the bottom of the card, off the picture.
-    const inHand = item.location.type === LocationType.PlayerHand
-    return actions.length ? <ItemActions actions={actions} y={inHand ? HAND_BUTTON_Y : 0} angle={handCardAngle(item, context)} /> : null
+    // In hand and in the duel, where the whole card shows, the button goes at its bottom, off the picture.
+    const atBottom = item.location.type === LocationType.PlayerHand || item.location.type === LocationType.PlayerDuel
+    return actions.length ? <ItemActions actions={actions} y={atBottom ? HAND_BUTTON_Y : 0} angle={handCardAngle(item, context)} /> : null
   }
 
   /** A won bet shines in gold instead (see BetShow). */

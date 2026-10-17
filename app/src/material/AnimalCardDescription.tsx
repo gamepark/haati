@@ -89,14 +89,15 @@ class AnimalCardDescription extends CardDescription<number, MaterialType, Locati
       .map((move) => ({ move, ...destinations[move.location.type as LocationType]! }))
     if (!actions.length) return null
     // In a row, only the edge of the card towards the board is uncovered: the button goes there, below
-    // the family and the value printed in the corner. In hand, it goes at the bottom, off the picture.
+    // the family and the value printed in the corner. In hand and in the duel, where the whole card shows,
+    // it goes at the bottom, off the picture.
     const inRow = item.location.type === LocationType.Palace || item.location.type === LocationType.Jungle
-    const inHand = item.location.type === LocationType.PlayerHand
+    const atBottom = item.location.type === LocationType.PlayerHand || item.location.type === LocationType.PlayerDuel
     return (
       <ItemActions
         actions={actions}
         x={inRow ? -side(item.location.player, context) * 1.9 : 0}
-        y={inHand ? HAND_BUTTON_Y : 0}
+        y={atBottom ? HAND_BUTTON_Y : 0}
         angle={handCardAngle(item, context)}
       />
     )
