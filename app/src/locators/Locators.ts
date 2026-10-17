@@ -24,6 +24,7 @@ import {
   ANIMAL_DECK_ROTATE_Z,
   ANIMAL_DECK_Y,
   ANIMAL_DISCARD,
+  ANIMAL_RESET,
   ANIMAL_SET_ASIDE,
   CARD_HEIGHT,
   CARD_WIDTH,
@@ -189,6 +190,28 @@ class AnimalDeckLocator extends DeckLocator {
 
   getRotateZ(location: Location) {
     return location.id === 1 ? ANIMAL_DECK_ROTATE_Z : -ANIMAL_DECK_ROTATE_Z
+  }
+}
+
+/** The 4 Animal cards out of the round. Between two rounds, all 24 are gathered there. */
+export const SET_ASIDE_SIZE = 4
+
+/**
+ * Whether the Animal cards are being gathered, mixed and dealt between two rounds: the pile set aside then
+ * holds more than the 4 cards out of the round.
+ */
+export const isAnimalPileReset = ({ rules }: MaterialContext) => {
+  const rule = rules.game.rule?.id
+  return (
+    (rule === RuleId.EndOfRound || rule === RuleId.NewRound) &&
+    rules.material(MaterialType.AnimalCard).location(LocationType.AnimalSetAside).length > SET_ASIDE_SIZE
+  )
+}
+
+/** The Animal cards set aside, above the board, but in the middle of the screen between two rounds (see isAnimalPileReset). */
+class AnimalSetAsideLocator extends DeckLocator {
+  getCoordinates(_location: Location, context: MaterialContext) {
+    return isAnimalPileReset(context) ? ANIMAL_RESET : ANIMAL_SET_ASIDE
   }
 }
 
@@ -387,7 +410,7 @@ class PlayerVictoryLocator extends Locator {
 export const Locators: Partial<Record<LocationType, Locator<number, MaterialType, LocationType>>> = {
   [LocationType.Board]: new BoardLocator(),
   [LocationType.AnimalDeck]: new AnimalDeckLocator(),
-  [LocationType.AnimalSetAside]: new DeckLocator({ coordinates: ANIMAL_SET_ASIDE }),
+  [LocationType.AnimalSetAside]: new AnimalSetAsideLocator(),
   [LocationType.AnimalDiscard]: new DeckLocator({ coordinates: ANIMAL_DISCARD }),
   [LocationType.CharacterDeck]: new DeckLocator({ coordinates: CHARACTER_DECK }),
   [LocationType.CharacterDiscard]: new DeckLocator({

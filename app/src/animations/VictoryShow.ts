@@ -9,7 +9,15 @@ import { PLAYER_VICTORY, side, VICTORY_SHOW_SCALE, VICTORY_WIDTH } from '../loca
 import { colors } from '../theme/colors'
 
 export const VICTORY_SHOW_DURATION = 6000
-export const ROUND_WON_SHOW_DURATION = 3500
+/** A round won: the token flies to the middle, shines there while the message names the winner, then flies away (ms). */
+const ROUND_WON_FLIGHT = 875
+const ROUND_WON_GLOW = 350
+const ROUND_WON_HOLD = 875
+export const ROUND_WON_SHOW_DURATION = 2 * ROUND_WON_FLIGHT + ROUND_WON_HOLD
+/** When the token reaches the middle, shines fully, then leaves the middle, in % of the show. */
+export const ROUND_WON_ARRIVED = (ROUND_WON_FLIGHT / ROUND_WON_SHOW_DURATION) * 100
+export const ROUND_WON_SHINING = ((ROUND_WON_FLIGHT + ROUND_WON_GLOW) / ROUND_WON_SHOW_DURATION) * 100
+export const ROUND_WON_LEAVING = ((ROUND_WON_FLIGHT + ROUND_WON_HOLD) / ROUND_WON_SHOW_DURATION) * 100
 
 /** A move that gives a player a Round victory token. */
 const isRoundVictoryWon = (move: MaterialMove) =>
@@ -57,8 +65,8 @@ export const roundWonShow = (context: ItemContext, move: MaterialMove, duration:
   const centre = { x: 0, y: 0 }
   const animation = keyframes`
     0% { ${frame(from, 0, 1, turnedFrom, 0)} }
-    25% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo, 0)} }
-    35%, 75% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo, 0.4)} }
+    ${ROUND_WON_ARRIVED}% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo, 0)} }
+    ${ROUND_WON_SHINING}%, ${ROUND_WON_LEAVING}% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo, 0.4)} }
     100% { ${frame(place, 0, 1, turnedTo, 0)} }
   `
   return css`

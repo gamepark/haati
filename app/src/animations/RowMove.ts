@@ -27,7 +27,7 @@ export const isRowMove = (move: MaterialMove, context: MaterialContext) => {
 }
 
 /** The animation of the framework, kept for a card dropped by the player: it is already where the pointer let go of it. */
-const frameworkAnimations = new MaterialAnimations()
+export const frameworkAnimations = new MaterialAnimations()
 
 type RulesCreator = new (game: MaterialGame, options: { player?: number }) => MaterialRules
 

@@ -4,7 +4,7 @@ import { HaatiRules } from '@gamepark/haati/HaatiRules'
 import { useAnimation, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { isMoveItem, MaterialMove } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
-import { isRoundWon } from '../animations/VictoryShow'
+import { isRoundWon, ROUND_WON_ARRIVED, ROUND_WON_LEAVING, ROUND_WON_SHINING } from '../animations/VictoryShow'
 import { TABLE_HEIGHT, TABLE_WIDTH, VICTORY_HEIGHT, VICTORY_SHOW_SCALE } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
@@ -46,9 +46,9 @@ const placeCss = css`
 
 /** In step with the token: visible while it shines in the middle. */
 const fade = keyframes`
-  0%, 25% { opacity: 0; }
-  35%, 72% { opacity: 1; }
-  80%, 100% { opacity: 0; }
+  0%, ${ROUND_WON_ARRIVED}% { opacity: 0; }
+  ${ROUND_WON_SHINING}%, ${ROUND_WON_LEAVING - 4}% { opacity: 1; }
+  ${ROUND_WON_LEAVING + 6}%, 100% { opacity: 0; }
 `
 
 const fadeCss = (duration: number) => css`

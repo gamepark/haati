@@ -63,6 +63,14 @@ export const ANIMAL_DISCARD = { x: 8.5, y: -16.5 }
 export const CHARACTER_DECK = { x: 8.5, y: 16.5 }
 export const CHARACTER_DISCARD = { x: 15.5, y: 16.5 }
 
+/**
+ * Between two rounds, the cards are gathered and mixed in the middle of the screen, on the board: the Animal
+ * cards on the left, the Character cards on the right, a little gap between the two piles.
+ */
+const RESET_PILE_X = CARD_WIDTH / 2 + 0.8
+export const ANIMAL_RESET = { x: -RESET_PILE_X, y: 0 }
+export const CHARACTER_RESET = { x: RESET_PILE_X, y: 0 }
+
 /** The 2 Round victory tokens are the two halves of one elephant: they are laid side by side, upright. */
 export const VICTORY_WIDTH = 2.57
 export const VICTORY_HEIGHT = 6.56

@@ -25,37 +25,45 @@ const HOLD = 50
 const CLOSE = 200
 const MIXES = 2
 const SPREAD = 300
-export const HAND_SHUFFLE_DURATION = GATHER + MIXES * (PART + HOLD + CLOSE) + SPREAD
+/** The mixes alone, from the pile gathered to the pile closed up for the last time. */
+export const MIX_DURATION = MIXES * (PART + HOLD + CLOSE)
+export const HAND_SHUFFLE_DURATION = GATHER + MIX_DURATION + SPREAD
 /** Where the two packets go, from the middle of the pile, along the card: a little gap between them. */
-const PACKET_X = 0.55 * CARD_WIDTH
+export const PACKET_X = 0.55 * CARD_WIDTH
 /** The height between two cards of the pile, in em. */
-const PILE_GAP = 1
+export const PILE_GAP = 1
 
-const isHandShuffle = (move: MaterialMove): move is Shuffle => isShuffle(move) && move.itemType === MaterialType.AnimalCard
+const isHandShuffle = (move: MaterialMove, context: MaterialContext): move is Shuffle =>
+  isShuffle(move) &&
+  move.itemType === MaterialType.AnimalCard &&
+  context.rules.material(MaterialType.AnimalCard).getItem(move.indexes[0])?.location.type === LocationType.PlayerHand
 
 /**
  * The hands mixed with nothing to show: the viewer's own (they see its cards, sorted by value, so the mix
  * moves nothing), and a hand holding a single Animal card.
  */
 export const isHandShuffleSkipped = (move: MaterialMove, context: MaterialContext) =>
-  isHandShuffle(move) && (move.indexes.length < 2 || context.rules.material(MaterialType.AnimalCard).getItem(move.indexes[0]).location.player === context.player)
+  isHandShuffle(move, context) &&
+  (move.indexes.length < 2 || context.rules.material(MaterialType.AnimalCard).getItem(move.indexes[0]).location.player === context.player)
 
-export const isOpponentHandShuffled = (move: MaterialMove, context: MaterialContext) => isHandShuffle(move) && !isHandShuffleSkipped(move, context)
+export const isOpponentHandShuffled = (move: MaterialMove, context: MaterialContext) =>
+  isHandShuffle(move, context) && !isHandShuffleSkipped(move, context)
 
 /** Where a card is: from the middle of the pile along the card (in em), and its height in the pile (in cards). */
-type Spot = { x: number; height: number }
+export type Spot = { x: number; height: number }
 
 /**
- * The spots of every card at each step, in %, the cards listed in the order of the fan. The pile starts
- * in that order, the last card on top. At each mix, the cards at an even height go to one side, the others to
- * the other side, the top card's packet first to the right then to the left; it comes back under the other.
+ * The spots of every card at each step, in % of the whole animation (`duration`), the mixes starting at
+ * `start`, the cards listed from the bottom of the pile to its top. At each mix, the cards at an even height go
+ * to one side, the others to the other side, the top card's packet first to the right then to the left; it
+ * comes back under the other.
  */
-const mixSteps = (cards: number[]): Map<number, [number, Spot][]> => {
+export const mixSteps = (cards: number[], start = GATHER, duration = HAND_SHUFFLE_DURATION): Map<number, [number, Spot][]> => {
   const steps = new Map(cards.map((card) => [card, [] as [number, Spot][]]))
   let pile = [...cards]
-  let time = GATHER
+  let time = start
   const at = (spot: (card: number, height: number) => Spot) =>
-    pile.forEach((card, height) => steps.get(card)!.push([(time / HAND_SHUFFLE_DURATION) * 100, spot(card, height)]))
+    pile.forEach((card, height) => steps.get(card)!.push([(time / duration) * 100, spot(card, height)]))
   at((_, height) => ({ x: 0, height }))
   for (let mix = 0; mix < MIXES; mix++) {
     const topParity = (pile.length - 1) % 2

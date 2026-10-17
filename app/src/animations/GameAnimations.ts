@@ -3,9 +3,20 @@ import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, MaterialGameAnimations, transformItem } from '@gamepark/react-game'
-import { isMoveItem, isShuffle, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItem, isRollItemType, isShuffle, MaterialMove } from '@gamepark/rules-api'
 import { HAND_SHUFFLE_DURATION, handShuffle, isHandShuffleSkipped, isOpponentHandShuffled } from './HandShuffle'
 import { BET_VERDICT_DURATION, betLost, isBetLost, isWonBetPlayed, wonBetPlayed } from './BetShow'
+import {
+  ANIMAL_PILE_SHUFFLE_DURATION,
+  animalPileGlide,
+  CHARACTER_PILE_SHUFFLE_DURATION,
+  isAnimalDealEnded,
+  isAnimalGatheringStarted,
+  isAnimalPileShuffled,
+  isCharacterPileShuffled,
+  PILE_GLIDE_DURATION,
+  pileShuffle
+} from './ResetPiles'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
 import { isElephantCompleted, isRoundWon, ROUND_WON_SHOW_DURATION, roundWonShow, victoryShow, VICTORY_SHOW_DURATION } from './VictoryShow'
 import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/TableLayout'
@@ -14,7 +25,8 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
  * Most moves keep the framework's pace. Faster are only the housekeeping a player does not need to
  * follow: the Character pile made again from its discard when it runs out, and the Animal cards
  * gathered and laid out in piles between two rounds (the top card of each pile still turns over at
- * the usual pace). The opponent's hand, mixed after each draw, is shuffled like a pile of cards (see
+ * the usual pace). Between two rounds, both piles are mixed in the middle of the screen (see ResetPiles),
+ * and the Collection tokens turn over slower than usual. The opponent's hand, mixed after each draw, is shuffled like a pile of cards (see
  * HandShuffle); the viewer's own hand is not animated. The Favor and Honor tokens move at half the usual second, except between two rounds,
  * when the Honor tokens turn into Favor tokens at the usual pace.
  *
@@ -29,6 +41,8 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
 export const gameAnimations = new MaterialGameAnimations()
 
 const DUEL_SHOW_DURATION = 3750
+/** The Collection tokens turned over between two rounds, slower than the usual second so that the new faces are seen. */
+const COLLECTION_FLIP_DURATION = 1500
 /** When the card revealed last is a Character card, it turns over at the usual pace: this share of the show. */
 const CHARACTER_FLIP_SHARE = 0.12
 
@@ -111,6 +125,11 @@ gameAnimations
   .configure(isRoundWon)
   .duration(ROUND_WON_SHOW_DURATION)
   .itemAnimation((context, animation) => roundWonShow(context, animation.move, animation.duration))
+gameAnimations.configure(isAnimalGatheringStarted).duration(PILE_GLIDE_DURATION).itemAnimation(animalPileGlide)
+gameAnimations.configure(isAnimalDealEnded).itemAnimation(animalPileGlide)
+gameAnimations.configure(isAnimalPileShuffled).duration(ANIMAL_PILE_SHUFFLE_DURATION).itemAnimation(pileShuffle)
+gameAnimations.configure(isCharacterPileShuffled).duration(CHARACTER_PILE_SHUFFLE_DURATION).itemAnimation(pileShuffle)
+gameAnimations.configure(isRollItemType(MaterialType.CollectionToken)).duration(COLLECTION_FLIP_DURATION)
 gameAnimations.configure(isHandShuffleSkipped).skip()
 gameAnimations.configure(isOpponentHandShuffled).duration(HAND_SHUFFLE_DURATION).itemAnimation(handShuffle)
 gameAnimations.configure((move, context) => isPrestige(move) && context.rules.game.rule?.id !== RuleId.EndOfRound).duration(500)
