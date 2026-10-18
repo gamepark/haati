@@ -320,7 +320,7 @@
     "tiger-effect": "L’effet du Tigre dans la Jungle vous permet, à votre tour, de déplacer un animal d’un Palais vers une Jungle. Déplacez votre <b>Éléphant 4</b> de votre Palais à votre Jungle.",
     "collection-won": "1, 2, 3, 4 : votre Jungle forme une <b>Collection</b> ! Vous remportez le jeton Collection de la Jungle et sa récompense : <b>3 Faveurs et 1 Honneur</b>.",
     "honor": "Votre premier <b>Honneur</b> ! Les Honneurs (jetons noirs) comptent dans votre Prestige comme les Faveurs et départagent les égalités. À la fin de la manche, les Faveurs sont perdues, mais les Honneurs deviennent des Faveurs pour la manche suivante.",
-    "prestige-total": "Votre total de <b>Prestige</b> est donc de 8 : 7 Faveurs + 1 Honneur. Celui qui a le plus de Prestige remporte la manche !",
+    "prestige-total": "Vous avez 7 Faveurs et 1 Honneur, donc votre <b>Prestige</b> est de 8 !",
     "your-turn": "À vous de jouer la fin de la manche : il reste <b>5 tours</b> !\n\n<i>N’oubliez pas : cliquez sur n’importe quel élément du jeu (carte, jeton, plateau, compteur) pour afficher son aide.</i>"
   },
   "table": {
