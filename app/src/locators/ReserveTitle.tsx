@@ -5,7 +5,10 @@ import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 import { RESERVE_TITLE_INSET } from './TableLayout'
 
-/** The title of the reserve, in a cartouche as wide as the tokens, over the bottom of the Favor tokens. */
+/**
+ * The title of the reserve, in a cartouche as wide as the tokens, over the bottom of the Favor tokens. Light gold
+ * with brown ink, so that it reads as a label and not as one of the plum action buttons.
+ */
 export const ReserveTitle = () => {
   const { t } = useTranslation()
   return <span css={titleCss}>{t('table.reserve')}</span>
@@ -22,13 +25,13 @@ const titleCss = css`
   padding: 0.1em 0;
   text-align: center;
   border-radius: 0.3em;
-  background: ${colors.plum};
-  border: 0.08em solid ${colors.gold};
+  background: ${colors.goldLight};
+  border: 0.08em solid ${colors.goldDeep};
   box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.5);
   font-family: ${fontDisplay};
   font-size: ${TITLE_SIZE}em;
   line-height: 1.2;
   white-space: nowrap;
-  color: ${colors.parchment};
+  color: ${colors.ink};
   pointer-events: none;
 `
