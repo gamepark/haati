@@ -21,7 +21,7 @@ const FOCUS_TIME = 1000
  * - a step marked `focusFirst` shows its popup once the view has reached its focus, so that the player
  *   sees where the view goes;
  * - a popup asking for a move of the player has no "OK" button;
- * - no popup leaves the screen, and none shows while a turn is announced.
+ * - no popup leaves the screen, and none shows over the announcement of a turn.
  */
 export const TutorialFocusEffects = () => {
   const rules = useRules<HaatiRules>()
@@ -35,7 +35,8 @@ export const TutorialFocusEffects = () => {
     if (popupClosed || stepComplete) setFocus(undefined, true)
   }, [popupClosed, stepComplete, setFocus])
 
-  // The turn being announced (see TurnAnnouncement): its popup waits for the end of the announcement.
+  // The turn being announced (see TurnAnnouncement), in the middle of the table: a popup over the whole table waits for the end of
+  // the announcement. A popup with a focus shows at once: the view leaves the middle of the table for its focus.
   const announcedTurn = rules?.game.rule?.id === RuleId.ChooseCards ? `${getRound(rules)}-${getTurn(rules)}` : undefined
   const [announcing, setAnnouncing] = useState(false)
   useEffect(() => {
@@ -68,7 +69,7 @@ export const TutorialFocusEffects = () => {
         focus?.highlight && shownCss,
         isPlayerMoveExpected(rules.game) && noOkCss,
         popupOnScreenCss(step?.popup?.position),
-        (announcing || focusing) && hiddenPopupCss
+        ((announcing && !step?.focus) || focusing) && hiddenPopupCss
       ]}
     />
   )
