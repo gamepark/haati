@@ -8,6 +8,9 @@ import { useFocusContext, useMaterialContext, useRules } from '@gamepark/react-g
 import { maxBy } from 'es-toolkit'
 import { Locators } from '../locators/Locators'
 import { CARD_HEIGHT, CARD_WIDTH, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
+import { getTutorialEffect } from '../tutorial/Tutorial'
+import { TutorialEffect } from '../tutorial/TutorialEffect'
+import { tutorialBeatCss } from '../tutorial/TutorialShine'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 
@@ -31,6 +34,8 @@ export const AnimalDeckCounters = () => {
   const isPlayedDown = (pile: number) =>
     !!focus?.highlight &&
     !focus.materials?.some((material) => material.getItems().some((item) => item.location.type === LocationType.AnimalDeck && item.location.id === pile))
+  // In the tutorial, the counters can beat, to catch the eye.
+  const beats = getTutorialEffect(context) === TutorialEffect.DeckCounters
   return (
     <>
       {animalPiles.map((pile) => {
@@ -53,7 +58,7 @@ export const AnimalDeckCounters = () => {
         const x = (centre.x ?? 0) + sx * (CARD_HEIGHT / 2 - COUNTER_INSET)
         const y = (centre.y ?? 0) + sy * (CARD_WIDTH / 2 - COUNTER_INSET)
         return (
-          <div key={pile} css={[counterCss, placeCss(x, y), isPlayedDown(pile) && playedDownCss]}>
+          <div key={pile} css={[counterCss, placeCss(x, y), isPlayedDown(pile) && playedDownCss, beats && tutorialBeatCss]}>
             <span css={figureCss}>{pileCards.length}</span>
           </div>
         )
@@ -84,6 +89,8 @@ const counterCss = css`
   border: 0.1em solid ${colors.gold};
   box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.5);
   transform: translate(-50%, -50%) translateZ(1em);
+  /* The centre of the counter, once translated: a scale applies around it (see tutorialBeatCss). */
+  transform-origin: 0 0;
   pointer-events: none;
 `
 

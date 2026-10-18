@@ -34,6 +34,12 @@ const boardCycle = {
   margin: { top: -10, bottom: -4 }
 }
 
+/**
+ * A scale of focus so small that the view clamps it to the whole table, zoomed out as far as it goes: the cards of a duel are
+ * highlighted where they lie on the table, where the player will look for them in a game.
+ */
+const WHOLE_TABLE = 0.01
+
 /** A move of an Animal card, the one with this id, to this place. */
 const moveAnimal = (id: number, type: LocationType, player?: number) => (move: MaterialMove, game: MaterialGame) =>
   isMoveItemType(MaterialType.AnimalCard)(move) &&
@@ -99,10 +105,14 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
     {
       popup: { text: text('turns') },
       focusFirst: true,
-      focus: (game) => ({
-        materials: [this.material(game, MaterialType.AnimalCard).location(LocationType.AnimalDeck).locationId(2)],
-        locations: [panel(me, PanelArea.Turn)]
-      })
+      focus: () => ({ locations: [panel(me, PanelArea.Turn)], margin: { bottom: 12 } }),
+      effect: TutorialEffect.TurnCounter
+    },
+    {
+      popup: { text: text('deck-counters') },
+      focusFirst: true,
+      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).location(LocationType.AnimalDeck)] }),
+      effect: TutorialEffect.DeckCounters
     },
     {
       popup: { text: text('hand'), position: { x: -34, y: -12 } },
@@ -176,10 +186,9 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
     },
     { move: { player: opponent, filter: moveAnimal(card(Animal.Tiger, 5), LocationType.PlayerDuel), interrupt: resolutionOf() } },
     {
-      popup: { text: text('tiger-beats-mouse'), position: { y: 24 } },
-      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerDuel)], margin: { bottom: 12 } }),
-      move: { interrupt: resolutionOf(me) },
-      effect: TutorialEffect.DuelShow
+      popup: { text: text('tiger-beats-mouse'), position: { y: -20 } },
+      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerDuel)], scale: WHOLE_TABLE }),
+      move: { interrupt: resolutionOf(me) }
     },
     {
       popup: { text: text('mouse-jungle'), position: { y: -20 } },
@@ -188,10 +197,9 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
           this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerDuel).player(me),
           this.material(game, MaterialType.AnimalCard).location(LocationType.Jungle).player(me)
         ],
-        margin: { top: 10 }
+        scale: WHOLE_TABLE
       }),
-      move: {},
-      effect: TutorialEffect.DuelShow
+      move: {}
     },
     {
       popup: { text: text('character-piles'), position: { x: 11, y: -7 } },
@@ -243,19 +251,18 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
     { move: { player: opponent, filter: moveAnimal(card(Animal.Elephant, 3), LocationType.PlayerDuel) } },
     { move: { player: opponent, filter: isCustomMoveType(CustomMoveType.Validate), interrupt: resolutionOf() } },
     {
-      popup: { text: text('same-family'), position: { y: 24 } },
-      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerDuel)], margin: { bottom: 12 } }),
-      move: {},
-      effect: TutorialEffect.DuelShow
+      popup: { text: text('same-family'), position: { y: -20 } },
+      focus: (game) => ({ materials: [this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerDuel)], scale: WHOLE_TABLE }),
+      move: {}
     },
     {
-      popup: { text: text('bet-won'), position: { x: -50, y: 0 } },
+      popup: { text: text('bet-won'), position: { y: -20 } },
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerDuel).player(me),
           this.material(game, MaterialType.CharacterCard).location(LocationType.PlayerDuel).player(me)
         ],
-        margin: { top: 10 }
+        scale: WHOLE_TABLE
       })
     },
     {
@@ -343,31 +350,10 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
 /** The tutorial of the game, shared by the game provider and the tutorial display adjustments. */
 export const haatiTutorial = new Tutorial()
 
-/**
- * The effect of the display during the current step of the tutorial, if any. The step starts as soon as the move
- * before it is played, while the reveal of the duel it brings may still be shown: the duel is only kept in the
- * middle of the screen once all its cards are face up, right where the show of the reveal leaves them.
- */
+/** The effect of the display during the current step of the tutorial, if any. */
 export const getTutorialEffect = ({ rules }: MaterialContext) => {
   const tutorial = rules.game.tutorial
-  const effect = tutorial ? haatiTutorial.steps[tutorial.step]?.effect : undefined
-  if (effect === TutorialEffect.DuelShow && hasHiddenDuelCards(rules.game)) return
-  return effect
-}
-
-const hasHiddenDuelCards = (game: MaterialGame) =>
-  [MaterialType.AnimalCard, MaterialType.CharacterCard].some(
-    (type) =>
-      haatiTutorial
-        .material(game, type)
-        .location(LocationType.PlayerDuel)
-        .rotation((rotation) => !rotation).length > 0
-  )
-
-/** Whether the tutorial pauses on the duel being revealed, keeping its Animal cards in the middle of the screen: the show of the duel then ends there. */
-export const isDuelShowNext = ({ rules }: MaterialContext) => {
-  const tutorial = rules.game.tutorial
-  return !!tutorial && haatiTutorial.steps[tutorial.step]?.effect === TutorialEffect.DuelShow
+  return tutorial ? haatiTutorial.steps[tutorial.step]?.effect : undefined
 }
 
 /** Whether the current step of the tutorial waits for a move of the viewer, which the popup asks for: its "OK" button is then hidden. */

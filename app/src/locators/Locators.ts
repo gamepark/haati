@@ -35,8 +35,6 @@ import {
   CHARACTER_DECK,
   CHARACTER_DISCARD,
   DUEL_CHARACTER_X,
-  DUEL_SHOW_SCALE,
-  DUEL_SHOW_X,
   DUEL_X,
   DUEL_Y,
   HAND,
@@ -130,19 +128,10 @@ class DuelLocator extends Locator {
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
-    if (isDuelShown(context)) return { x: side(item.location.player, context) * DUEL_SHOW_X, y: 0, z: 10 }
     const x = context.type === MaterialType.CharacterCard ? DUEL_CHARACTER_X : DUEL_X
     return { x: side(item.location.player, context) * x, y: DUEL_Y }
   }
-
-  placeItem(item: MaterialItem, context: ItemContext): string[] {
-    const transform = super.placeItem(item, context)
-    return isDuelShown(context) ? [...transform, `scale(${DUEL_SHOW_SCALE})`] : transform
-  }
 }
-
-/** In the tutorial, the Animal cards of the duel can stay in the middle of the screen, where their reveal shows them, for a popup to explain the duel. */
-const isDuelShown = (context: ItemContext) => context.type === MaterialType.AnimalCard && getTutorialEffect(context) === TutorialEffect.DuelShow
 
 /**
  * The hand, fanned out in the bottom outer corner: Character cards first, then Animal cards. While the

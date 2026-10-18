@@ -4,8 +4,10 @@ export enum TutorialEffect {
   RoundVictory = 1,
   /** The board is lit in a circle on its cycle of the animals only. */
   AnimalCycle,
-  /** The Animal cards of the duel stay in the middle of the screen, where their reveal shows them. */
-  DuelShow,
   /** The Honor tokens come in front of the Favor tokens and shine. */
-  Honor
+  Honor,
+  /** The turn counter of the viewer's panel grows and beats, to catch the eye. */
+  TurnCounter,
+  /** The counters of the piles of Animal cards grow and beat, to catch the eye. */
+  DeckCounters
 }

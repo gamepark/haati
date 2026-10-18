@@ -4,13 +4,16 @@ import { HaatiRules } from '@gamepark/haati/HaatiRules'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { countPrestige, PrestigeType } from '@gamepark/haati/material/Prestige'
-import { StyledPlayerPanel, useFocusContext, usePlay, usePlayers, useRules } from '@gamepark/react-game'
+import { StyledPlayerPanel, useFocusContext, useMaterialContext, usePlay, usePlayers, useRules } from '@gamepark/react-game'
 import { MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
 import { PanelArea, PLAYER_BAND_BOTTOM, PLAYER_PANEL_HEIGHT, PLAYER_PANEL_WIDTH, PLAYER_PANEL_X, TABLE_HEIGHT, TABLE_WIDTH } from '../locators/TableLayout'
 import { colors } from '../theme/colors'
 import { fontDisplay } from '../theme'
 import { getTurn } from './RoundProgress'
+import { getTutorialEffect } from '../tutorial/Tutorial'
+import { TutorialEffect } from '../tutorial/TutorialEffect'
+import { tutorialBeatCss } from '../tutorial/TutorialShine'
 import characterBack from '../images/cards/CharacterBack.jpg'
 import favor from '../images/tokens/prestige/Favor1.png'
 import honor from '../images/tokens/prestige/Honor1.png'
@@ -37,7 +40,10 @@ export const PlayerPanels = () => {
   const rules = useRules<HaatiRules>()
   const play = usePlay<MaterialMove>()
   const { focus } = useFocusContext()
+  const context = useMaterialContext()
   if (!rules) return null
+  // In the tutorial, the turn counter in the focus can beat, to catch the eye.
+  const turnBeats = getTutorialEffect(context) === TutorialEffect.TurnCounter
   // During a focus of the tutorial, a panel is darkened like the material, but for the areas the focus is on.
   const litAreas = (player: number): PanelArea[] =>
     !focus?.highlight
@@ -58,7 +64,7 @@ export const PlayerPanels = () => {
           image: '',
           value: t('panel.turn', { turn: getTurn(rules) }),
           imageCss: noImageCss,
-          extraCss: [turnCounterCss, isLit(PanelArea.Turn) && litTurnCss]
+          extraCss: [turnCounterCss, isLit(PanelArea.Turn) && litTurnCss, isLit(PanelArea.Turn) && turnBeats && tutorialBeatCss]
         }
         return (
           <div key={player.id} css={[blockCss, blockPlace(index === 0), !isLit(PanelArea.Whole) && playedDownCss]}>
