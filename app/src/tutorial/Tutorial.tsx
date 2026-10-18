@@ -350,10 +350,13 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
 /** The tutorial of the game, shared by the game provider and the tutorial display adjustments. */
 export const haatiTutorial = new Tutorial()
 
-/** The effect of the display during the current step of the tutorial, if any. */
+/**
+ * The effect of the display during the current step of the tutorial, if any. It ends with the popup, like the focus: once the player
+ * clicks "OK", the moves the step resumes are seen on the plain table.
+ */
 export const getTutorialEffect = ({ rules }: MaterialContext) => {
   const tutorial = rules.game.tutorial
-  return tutorial ? haatiTutorial.steps[tutorial.step]?.effect : undefined
+  return tutorial && !tutorial.popupClosed ? haatiTutorial.steps[tutorial.step]?.effect : undefined
 }
 
 /** Whether the current step of the tutorial waits for a move of the viewer, which the popup asks for: its "OK" button is then hidden. */
