@@ -114,7 +114,7 @@ class PrestigeDescription extends MoneyDescription<number, MaterialType, Locatio
   }
 
   /** In the tutorial, the Honor tokens of a player shine while they come in front of the Favor tokens (see PlayerPrestigeLocator). */
-  getItemExtraCss(item: MaterialItem, context: ItemContext) {
+  getItemExtraCss(item: MaterialItem<number, LocationType, number>, context: ItemContext) {
     const extraCss = super.getItemExtraCss(item, context)
     const shines = context.type === MaterialType.Honor && item.location.type === LocationType.PlayerPrestige && getTutorialEffect(context) === TutorialEffect.Honor
     return shines ? [extraCss, tutorialShineCss] : extraCss

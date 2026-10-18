@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { MoveComponentContext } from '@gamepark/react-game'
-import { isCreateItem, isDeleteItem, isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { CreateItem, DeleteItem, isCreateItem, isDeleteItem, isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
 
 export type HaatiContext = MoveComponentContext<MaterialMove, number, MaterialGame>
 
@@ -44,7 +44,7 @@ export const revealedInAction = (context: HaatiContext, type: MaterialType, play
 const isPrestige = (type: MaterialType) => type === MaterialType.Favor || type === MaterialType.Honor
 
 /** Whether a move creates or deletes a Favor or an Honor token. */
-export const isPrestigeMove = (move: MaterialMove): boolean => (isCreateItem(move) || isDeleteItem(move)) && isPrestige(move.itemType as MaterialType)
+export const isPrestigeMove = (move: MaterialMove): move is CreateItem | DeleteItem => (isCreateItem(move) || isDeleteItem(move)) && isPrestige(move.itemType as MaterialType)
 
 /** Whose tokens a Prestige move creates or deletes. A deleted token keeps its index, so it is still in the state it was deleted from. */
 export const prestigeOwner = (move: MaterialMove, game: MaterialGame): number | undefined => {
