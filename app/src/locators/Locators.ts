@@ -133,12 +133,7 @@ class DuelLocator extends Locator {
   }
 }
 
-/**
- * The hand, fanned out in the bottom outer corner: Character cards first, then Animal cards. While the
- * cards of the duel are being chosen, those already committed keep their place in the hand, so that the
- * cards left do not move under the pointer. Only the viewer's own hand does so: a gap in the opponent's hand
- * would tell which of their cards they played.
- */
+/** The hand, fanned out in the bottom outer corner: Character cards first, then Animal cards. */
 class PlayerHandLocator extends HandLocator {
   radius = HAND_RADIUS
   gapMaxAngle = HAND_GAP_ANGLE
@@ -149,15 +144,26 @@ class PlayerHandLocator extends HandLocator {
   }
 
   hand(type: MaterialType, player: number | undefined, context: MaterialContext) {
-    const choosing = context.rules.game.rule?.id === RuleId.ChooseCards && player === context.player
-    return context.rules
-      .material(type)
-      .location((location) => location.type === LocationType.PlayerHand || (choosing && location.type === LocationType.PlayerDuel))
-      .player(player)
+    return context.rules.material(type).location(LocationType.PlayerHand).player(player)
+  }
+
+  /** The indexes of the Character cards, then of the Animal cards, in the order of the hand (see getItemIndex). */
+  order(player: number | undefined, context: MaterialContext) {
+    const characters = this.hand(MaterialType.CharacterCard, player, context).getIndexes()
+    const animals = this.hand(MaterialType.AnimalCard, player, context)
+    if (player !== context.player) return { characters, animals: animals.getIndexes() }
+    const value = (index: number) => animals.getItem<number>(index).id
+    return { characters, animals: animals.getIndexes().sort((a, b) => getValue(value(a)) - getValue(value(b)) || value(a) - value(b)) }
   }
 
   countItems(location: Location, context: MaterialContext) {
-    return this.hand(MaterialType.AnimalCard, location.player, context).length + this.hand(MaterialType.CharacterCard, location.player, context).length
+    const { characters, animals } = this.order(location.player, context)
+    return characters.length + animals.length
+  }
+
+  /** A card's place depends on the whole hand, not only on its size: the shuffle after a draw, for instance, changes the ids behind the indexes. */
+  getPositionDependencies(location: Location, context: MaterialContext) {
+    return this.order(location.player, context)
   }
 
   /** The hover of the cards in hand is HandHoverStyles', which keeps the card under the pointer and its buttons on it. */
@@ -172,19 +178,9 @@ class PlayerHandLocator extends HandLocator {
    * which the shuffle keeps telling nothing.
    */
   getItemIndex(item: MaterialItem, context: ItemContext) {
-    const player = item.location.player
-    const characters = this.hand(MaterialType.CharacterCard, player, context)
-    if (context.type === MaterialType.CharacterCard) return Math.max(0, characters.getIndexes().indexOf(context.index))
-    const animals = this.hand(MaterialType.AnimalCard, player, context)
-    const order =
-      player === context.player
-        ? animals.getIndexes().sort((a, b) => {
-            const idA = animals.getItem<number>(a).id
-            const idB = animals.getItem<number>(b).id
-            return getValue(idA) - getValue(idB) || idA - idB
-          })
-        : animals.getIndexes()
-    return characters.length + Math.max(0, order.indexOf(context.index))
+    const { characters, animals } = this.order(item.location.player, context)
+    if (context.type === MaterialType.CharacterCard) return Math.max(0, characters.indexOf(context.index))
+    return characters.length + Math.max(0, animals.indexOf(context.index))
   }
 }
 
