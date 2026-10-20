@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/haati/material/LocationType'
-import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { countPrestige } from '@gamepark/haati/material/Prestige'
+import { countPrestige, getPrestigeSide, PrestigeSide } from '@gamepark/haati/material/Prestige'
 import { MaterialHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { Trans, useTranslation } from 'react-i18next'
@@ -12,13 +11,13 @@ import { helpBlock, helpComponents, helpIntro, helpLocation, helpSection, helpTi
  * Favor (white) and Honor (black) both count as Prestige, which wins the round. What sets them
  * apart is what happens after it: "Les Faveurs passent, mais l'Honneur demeure !"
  */
-export const PrestigeHelp = ({ item, itemType }: MaterialHelpProps) => {
+export const PrestigeHelp = ({ item }: MaterialHelpProps) => {
   const { t } = useTranslation()
   const rules = useRules<MaterialRules>()
   const me = usePlayerId<number>()
   const owner = item.location?.type === LocationType.PlayerPrestige ? item.location.player : undefined
   const name = usePlayerName(owner)
-  const key = itemType === MaterialType.Favor ? 'favor' : 'honor'
+  const key = getPrestigeSide(item.location?.rotation) === PrestigeSide.Favor ? 'favor' : 'honor'
   return (
     <>
       <h2 css={helpTitle}>{t(`help.prestige.${key}.title`)}</h2>
@@ -51,8 +50,8 @@ export const PrestigeHelp = ({ item, itemType }: MaterialHelpProps) => {
             i18nKey={owner === me ? 'help.prestige.owned.mine' : 'help.prestige.owned'}
             values={{
               player: name,
-              favor: countPrestige(rules, MaterialType.Favor, owner),
-              honor: countPrestige(rules, MaterialType.Honor, owner)
+              favor: countPrestige(rules, PrestigeSide.Favor, owner),
+              honor: countPrestige(rules, PrestigeSide.Honor, owner)
             }}
             components={helpComponents}
           />

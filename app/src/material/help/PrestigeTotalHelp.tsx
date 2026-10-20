@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { countPrestige } from '@gamepark/haati/material/Prestige'
+import { countPrestige, PrestigeSide } from '@gamepark/haati/material/Prestige'
 import { LocationHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { Trans, useTranslation } from 'react-i18next'
@@ -22,8 +21,8 @@ export const PrestigeTotalHelp = ({ location }: LocationHelpProps) => {
   const rules = useRules<MaterialRules>()
   const me = usePlayerId<number>()
   const name = usePlayerName(location.player)
-  const favor = rules && location.player !== undefined ? countPrestige(rules, MaterialType.Favor, location.player) : 0
-  const honor = rules && location.player !== undefined ? countPrestige(rules, MaterialType.Honor, location.player) : 0
+  const favor = rules && location.player !== undefined ? countPrestige(rules, PrestigeSide.Favor, location.player) : 0
+  const honor = rules && location.player !== undefined ? countPrestige(rules, PrestigeSide.Honor, location.player) : 0
   return (
     <>
       <h2 css={helpTitle}>{t('help.prestige-total.title')}</h2>

@@ -142,7 +142,7 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.AnimalCard).location(LocationType.Palace).player(me),
-          this.material(game, MaterialType.Favor).location(LocationType.PlayerPrestige).player(me)
+          this.material(game, MaterialType.Prestige).location(LocationType.PlayerPrestige).player(me).rotation(undefined)
         ],
         margin: { bottom: 14 }
       }),
@@ -334,7 +334,7 @@ export class Tutorial extends MaterialTutorial<number, MaterialType, LocationTyp
     },
     {
       popup: { text: text('honor'), position: { y: 20 } },
-      focus: (game) => ({ materials: [this.material(game, MaterialType.Honor).location(LocationType.PlayerPrestige).player(me)], margin: { bottom: 14 } }),
+      focus: (game) => ({ materials: [this.material(game, MaterialType.Prestige).location(LocationType.PlayerPrestige).player(me).rotation(true)], margin: { bottom: 14 } }),
       effect: TutorialEffect.Honor
     },
 

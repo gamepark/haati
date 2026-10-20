@@ -1,7 +1,7 @@
 import { Collection } from '@gamepark/haati/material/Collection'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { prestigeUnits } from '@gamepark/haati/material/Prestige'
+import { prestigeLocation, PrestigeSide, prestigeUnits } from '@gamepark/haati/material/Prestige'
 import { css } from '@emotion/react'
 import { BoardDescription, ItemContext, MaterialContext, MoneyDescription, RoundTokenDescription, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
@@ -98,25 +98,36 @@ class RoundVictoryTokenDescription extends TokenDescription {
 }
 
 /**
- * Favor and Honor are money: one item per denomination (the id) and place, carrying a quantity. The
- * supply is unlimited, so it is drawn as a static pile of 3 tokens of each value in the reserve.
+ * Favor and Honor are money: one item per denomination (the id) and place, carrying a quantity. A token
+ * shows its Favor side, or its Honor side once turned over (location.rotation, see Prestige.ts). The supply
+ * is unlimited, so it is drawn as a static pile of 3 tokens of each value and side in the reserve.
  */
 class PrestigeDescription extends MoneyDescription<number, MaterialType, LocationType, number> {
   width = 1.63
   height = PRESTIGE_HEIGHT
   borderRadius = 0.8
+  images = { 1: favor1, 3: favor3, 6: favor6 }
+  backImages = { 1: honor1, 3: honor3, 6: honor6 }
   help = PrestigeHelp
   stockLocation = { type: LocationType.Reserve }
+  staticItems = [PrestigeSide.Favor, PrestigeSide.Honor].flatMap((side) =>
+    prestigeUnits.map((id) => ({ id, quantity: 3, location: this.getStockLocation({ id, location: prestigeLocation(0, side) }) }))
+  )
 
-  constructor(readonly images: Record<number, string>) {
-    super()
-    this.staticItems = prestigeUnits.map((id) => ({ id, quantity: 3, location: this.stockLocation }))
+  /** The pile of the value and side of the token: a token taken or given back flies from or to its own pile. */
+  getStockLocation(item: Partial<MaterialItem<number, LocationType>>) {
+    const pile = { ...this.stockLocation, id: item.id }
+    return item.location?.rotation ? { ...pile, rotation: true } : pile
+  }
+
+  isFlipped(item: Partial<MaterialItem<number, LocationType>>) {
+    return !!item.location?.rotation
   }
 
   /** In the tutorial, the Honor tokens of a player shine while they come in front of the Favor tokens (see PlayerPrestigeLocator). */
   getItemExtraCss(item: MaterialItem<number, LocationType, number>, context: ItemContext) {
     const extraCss = super.getItemExtraCss(item, context)
-    const shines = context.type === MaterialType.Honor && item.location.type === LocationType.PlayerPrestige && getTutorialEffect(context) === TutorialEffect.Honor
+    const shines = item.location.type === LocationType.PlayerPrestige && !!item.location.rotation && getTutorialEffect(context) === TutorialEffect.Honor
     return shines ? [extraCss, tutorialShineCss] : extraCss
   }
 }
@@ -124,5 +135,4 @@ class PrestigeDescription extends MoneyDescription<number, MaterialType, Locatio
 export const boardDescription = new HaatiBoardDescription()
 export const collectionTokenDescription = new CollectionTokenDescription()
 export const roundVictoryTokenDescription = new RoundVictoryTokenDescription()
-export const favorDescription = new PrestigeDescription({ 1: favor1, 3: favor3, 6: favor6 })
-export const honorDescription = new PrestigeDescription({ 1: honor1, 3: honor3, 6: honor6 })
+export const prestigeDescription = new PrestigeDescription()

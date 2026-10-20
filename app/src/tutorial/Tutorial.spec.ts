@@ -1,6 +1,5 @@
 import { HaatiRules } from '@gamepark/haati/HaatiRules'
-import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { countPrestige } from '@gamepark/haati/material/Prestige'
+import { countPrestige, PrestigeSide } from '@gamepark/haati/material/Prestige'
 import { wrapRulesWithTutorial } from '../../../node_modules/@gamepark/react-game/dist/components/tutorial/TutorialRulesWrapper.js'
 import { applyAutomaticMoves, LocalMoveType, Material, MaterialGame, MaterialMove, MoveKind } from '@gamepark/rules-api'
 import { describe, expect, it, vi } from 'vitest'
@@ -65,7 +64,7 @@ describe('Tutorial', () => {
     }
 
     // The round went the way the texts tell it: "Votre total de Prestige est donc de 8 : 7 Faveurs + 1 Honneur".
-    expect(countPrestige(rules, MaterialType.Favor, me)).toBe(7)
-    expect(countPrestige(rules, MaterialType.Honor, me)).toBe(1)
+    expect(countPrestige(rules, PrestigeSide.Favor, me)).toBe(7)
+    expect(countPrestige(rules, PrestigeSide.Honor, me)).toBe(1)
   })
 })

@@ -23,6 +23,6 @@ export enum LocationType {
   /** Round victory tokens not won yet, and the infinite supply of Prestige tokens. */
   Reserve,
   PlayerRoundVictory,
-  /** Favor and Honor tokens owned by a player. */
+  /** Prestige tokens owned by a player, on their Favor or their Honor side. */
   PlayerPrestige
 }

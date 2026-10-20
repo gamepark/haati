@@ -4,6 +4,6 @@ export enum MaterialType {
   CharacterCard,
   CollectionToken,
   RoundVictoryToken,
-  Favor,
-  Honor
+  /** A Prestige token: Favor on its front, Honor on its back (see Prestige.ts). */
+  Prestige
 }

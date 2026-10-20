@@ -265,10 +265,10 @@ class PlayerPrestigeLocator extends Locator {
   }
 
   getItemCoordinates(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
-    const tokens = context.rules.material(context.type).location(LocationType.PlayerPrestige).player(item.location.player)
+    const tokens = context.rules.material(context.type).location(LocationType.PlayerPrestige).player(item.location.player).rotation(item.location.rotation)
     const rank = tokens.id((id: number) => id > item.id).getQuantity() + context.displayIndex
     const step = Math.min(PRESTIGE_ROW_STEP, PRESTIGE_ROW_LENGTH / Math.max(1, tokens.getQuantity() - 1))
-    const favor = context.type === MaterialType.Favor
+    const favor = !item.location.rotation
     // In the tutorial, the Honor row can come in front of the Favor row, to be seen whole.
     const front = favor !== (getTutorialEffect(context) === TutorialEffect.Honor)
     return {
@@ -347,7 +347,7 @@ class ReserveLocator extends Locator {
     }
     const rank = prestigeUnits.indexOf(item.id)
     const offset = context.displayIndex * RESERVE_PILE_OFFSET
-    const favor = context.type === MaterialType.Favor
+    const favor = !item.location.rotation
     return {
       x: RESERVE.x + (rank - 1) * RESERVE_PILE_STEP - RESERVE_PILE_OFFSET + offset,
       y: (favor ? RESERVE_FAVOR_Y : RESERVE_HONOR_Y) - offset,

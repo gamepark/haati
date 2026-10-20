@@ -29,7 +29,7 @@ import { DUEL_SHOW_SCALE, DUEL_SHOW_X, DUEL_X, DUEL_Y, side } from '../locators/
  * the usual pace). Between two rounds, both piles are mixed in the middle of the screen (see ResetPiles),
  * and the Collection tokens turn over slower than usual. The opponent's hand, mixed after each draw, is shuffled like a pile of cards (see
  * HandShuffle); the viewer's own hand is not animated. The Favor and Honor tokens move at half the usual second, except between two rounds,
- * when the Honor tokens turn into Favor tokens at the usual pace.
+ * when the Favor tokens go back to the reserve and the Honor tokens turn over onto their Favor side at the usual pace.
  *
  * The reveal of the duel is a show: once the last card turns over, the two Animal cards leave the
  * table for the middle of the screen, clash, then go back to their place, where the players resolve
@@ -48,7 +48,7 @@ const COLLECTION_FLIP_DURATION = 1500
 /** When the card revealed last is a Character card, it turns over at the usual pace: this share of the show. */
 const CHARACTER_FLIP_SHARE = 0.12
 
-const isPrestige = (move: MaterialMove) => 'itemType' in move && (move.itemType === MaterialType.Favor || move.itemType === MaterialType.Honor)
+const isPrestige = (move: MaterialMove) => 'itemType' in move && move.itemType === MaterialType.Prestige
 
 const isCharacterPileRemade = (move: MaterialMove) =>
   (isMoveItem(move) && move.itemType === MaterialType.CharacterCard && move.location.type === LocationType.CharacterDeck) ||

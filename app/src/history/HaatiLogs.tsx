@@ -5,7 +5,7 @@ import { Bet, CharacterCard, getBet } from '@gamepark/haati/material/Character'
 import { Collection } from '@gamepark/haati/material/Collection'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { countPrestige, totalPrestige } from '@gamepark/haati/material/Prestige'
+import { countPrestige, PrestigeSide, totalPrestige } from '@gamepark/haati/material/Prestige'
 import { MaterialLogProps, usePlayerName } from '@gamepark/react-game'
 import { Location, MoveItem, StartPlayerTurn } from '@gamepark/rules-api'
 import { ReactElement } from 'react'
@@ -129,7 +129,7 @@ export const RoundWonLog = (props: MaterialLogProps<MoveItem>) => {
   const rules = new HaatiRules(context.game)
   const prestige = [totalPrestige(rules, winner), totalPrestige(rules, loser)]
   if (prestige[0] !== prestige[1]) return <LogText code="log.round-won" values={{ player, winner: prestige[0], loser: prestige[1] }} />
-  const honor = [countPrestige(rules, MaterialType.Honor, winner), countPrestige(rules, MaterialType.Honor, loser)]
+  const honor = [countPrestige(rules, PrestigeSide.Honor, winner), countPrestige(rules, PrestigeSide.Honor, loser)]
   if (honor[0] !== honor[1]) return <LogText code="log.round-won.honor" values={{ player, prestige: prestige[0], winner: honor[0], loser: honor[1] }} />
   return <LogText code="log.round-won.duel" values={{ player }} />
 }

@@ -2,7 +2,7 @@ import { isMoveItem, ItemMove, MaterialMove, MaterialRulesPart } from '@gamepark
 import { beats } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { countPrestige, prestigeLocation, totalPrestige } from '../material/Prestige'
+import { countPrestige, prestigeLocation, PrestigeSide, prestigeTokens, totalPrestige } from '../material/Prestige'
 import { Memory } from '../Memory'
 import { RuleId } from './RuleId'
 
@@ -23,8 +23,8 @@ export class EndOfRoundRule extends MaterialRulesPart {
     const prestige1 = totalPrestige(this, player1)
     const prestige2 = totalPrestige(this, player2)
     if (prestige1 !== prestige2) return this.endRound(prestige1 > prestige2 ? player1 : player2)
-    const honor1 = countPrestige(this, MaterialType.Honor, player1)
-    const honor2 = countPrestige(this, MaterialType.Honor, player2)
+    const honor1 = countPrestige(this, PrestigeSide.Honor, player1)
+    const honor2 = countPrestige(this, PrestigeSide.Honor, player2)
     if (honor1 !== honor2) return this.endRound(honor1 > honor2 ? player1 : player2)
     return this.lastCards.moveItems((item) => ({ type: LocationType.PlayerDuel, player: item.location.player, rotation: true }))
   }
@@ -51,14 +51,12 @@ export class EndOfRoundRule extends MaterialRulesPart {
       moves.push(this.endGame())
       return moves
     }
-    // Each Honor token is turned over into a Favor token of the same value.
+    // The Favor tokens are given back, then the Honor tokens are turned over onto their Favor side, all at once.
     for (const player of this.game.players) {
-      const honor = this.material(MaterialType.Honor).location(LocationType.PlayerPrestige).player(player)
-      moves.push(
-        ...this.material(MaterialType.Favor).location(LocationType.PlayerPrestige).player(player).deleteItems(),
-        ...honor.deleteItems(),
-        ...honor.getItems().map((token) => this.material(MaterialType.Favor).createItem({ id: token.id, location: prestigeLocation(player), quantity: token.quantity }))
-      )
+      const favor = prestigeTokens(this, PrestigeSide.Favor, player)
+      const honor = prestigeTokens(this, PrestigeSide.Honor, player)
+      if (favor.length) moves.push(favor.deleteItemsAtOnce())
+      if (honor.length) moves.push(honor.moveItemsAtOnce(prestigeLocation(player)))
     }
     moves.push(...this.prepareNextRound(), this.startRule(RuleId.NewRound))
     return moves

@@ -20,7 +20,7 @@ import {
   RevealLog,
   RoundWonLog
 } from './HaatiLogs'
-import { HaatiContext, isPrestigeMove, prestigeGain, previousMove } from './moveRuns'
+import { HaatiContext, isPrestigeMove, isPrestigeTurnover, prestigeGain, previousMove } from './moveRuns'
 
 type Entry = MovePlayedLogDescription
 
@@ -66,12 +66,13 @@ export class HaatiHistory implements LogDescription<MaterialMove, number, Materi
 
     if (isMoveItemType(MaterialType.RoundVictoryToken)(move)) return this.entry(RoundWonLog, move.location.player)
 
+    if (isPrestigeTurnover(move)) {
+      // Between two rounds, the Favor tokens of both players are given back and their Honor tokens turned over: one entry says it all.
+      const previous = previousMove(context)
+      return previous !== undefined && isPrestigeTurnover(previous) ? undefined : this.entry(HonorToFavorLog, undefined, 1)
+    }
+
     if (isPrestigeMove(move)) {
-      // Between two rounds, every token of both players is turned over at once: one entry says it all.
-      if (ruleId === RuleId.EndOfRound) {
-        const previous = previousMove(context)
-        return previous !== undefined && isPrestigeMove(previous) ? undefined : this.entry(HonorToFavorLog, undefined, 1)
-      }
       const gain = prestigeGain(context)
       return gain.first && (gain.favor || gain.honor) ? this.entry(GainLog, gain.player, 1) : undefined
     }

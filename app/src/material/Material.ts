@@ -5,8 +5,7 @@ import { characterCardDescription } from './CharacterCardDescription'
 import {
   boardDescription,
   collectionTokenDescription,
-  favorDescription,
-  honorDescription,
+  prestigeDescription,
   roundVictoryTokenDescription
 } from './TokenDescriptions'
 
@@ -16,6 +15,5 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.CharacterCard]: characterCardDescription,
   [MaterialType.CollectionToken]: collectionTokenDescription,
   [MaterialType.RoundVictoryToken]: roundVictoryTokenDescription,
-  [MaterialType.Favor]: favorDescription,
-  [MaterialType.Honor]: honorDescription
+  [MaterialType.Prestige]: prestigeDescription
 }

@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { HaatiRules } from '@gamepark/haati/HaatiRules'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { countPrestige, PrestigeType } from '@gamepark/haati/material/Prestige'
+import { countPrestige, prestigeLocation, PrestigeSide } from '@gamepark/haati/material/Prestige'
 import { StyledPlayerPanel, useFocusContext, useMaterialContext, usePlay, usePlayers, useRules } from '@gamepark/react-game'
 import { MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
@@ -51,13 +51,13 @@ export const PlayerPanels = () => {
       : (focus.locations ?? [])
           .filter((location) => location.type === LocationType.PlayerPrestige && location.player === player)
           .map((location) => location.id as PanelArea)
-  const prestigeHelp = (type: PrestigeType, player: number) =>
-    play(MaterialMoveBuilder.displayMaterialHelp(type, { id: 1, location: { type: LocationType.PlayerPrestige, player } }), { local: true })
+  const prestigeHelp = (side: PrestigeSide, player: number) =>
+    play(MaterialMoveBuilder.displayMaterialHelp(MaterialType.Prestige, { id: 1, location: prestigeLocation(player, side) }), { local: true })
   return (
     <>
       {players.map((player, index) => {
-        const favorTotal = countPrestige(rules, MaterialType.Favor, player.id)
-        const honorTotal = countPrestige(rules, MaterialType.Honor, player.id)
+        const favorTotal = countPrestige(rules, PrestigeSide.Favor, player.id)
+        const honorTotal = countPrestige(rules, PrestigeSide.Honor, player.id)
         const lit = litAreas(player.id)
         const isLit = (area: PanelArea) => lit.includes(area)
         const turnCounter = {
@@ -70,10 +70,10 @@ export const PlayerPanels = () => {
           <div key={player.id} css={[blockCss, blockPlace(index === 0), !isLit(PanelArea.Whole) && playedDownCss]}>
             <StyledPlayerPanel player={player} activeRing mainCounter={turnCounter} css={panelCss} />
             <div css={[tilesCss, isLit(PanelArea.Tiles) && litAreaCss]}>
-              <button css={[tileCss, favorCss]} onClick={() => prestigeHelp(MaterialType.Favor, player.id)} aria-label={t('help.prestige.favor.title')}>
+              <button css={[tileCss, favorCss]} onClick={() => prestigeHelp(PrestigeSide.Favor, player.id)} aria-label={t('help.prestige.favor.title')}>
                 <span css={figureCss}>{favorTotal}</span>
               </button>
-              <button css={[tileCss, honorCss]} onClick={() => prestigeHelp(MaterialType.Honor, player.id)} aria-label={t('help.prestige.honor.title')}>
+              <button css={[tileCss, honorCss]} onClick={() => prestigeHelp(PrestigeSide.Honor, player.id)} aria-label={t('help.prestige.honor.title')}>
                 <span css={figureCss}>{honorTotal}</span>
               </button>
             </div>

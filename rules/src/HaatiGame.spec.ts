@@ -6,7 +6,8 @@ import { Animal, beats, hasCollection } from './material/Animal'
 import { CHARACTER_HAND_LIMIT } from './material/Character'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { gainPrestige, prestigeLocation } from './material/Prestige'
+import { countPrestige, gainPrestige, prestigeLocation, PrestigeSide, prestigeTokens } from './material/Prestige'
+import { EndOfRoundRule } from './rules/EndOfRoundRule'
 import { RuleId } from './rules/RuleId'
 
 type Game = MaterialGame<number, MaterialType, LocationType, RuleId>
@@ -46,8 +47,8 @@ const check = (game: Game) => {
     if (game.rule?.id !== RuleId.DiscardCharacter) expect(characters).toBeLessThanOrEqual(CHARACTER_HAND_LIMIT)
     expect(rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length).toBeLessThanOrEqual(2)
     // Prestige is always held in the fewest tokens: at most one 3 and two 1.
-    for (const type of [MaterialType.Favor, MaterialType.Honor]) {
-      const tokens = rules.material(type).location(LocationType.PlayerPrestige).player(player)
+    for (const side of [PrestigeSide.Favor, PrestigeSide.Honor]) {
+      const tokens = prestigeTokens(rules, side, player)
       expect(tokens.id(3).getQuantity()).toBeLessThanOrEqual(1)
       expect(tokens.id(1).getQuantity()).toBeLessThanOrEqual(2)
     }
@@ -74,11 +75,25 @@ describe('Haati', () => {
     const game: Game = new HaatiSetup().setup({ players: 2 })
     const rules = new HaatiRules(game)
     const player = game.players[0]
-    game.items[MaterialType.Favor] = [{ id: 1, location: prestigeLocation(player), quantity: 2 }]
-    expect(gainPrestige(rules, MaterialType.Favor, player, 1)).toMatchObject([
+    game.items[MaterialType.Prestige] = [{ id: 1, location: prestigeLocation(player), quantity: 2 }]
+    expect(gainPrestige(rules, PrestigeSide.Favor, player, 1)).toMatchObject([
       { type: ItemMoveType.Create, item: { id: 3, location: prestigeLocation(player), quantity: 1 } },
       { type: ItemMoveType.Delete, itemIndex: 0, quantity: 2 }
     ])
+  })
+
+  it('turns the Honor over onto its Favor side between two rounds', () => {
+    const game: Game = new HaatiSetup().setup({ players: 2 })
+    const rules = new HaatiRules(game)
+    const [player1, player2] = game.players
+    game.items[MaterialType.Prestige] = [
+      { id: 3, location: prestigeLocation(player1), quantity: 1 },
+      { id: 1, location: prestigeLocation(player1, PrestigeSide.Honor), quantity: 2 },
+      { id: 6, location: prestigeLocation(player2, PrestigeSide.Honor), quantity: 1 }
+    ]
+    for (const move of new EndOfRoundRule(game).endRound(player2)) rules.play(move)
+    expect([player1, player2].map((player) => countPrestige(rules, PrestigeSide.Favor, player))).toEqual([2, 6])
+    expect([player1, player2].map((player) => countPrestige(rules, PrestigeSide.Honor, player))).toEqual([0, 0])
   })
 
   it('plays whole random games to their end', { timeout: 30_000 }, () => {

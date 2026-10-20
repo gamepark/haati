@@ -8,24 +8,46 @@ import { MaterialSource } from './MaterialSource'
  */
 export const prestigeUnits = [6, 3, 1]
 
-export type PrestigeType = MaterialType.Favor | MaterialType.Honor
+/**
+ * A Prestige token is double-sided: Favor (white) on its front, Honor (black) on its back. Both sides are
+ * one MaterialType.Prestige, the Honor side being turned over (location.rotation), so that the Honor of a
+ * round is turned over into the Favor of the next one, as on the table.
+ */
+export enum PrestigeSide {
+  Favor = 1,
+  Honor
+}
 
-export const prestigeLocation = (player: number) => ({ type: LocationType.PlayerPrestige, player })
+/**
+ * Where a player's tokens of a side lie. The Favor side carries no rotation at all, not even false: the
+ * money of a place is the items whose location is equal to this one.
+ */
+export const prestigeLocation = (player: number, side = PrestigeSide.Favor) =>
+  side === PrestigeSide.Honor ? { type: LocationType.PlayerPrestige, player, rotation: true } : { type: LocationType.PlayerPrestige, player }
 
-export const countPrestige = (rules: MaterialSource, type: PrestigeType, player: number): number =>
-  rules.material(type).location(LocationType.PlayerPrestige).player(player).money(prestigeUnits).count
+export const getPrestigeSide = (rotation?: boolean) => (rotation ? PrestigeSide.Honor : PrestigeSide.Favor)
+
+/** The tokens of a player on a side. */
+export const prestigeTokens = (rules: MaterialSource, side: PrestigeSide, player: number) =>
+  rules
+    .material(MaterialType.Prestige)
+    .location(LocationType.PlayerPrestige)
+    .player(player)
+    .rotation((rotation?: boolean) => getPrestigeSide(rotation) === side)
+
+export const countPrestige = (rules: MaterialSource, side: PrestigeSide, player: number): number =>
+  prestigeTokens(rules, side, player).money(prestigeUnits).count
 
 /**
  * A player gains an amount, and their tokens are exchanged at once for the fewest tokens worth their new
  * total: three 1 become a 3, two 3 become a 6. The new tokens are taken before the surplus ones are given
  * back: 1+1 gaining 1 takes a 3, then gives back 1+1.
  *
- * The moves are computed from the tokens the player owns now: only one gain of a type can be made in a
+ * The moves are computed from the tokens the player owns now: only one gain of a side can be made in a
  * single list of consequences.
  */
-export const gainPrestige = (rules: MaterialSource, type: PrestigeType, player: number, amount: number) =>
-  rules.material(type).location(LocationType.PlayerPrestige).player(player).money(prestigeUnits)
-    .addMoney(amount, prestigeLocation(player), { consolidate: true })
+export const gainPrestige = (rules: MaterialSource, side: PrestigeSide, player: number, amount: number) =>
+  prestigeTokens(rules, side, player).money(prestigeUnits).addMoney(amount, prestigeLocation(player, side), { consolidate: true })
 
 export const totalPrestige = (rules: MaterialSource, player: number): number =>
-  countPrestige(rules, MaterialType.Favor, player) + countPrestige(rules, MaterialType.Honor, player)
+  countPrestige(rules, PrestigeSide.Favor, player) + countPrestige(rules, PrestigeSide.Honor, player)

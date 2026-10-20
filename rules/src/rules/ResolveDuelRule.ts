@@ -5,7 +5,7 @@ import { CharacterCard } from '../material/Character'
 import { Collection, collectionPlace, getCollectionReward } from '../material/Collection'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { gainPrestige } from '../material/Prestige'
+import { gainPrestige, PrestigeSide } from '../material/Prestige'
 import { HaatiRule } from './HaatiRule'
 import { animalPiles } from './NewRoundRule'
 import { RuleId } from './RuleId'
@@ -64,14 +64,14 @@ export class ResolveDuelRule extends HaatiRule {
   palaceEffect(animal: Animal): MaterialMove[] {
     switch (animal) {
       case Animal.Elephant:
-        return [...gainPrestige(this, MaterialType.Favor, this.player, this.count(LocationType.Palace, Animal.Elephant)), ...this.resume()]
+        return [...gainPrestige(this, PrestigeSide.Favor, this.player, this.count(LocationType.Palace, Animal.Elephant)), ...this.resume()]
       case Animal.Tiger:
-        return [...gainPrestige(this, MaterialType.Favor, this.player, this.count(LocationType.Jungle, Animal.Tiger)), ...this.drawCharacter()]
+        return [...gainPrestige(this, PrestigeSide.Favor, this.player, this.count(LocationType.Jungle, Animal.Tiger)), ...this.drawCharacter()]
       case Animal.Mouse: {
         const pairs = Math.floor(this.count(LocationType.Palace, Animal.Mouse) / 2)
         return [
-          ...gainPrestige(this, MaterialType.Favor, this.player, pairs),
-          ...gainPrestige(this, MaterialType.Honor, this.player, pairs),
+          ...gainPrestige(this, PrestigeSide.Favor, this.player, pairs),
+          ...gainPrestige(this, PrestigeSide.Honor, this.player, pairs),
           ...this.resume()
         ]
       }
@@ -93,20 +93,20 @@ export class ResolveDuelRule extends HaatiRule {
   characterEffect(card: CharacterCard): MaterialMove[] {
     switch (card) {
       case CharacterCard.MerchantWin:
-        return [...gainPrestige(this, MaterialType.Favor, this.player, 2), ...this.resume()]
+        return [...gainPrestige(this, PrestigeSide.Favor, this.player, 2), ...this.resume()]
       case CharacterCard.MerchantLose:
-        return [...gainPrestige(this, MaterialType.Favor, this.player, 1), ...gainPrestige(this, MaterialType.Honor, this.player, 1), ...this.resume()]
+        return [...gainPrestige(this, PrestigeSide.Favor, this.player, 1), ...gainPrestige(this, PrestigeSide.Honor, this.player, 1), ...this.resume()]
       case CharacterCard.MaharajaWin:
         return [this.startPlayerTurn(RuleId.Maharaja, this.player)]
       case CharacterCard.MaharajaLose:
-        return [...gainPrestige(this, MaterialType.Favor, this.player, 1), this.startPlayerTurn(RuleId.Maharaja, this.player)]
+        return [...gainPrestige(this, PrestigeSide.Favor, this.player, 1), this.startPlayerTurn(RuleId.Maharaja, this.player)]
       case CharacterCard.ThiefWin:
       case CharacterCard.ThiefLose:
         return [this.startPlayerTurn(RuleId.Thief, this.player)]
       case CharacterCard.HunterWin:
-        return [...gainPrestige(this, MaterialType.Favor, this.player, 1), this.startPlayerTurn(RuleId.Hunter, this.player)]
+        return [...gainPrestige(this, PrestigeSide.Favor, this.player, 1), this.startPlayerTurn(RuleId.Hunter, this.player)]
       case CharacterCard.HunterLose:
-        return [...gainPrestige(this, MaterialType.Honor, this.player, 1), this.startPlayerTurn(RuleId.Hunter, this.player)]
+        return [...gainPrestige(this, PrestigeSide.Honor, this.player, 1), this.startPlayerTurn(RuleId.Hunter, this.player)]
     }
   }
 
@@ -148,8 +148,8 @@ export class ResolveDuelRule extends HaatiRule {
           .id(token.id)
           .moveItem({ type: LocationType.PlayerCollection, player: this.player, rotation: token.location.rotation })
       ),
-      ...gainPrestige(this, MaterialType.Favor, this.player, sumBy(rewards, (reward) => reward.favor)),
-      ...gainPrestige(this, MaterialType.Honor, this.player, sumBy(rewards, (reward) => reward.honor))
+      ...gainPrestige(this, PrestigeSide.Favor, this.player, sumBy(rewards, (reward) => reward.favor)),
+      ...gainPrestige(this, PrestigeSide.Honor, this.player, sumBy(rewards, (reward) => reward.honor))
     ]
   }
 }
