@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/haati",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The rules of Haati adapted for Game Park",
   "sideEffects": false,
   "type": "module",
