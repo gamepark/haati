@@ -213,6 +213,8 @@ export const isAnimalPileReset = ({ rules }: MaterialContext) => {
 /** The Animal cards set aside, above the board, but in the middle of the screen between two rounds (see isAnimalPileReset). */
 class AnimalSetAsideLocator extends DeckLocator {
   limit = 24
+  // The help speaks of the 4 cards at once: no arrows from one to the next.
+  navigationSorts = []
 
   getCoordinates(_location: Location, context: MaterialContext) {
     return isAnimalPileReset(context) ? ANIMAL_RESET : ANIMAL_SET_ASIDE

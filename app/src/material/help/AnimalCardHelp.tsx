@@ -24,6 +24,7 @@ const animalKeys: Record<Animal, string> = {
  */
 export const AnimalCardHelp = ({ item, itemIndex, closeDialog }: MaterialHelpProps) => {
   const { t } = useTranslation()
+  if (item.location?.type === LocationType.AnimalSetAside) return <SetAsideHelp />
   if (item.id === undefined) {
     return (
       <>
@@ -66,6 +67,21 @@ export const AnimalCardHelp = ({ item, itemIndex, closeDialog }: MaterialHelpPro
         <Trans i18nKey="help.animal.collection" components={helpComponents} />
       </p>
       <CardLocation location={item.location} />
+    </>
+  )
+}
+
+/** The 4 cards removed face down at the start of the round: what they are, and why they are removed. */
+const SetAsideHelp = () => {
+  const { t } = useTranslation()
+  return (
+    <>
+      <h2 css={helpTitle}>{t('help.animal.set-aside.title')}</h2>
+      {['intro', 'why', 'next-round'].map((key) => (
+        <p key={key} css={helpIntro}>
+          <Trans i18nKey={`help.animal.set-aside.${key}`} components={helpComponents} />
+        </p>
+      ))}
     </>
   )
 }

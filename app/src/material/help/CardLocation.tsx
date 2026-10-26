@@ -26,7 +26,6 @@ export const CardLocation = ({ location }: { location?: Partial<Location> }) => 
 
 const locationKeys: Partial<Record<LocationType, string>> = {
   [LocationType.AnimalDeck]: 'animal-deck',
-  [LocationType.AnimalSetAside]: 'animal-set-aside',
   [LocationType.AnimalDiscard]: 'animal-discard',
   [LocationType.CharacterDeck]: 'character-deck',
   [LocationType.CharacterDiscard]: 'character-discard',

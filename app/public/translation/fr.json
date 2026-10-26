@@ -128,7 +128,6 @@
     "location": {
       "animal-deck": "Dans une pioche Animal, face cachée.",
       "animal-offer": "Visible au sommet d’une pioche : le perdant du prochain duel choisira entre les deux cartes visibles.",
-      "animal-set-aside": "Écartée face cachée : elle ne sert pas pendant cette manche.",
       "animal-discard": "Éliminée par le Chasseur.",
       "character-deck": "Dans la pioche des cartes Personnage.",
       "character-discard": "Dans la défausse des cartes Personnage.",
@@ -142,6 +141,12 @@
       "jungle.mine": "Dans votre Jungle."
     },
     "animal": {
+      "set-aside": {
+        "title": "4 cartes Animal écartées",
+        "intro": "Au début de chaque manche, 4 cartes Animal sont retirées au hasard, face cachée. Elles ne seront pas jouées pendant cette manche.",
+        "why": "Personne ne sait lesquelles manquent : même en comptant les cartes déjà jouées, vous ne pouvez jamais être sûr de celles qui restent dans les pioches ou dans la main de votre adversaire.",
+        "next-round": "À la fin de la manche, elles sont mélangées avec les 20 autres cartes, puis 4 nouvelles cartes sont écartées."
+      },
       "hidden": {
         "title": "Carte Animal",
         "intro": "Il y a 24 cartes Animal : 3 familles (<b>Éléphant</b>, <b>Tigre</b> et <b>Souris</b>), chacune numérotée de 1 à 8."
