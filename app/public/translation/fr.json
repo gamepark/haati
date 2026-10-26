@@ -125,6 +125,11 @@
     "discard": "Défausser"
   },
   "help": {
+    "taken": {
+      "title": "Carte récupérée au tour précédent",
+      "intro": "{player} a récupéré cette carte au tour précédent :",
+      "location": "{player} a récupéré cette carte au tour précédent, et la garde en main."
+    },
     "location": {
       "animal-deck": "Dans une pioche Animal, face cachée.",
       "animal-offer": "Visible au sommet d’une pioche : le perdant du prochain duel choisira entre les deux cartes visibles.",

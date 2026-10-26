@@ -3,13 +3,13 @@ import { css } from '@emotion/react'
 import { Animal, getAnimal, getValue } from '@gamepark/haati/material/Animal'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
-import { MaterialHelpProps } from '@gamepark/react-game'
+import { MaterialHelpProps, usePlayerName } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
 import { animalColors } from '../../theme/colors'
 import { CardLocation } from './CardLocation'
 import { PlayCardButton } from './PlayCardButton'
 import { JungleIcon, PalaceIcon } from './HelpIcons'
-import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpSection, helpTitle } from './helpStyles'
+import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpLocation, helpSection, helpTitle } from './helpStyles'
 
 const animalKeys: Record<Animal, string> = {
   [Animal.Elephant]: 'elephant',
@@ -66,8 +66,19 @@ export const AnimalCardHelp = ({ item, itemIndex, closeDialog }: MaterialHelpPro
       <p css={helpIntro}>
         <Trans i18nKey="help.animal.collection" components={helpComponents} />
       </p>
-      <CardLocation location={item.location} />
+      {/* Only the help of a hidden hand names a card of that hand, with no index: the one its owner took last (see TakenCardHelp). */}
+      {itemIndex === undefined && item.location?.type === LocationType.PlayerHand ? <TakenCard player={item.location.player} /> : <CardLocation location={item.location} />}
     </>
+  )
+}
+
+/** The card the opponent took at the last turn, which they still hide in their hand. */
+const TakenCard = ({ player }: { player?: number }) => {
+  const name = usePlayerName(player)
+  return (
+    <p css={helpLocation}>
+      <Trans i18nKey="help.taken.location" values={{ player: name }} components={helpComponents} />
+    </p>
   )
 }
 

@@ -18,6 +18,7 @@ import {
 import { prestigeUnits } from '@gamepark/haati/material/Prestige'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { PrestigeTotalHelp } from '../material/help/PrestigeTotalHelp'
+import { TakenCardHelp } from '../material/help/TakenCardHelp'
 import { getTutorialEffect } from '../tutorial/Tutorial'
 import { TutorialEffect } from '../tutorial/TutorialEffect'
 import { tutorialFillInCss } from '../tutorial/TutorialShine'
@@ -133,8 +134,20 @@ class DuelLocator extends Locator {
   }
 }
 
+/**
+ * Where a card taken from a pile lands in the hand, as the framework would draw it for a drag. Its help is
+ * the card the opponent took at the last turn, opened from the (?) over their hand (see LastTakenCards).
+ */
+class PlayerHandDescription extends DropAreaDescription {
+  width = CARD_WIDTH
+  height = CARD_HEIGHT
+  borderRadius = 0.4
+  help = TakenCardHelp
+}
+
 /** The hand, fanned out in the bottom outer corner: Character cards first, then Animal cards. */
 class PlayerHandLocator extends HandLocator {
+  locationDescription = new PlayerHandDescription()
   radius = HAND_RADIUS
   gapMaxAngle = HAND_GAP_ANGLE
   maxAngle = 4 * HAND_GAP_ANGLE
