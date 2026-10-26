@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp'
 import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt'
-import { faHandPointUp } from '@fortawesome/free-solid-svg-icons/faHandPointUp'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons/faTrashCan'
 import { CharacterCard } from '@gamepark/haati/material/Character'
 import { LocationType } from '@gamepark/haati/material/LocationType'
@@ -9,7 +9,7 @@ import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { isWonBet, wonBetCss } from '../animations/BetShow'
-import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y } from '../locators/TableLayout'
+import { CARD_HEIGHT, CARD_WIDTH, DUEL_BUTTON_Y, HAND_BUTTON_Y } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
 import { handCardAngle, handCardCss } from './handHover'
 import { CharacterCardHelp } from './help/CharacterCardHelp'
@@ -47,13 +47,13 @@ class CharacterCardDescription extends CardDescription<number, MaterialType, Loc
       .filter(isMoveItemType(MaterialType.CharacterCard))
       .filter((move) => move.itemIndex === context.index)
       .map((move) => {
-        if (move.location.type === LocationType.PlayerDuel) return { move, icon: faHandPointUp, title: 'button.bet' }
+        if (move.location.type === LocationType.PlayerDuel) return { move, icon: faArrowUp, title: 'button.bet' }
         if (context.rules.game.rule?.id === RuleId.DiscardCharacter) return { move, icon: faTrashCan, title: 'button.discard' }
         return { move, icon: faBolt, title: 'button.activate' }
       })
-    // In hand and in the duel, where the whole card shows, the button goes at its bottom, off the picture.
-    const atBottom = item.location.type === LocationType.PlayerHand || item.location.type === LocationType.PlayerDuel
-    return actions.length ? <ItemActions actions={actions} y={atBottom ? HAND_BUTTON_Y : 0} angle={handCardAngle(item, context)} /> : null
+    // In hand, the button straddles the top edge; in the duel, where the whole card shows, it goes at the bottom, off the picture.
+    const y = item.location.type === LocationType.PlayerHand ? HAND_BUTTON_Y : item.location.type === LocationType.PlayerDuel ? DUEL_BUTTON_Y : 0
+    return actions.length ? <ItemActions actions={actions} y={y} angle={handCardAngle(item, context)} /> : null
   }
 
   /** A won bet shines in gold instead (see BetShow). */

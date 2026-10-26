@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, Global } from '@emotion/react'
 import { useEffect } from 'react'
+import { HAND_ACTIONS_ANGLE } from '../theme/ItemActions'
 import { HAND_CARD_LABEL, HAND_HOVER_LIFT, HAND_HOVER_SCALE, HAND_HOVER_TIME } from './handHover'
 
 /**
@@ -62,6 +63,7 @@ const styles = css`
       opacity: 1;
       pointer-events: auto;
       transform: ${hoverTransform} !important;
+      ${HAND_ACTIONS_ANGLE}: 0deg !important;
     }
   }
 `

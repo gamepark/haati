@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { Bet, Character, CharacterCard, getBet, getCharacter } from '@gamepark/haati/material/Character'
+import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
 import { Lose, Win } from '../../tutorial/TutorialPictures'
 import { CardLocation } from './CardLocation'
+import { PlayCardButton } from './PlayCardButton'
 import { RulesIcon } from './HelpIcons'
 import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpSection, helpTitle } from './helpStyles'
 
@@ -18,12 +20,13 @@ const characterKeys: Record<Character, string> = {
  * A Character card is a bet on the outcome of the duel: the ✓ cards pay if their owner wins it, the
  * ✗ cards if they lose it. The dialog says the bet first, because it decides everything else.
  */
-export const CharacterCardHelp = ({ item }: MaterialHelpProps<number, number, number>) => {
+export const CharacterCardHelp = ({ item, itemIndex, closeDialog }: MaterialHelpProps<number, number, number>) => {
   const { t } = useTranslation()
   const card = item.id as CharacterCard | undefined
   return (
     <>
       <h2 css={helpTitle}>{card === undefined ? t('help.character.hidden') : t(`help.character.${characterKeys[getCharacter(card)]}`)}</h2>
+      <PlayCardButton type={MaterialType.CharacterCard} itemIndex={itemIndex} label="button.bet" closeDialog={closeDialog} />
       {card !== undefined && (
         <>
           <div css={helpSection}>

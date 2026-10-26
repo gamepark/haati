@@ -2,10 +2,12 @@
 import { css } from '@emotion/react'
 import { Animal, getAnimal, getValue } from '@gamepark/haati/material/Animal'
 import { LocationType } from '@gamepark/haati/material/LocationType'
+import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
 import { animalColors } from '../../theme/colors'
 import { CardLocation } from './CardLocation'
+import { PlayCardButton } from './PlayCardButton'
 import { JungleIcon, PalaceIcon } from './HelpIcons'
 import { helpBlock, helpBlockActive, helpComponents, helpIntro, helpSection, helpTitle } from './helpStyles'
 
@@ -20,7 +22,7 @@ const animalKeys: Record<Animal, string> = {
  * two places it can land — the Palace for the winner of the duel, the Jungle for the loser. A card
  * already in a place has its block picked out.
  */
-export const AnimalCardHelp = ({ item }: MaterialHelpProps) => {
+export const AnimalCardHelp = ({ item, itemIndex, closeDialog }: MaterialHelpProps) => {
   const { t } = useTranslation()
   if (item.id === undefined) {
     return (
@@ -39,6 +41,7 @@ export const AnimalCardHelp = ({ item }: MaterialHelpProps) => {
   return (
     <>
       <h2 css={[helpTitle, familyColor(animal)]}>{t(`help.animal.${key}.title`, { value: getValue(item.id) })}</h2>
+      <PlayCardButton type={MaterialType.AnimalCard} itemIndex={itemIndex} label="button.play" closeDialog={closeDialog} />
       <p css={helpIntro}>
         <Trans i18nKey={`help.animal.${key}.duel`} components={helpComponents} />
       </p>

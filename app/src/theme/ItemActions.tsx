@@ -4,6 +4,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ItemMenuButton } from '@gamepark/react-game'
 import { MaterialMove } from '@gamepark/rules-api'
+import { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { colors } from './colors'
 
@@ -20,7 +21,8 @@ export type ItemAction = {
  * the backs of the Character cards. The icon alone says the action, so that no label covers the
  * button of the next card; the help of the card explains them.
  *
- * The buttons of a card in hand are tilted with it (`angle`), and follow it when it is hovered (see
+ * The buttons of a card in hand turn with it around its centre (`angle`), so that they stay on its
+ * edge, but their icons turn back to stand upright. They follow the card when it is hovered (see
  * HandHoverStyles).
  */
 export const ItemActions = ({ actions, x = 0, y = 0, angle }: { actions: ItemAction[]; x?: number; y?: number; angle?: number }) => {
@@ -29,18 +31,26 @@ export const ItemActions = ({ actions, x = 0, y = 0, angle }: { actions: ItemAct
     <>
       {actions.map((action, index) => (
         <ItemMenuButton key={index} css={buttonCss} x={x + (index - (actions.length - 1) / 2) * 2.6} y={y} move={action.move} aria-label={t(action.title)}>
-          <FontAwesomeIcon icon={action.icon} />
+          <FontAwesomeIcon icon={action.icon} css={iconCss} />
         </ItemMenuButton>
       ))}
     </>
   )
   if (angle === undefined) return buttons
   return (
-    <div data-hand-actions css={handActionsCss} style={{ transform: `rotateZ(${angle}deg)` }}>
+    <div data-hand-actions css={handActionsCss} style={{ transform: `rotateZ(${angle}deg)`, [HAND_ACTIONS_ANGLE]: `${angle}deg` } as CSSProperties}>
       {buttons}
     </div>
   )
 }
+
+/** The tilt of the buttons of a card in hand, which their icons undo. */
+export const HAND_ACTIONS_ANGLE = '--hand-actions-angle'
+
+const iconCss = css`
+  transform: rotateZ(calc(-1 * var(${HAND_ACTIONS_ANGLE}, 0deg)));
+  transition: transform 0.15s ease-out;
+`
 
 /** The buttons of a card in hand turn around the centre of the card, like the card. */
 const handActionsCss = css`

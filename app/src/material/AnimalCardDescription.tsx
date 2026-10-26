@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp'
 import { faBan } from '@fortawesome/free-solid-svg-icons/faBan'
 import { faHand } from '@fortawesome/free-solid-svg-icons/faHand'
-import { faHandPointUp } from '@fortawesome/free-solid-svg-icons/faHandPointUp'
 import { faLandmarkDome } from '@fortawesome/free-solid-svg-icons/faLandmarkDome'
 import { faTree } from '@fortawesome/free-solid-svg-icons/faTree'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { CARD_HEIGHT, CARD_WIDTH, HAND_BUTTON_Y, side } from '../locators/TableLayout'
+import { CARD_HEIGHT, CARD_WIDTH, DUEL_BUTTON_Y, HAND_BUTTON_Y, side } from '../locators/TableLayout'
 import { ItemAction, ItemActions } from '../theme/ItemActions'
 import { handCardAngle, handCardCss } from './handHover'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
@@ -40,7 +40,7 @@ import mouse7 from '../images/cards/animals/Mouse7.jpg'
 import mouse8 from '../images/cards/animals/Mouse8.jpg'
 
 const destinations: Partial<Record<LocationType, Omit<ItemAction, 'move'>>> = {
-  [LocationType.PlayerDuel]: { icon: faHandPointUp, title: 'button.play' },
+  [LocationType.PlayerDuel]: { icon: faArrowUp, title: 'button.play' },
   [LocationType.Palace]: { icon: faLandmarkDome, title: 'button.to-palace' },
   [LocationType.Jungle]: { icon: faTree, title: 'button.to-jungle' },
   [LocationType.AnimalDiscard]: { icon: faBan, title: 'button.eliminate' },
@@ -90,15 +90,14 @@ class AnimalCardDescription extends CardDescription<number, MaterialType, Locati
       .map((move) => ({ move, ...destinations[move.location.type as LocationType]! }))
     if (!actions.length) return null
     // In a row, only the edge of the card towards the board is uncovered: the button goes there, below
-    // the family and the value printed in the corner. In hand and in the duel, where the whole card shows,
-    // it goes at the bottom, off the picture.
+    // the family and the value printed in the corner. In hand, it straddles the top edge; in the duel,
+    // where the whole card shows, it goes at the bottom, off the picture.
     const inRow = item.location.type === LocationType.Palace || item.location.type === LocationType.Jungle
-    const atBottom = item.location.type === LocationType.PlayerHand || item.location.type === LocationType.PlayerDuel
     return (
       <ItemActions
         actions={actions}
         x={inRow ? -side(item.location.player, context) * 1.9 : 0}
-        y={atBottom ? HAND_BUTTON_Y : 0}
+        y={buttonY(item.location.type)}
         angle={handCardAngle(item, context)}
       />
     )
@@ -111,6 +110,8 @@ class AnimalCardDescription extends CardDescription<number, MaterialType, Locati
     return angle === undefined ? undefined : handCardCss(angle)
   }
 }
+
+const buttonY = (type: LocationType) => (type === LocationType.PlayerHand ? HAND_BUTTON_Y : type === LocationType.PlayerDuel ? DUEL_BUTTON_Y : 0)
 
 const duelGlideCss = css`
   transition: transform 0.6s ease-in-out;

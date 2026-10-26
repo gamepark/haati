@@ -54,8 +54,10 @@ export const DUEL_SHOW_X = 5.6
 export const HAND = { x: 33, y: 15.6 }
 export const HAND_RADIUS = 40
 export const HAND_GAP_ANGLE = 7
-/** The buttons of a card in hand, at its bottom, off the picture. */
-export const HAND_BUTTON_Y = CARD_HEIGHT / 2 - 1.6
+/** The buttons of a card in hand straddle its top edge, as in Faraway: the top of the cards is what the fan shows best. */
+export const HAND_BUTTON_Y = -CARD_HEIGHT / 2
+/** The buttons of a card in the duel, at its bottom, off the picture. */
+export const DUEL_BUTTON_Y = CARD_HEIGHT / 2 - 1.6
 
 /** The two piles of Animal cards, lying sideways (rotated by a quarter turn) above and below the board. */
 export const ANIMAL_DECK_Y = 17.4
