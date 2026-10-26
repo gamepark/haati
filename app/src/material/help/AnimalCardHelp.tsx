@@ -24,13 +24,15 @@ const animalKeys: Record<Animal, string> = {
  */
 export const AnimalCardHelp = ({ item, itemIndex, closeDialog }: MaterialHelpProps) => {
   const { t } = useTranslation()
-  if (item.location?.type === LocationType.AnimalSetAside) return <SetAsideHelp />
   if (item.id === undefined) {
     return (
       <>
         <h2 css={helpTitle}>{t('help.animal.hidden.title')}</h2>
         <p css={helpIntro}>
           <Trans i18nKey="help.animal.hidden.intro" components={helpComponents} />
+        </p>
+        <p css={helpIntro}>
+          <Trans i18nKey="help.animal.hidden.set-aside" components={helpComponents} />
         </p>
         <CardLocation location={item.location} />
       </>
@@ -79,21 +81,6 @@ const TakenCard = ({ player }: { player?: number }) => {
     <p css={helpLocation}>
       <Trans i18nKey="help.taken.location" values={{ player: name }} components={helpComponents} />
     </p>
-  )
-}
-
-/** The 4 cards removed face down at the start of the round: what they are, and why they are removed. */
-const SetAsideHelp = () => {
-  const { t } = useTranslation()
-  return (
-    <>
-      <h2 css={helpTitle}>{t('help.animal.set-aside.title')}</h2>
-      {['intro', 'why', 'next-round'].map((key) => (
-        <p key={key} css={helpIntro}>
-          <Trans i18nKey={`help.animal.set-aside.${key}`} components={helpComponents} />
-        </p>
-      ))}
-    </>
   )
 }
 

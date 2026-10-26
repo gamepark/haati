@@ -8,13 +8,13 @@ import { HAND_SHUFFLE_DURATION, handShuffle, isHandShuffleSkipped, isOpponentHan
 import { BET_VERDICT_DURATION, betLost, isBetLost, isWonBetPlayed, wonBetPlayed } from './BetShow'
 import {
   ANIMAL_PILE_SHUFFLE_DURATION,
-  animalPileGlide,
+  animalPileFade,
   CHARACTER_PILE_SHUFFLE_DURATION,
   isAnimalDealEnded,
   isAnimalGatheringStarted,
   isAnimalPileShuffled,
   isCharacterPileShuffled,
-  PILE_GLIDE_DURATION,
+  PILE_FADE_DURATION,
   pileShuffle
 } from './ResetPiles'
 import { isRowMove, ROW_MOVE_DURATION, rowMove } from './RowMove'
@@ -127,8 +127,8 @@ gameAnimations
   .configure(isRoundWon)
   .duration(ROUND_WON_SHOW_DURATION)
   .itemAnimation((context, animation) => roundWonShow(context, animation.move, animation.duration))
-gameAnimations.configure(isAnimalGatheringStarted).duration(PILE_GLIDE_DURATION).itemAnimation(animalPileGlide)
-gameAnimations.configure(isAnimalDealEnded).itemAnimation(animalPileGlide)
+gameAnimations.configure(isAnimalGatheringStarted).duration(PILE_FADE_DURATION).itemAnimation(animalPileFade)
+gameAnimations.configure(isAnimalDealEnded).itemAnimation(animalPileFade)
 gameAnimations.configure(isAnimalPileShuffled).duration(ANIMAL_PILE_SHUFFLE_DURATION).itemAnimation(pileShuffle)
 gameAnimations.configure(isCharacterPileShuffled).duration(CHARACTER_PILE_SHUFFLE_DURATION).itemAnimation(pileShuffle)
 gameAnimations.configure(isRollItemType(MaterialType.CollectionToken)).duration(COLLECTION_FLIP_DURATION)

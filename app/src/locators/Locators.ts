@@ -30,7 +30,6 @@ import {
   ANIMAL_DECK_Y,
   ANIMAL_DISCARD,
   ANIMAL_RESET,
-  ANIMAL_SET_ASIDE,
   CARD_HEIGHT,
   CARD_WIDTH,
   CHARACTER_DECK,
@@ -223,14 +222,16 @@ export const isAnimalPileReset = ({ rules }: MaterialContext) => {
   )
 }
 
-/** The Animal cards set aside, above the board, but in the middle of the screen between two rounds (see isAnimalPileReset). */
+/**
+ * The 4 Animal cards out of the round are not shown: only between two rounds, when all 24 are gathered
+ * there, does the pile appear, in the middle of the screen (see isAnimalPileReset).
+ */
 class AnimalSetAsideLocator extends DeckLocator {
   limit = 24
-  // The help speaks of the 4 cards at once: no arrows from one to the next.
-  navigationSorts = []
+  coordinates = ANIMAL_RESET
 
-  getCoordinates(_location: Location, context: MaterialContext) {
-    return isAnimalPileReset(context) ? ANIMAL_RESET : ANIMAL_SET_ASIDE
+  hide(item: MaterialItem, context: ItemContext) {
+    return !isAnimalPileReset(context) || super.hide(item, context)
   }
 }
 

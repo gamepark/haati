@@ -146,15 +146,10 @@
       "jungle.mine": "Dans votre Jungle."
     },
     "animal": {
-      "set-aside": {
-        "title": "4 cartes Animal écartées",
-        "intro": "Au début de chaque manche, 4 cartes Animal sont retirées au hasard, face cachée. Elles ne seront pas jouées pendant cette manche.",
-        "why": "Personne ne sait lesquelles manquent : même en comptant les cartes déjà jouées, vous ne pouvez jamais être sûr de celles qui restent dans les pioches ou dans la main de votre adversaire.",
-        "next-round": "À la fin de la manche, elles sont mélangées avec les 20 autres cartes, puis 4 nouvelles cartes sont écartées."
-      },
       "hidden": {
         "title": "Carte Animal",
-        "intro": "Il y a 24 cartes Animal : 3 familles (<b>Éléphant</b>, <b>Tigre</b> et <b>Souris</b>), chacune numérotée de 1 à 8."
+        "intro": "Il y a 24 cartes Animal : 3 familles (<b>Éléphant</b>, <b>Tigre</b> et <b>Souris</b>), chacune numérotée de 1 à 8.",
+        "set-aside": "Au début de chaque manche, 4 d’entre elles sont écartées au hasard, face cachée, sans que personne ne les voie : elles ne sont pas jouées pendant la manche. Même en comptant les cartes déjà jouées, vous ne pouvez donc jamais être sûr de celles qui restent dans les pioches ou dans la main de votre adversaire."
       },
       "elephant": {
         "title": "Éléphant {value}",

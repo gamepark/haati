@@ -4,24 +4,24 @@ import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { RuleId } from '@gamepark/haati/rules/RuleId'
 import { ItemContext, MaterialContext, transformItem } from '@gamepark/react-game'
 import { GridBoundaries, isMoveItemType, isShuffle, MaterialMove, MoveItem, Shuffle } from '@gamepark/rules-api'
-import { SET_ASIDE_SIZE } from '../locators/Locators'
+import { isAnimalPileReset, SET_ASIDE_SIZE } from '../locators/Locators'
 import { CHARACTER_DECK, CHARACTER_RESET } from '../locators/TableLayout'
 import { HAND_SHUFFLE_DURATION, MIX_DURATION, mixSteps, PILE_GAP, Spot } from './HandShuffle'
-import { frameworkAnimations, futureRules, MoveAnimation } from './RowMove'
+import { frameworkAnimations, MoveAnimation } from './RowMove'
 
 /**
  * Between two rounds, the cards are gathered and mixed in the middle of the screen, the way the opponent's
  * hand is (see HandShuffle). The Animal cards gather in a pile on the left (see isAnimalPileReset): the 4
- * cards set aside go there with the first card gathered, the pile is mixed, the cards are dealt from it, and
- * the 4 cards left go back above the board with the last card dealt. The Character pile is gathered in its
+ * cards set aside, not shown during the round, fade in there with the first card gathered, the pile is
+ * mixed, the cards are dealt from it, and the 4 cards left fade out with the last card dealt. The Character pile is gathered in its
  * place below the board, as the rules make it again first; it then rises to the right of the middle, is mixed
  * and goes back.
  */
 /** The Character pile rising to the middle, then going back, in ms. */
 const PILE_LIFT = 500
 export const CHARACTER_PILE_SHUFFLE_DURATION = PILE_LIFT + MIX_DURATION + PILE_LIFT
-/** The 4 Animal cards set aside gliding to the middle with the first card gathered, in ms. */
-export const PILE_GLIDE_DURATION = 600
+/** The 4 Animal cards set aside fading in, in the middle, with the first card gathered, in ms. */
+export const PILE_FADE_DURATION = 600
 
 const animalSetAside = ({ rules }: MaterialContext) => rules.material(MaterialType.AnimalCard).location(LocationType.AnimalSetAside)
 
@@ -36,14 +36,14 @@ export const isAnimalPileShuffled = (move: MaterialMove, context: MaterialContex
 export const isCharacterPileShuffled = (move: MaterialMove, context: MaterialContext) =>
   context.rules.game.rule?.id === RuleId.EndOfRound && isShuffleAt(MaterialType.CharacterCard, LocationType.CharacterDeck, move, context)
 
-/** The first Animal card gathered between two rounds: the 4 cards set aside go to the middle with it. */
+/** The first Animal card gathered between two rounds: the 4 cards set aside fade in with it. */
 export const isAnimalGatheringStarted = (move: MaterialMove, context: MaterialContext) =>
   context.rules.game.rule?.id === RuleId.EndOfRound &&
   isMoveItemType(MaterialType.AnimalCard)(move) &&
   move.location.type === LocationType.AnimalSetAside &&
   animalSetAside(context).length === SET_ASIDE_SIZE
 
-/** The last Animal card dealt for a new round: the 4 cards left go back above the board. */
+/** The last Animal card dealt for a new round: the 4 cards left fade out with it. */
 export const isAnimalDealEnded = (move: MaterialMove, context: MaterialContext) =>
   context.rules.game.rule?.id === RuleId.NewRound &&
   isMoveItemType(MaterialType.AnimalCard)(move) &&
@@ -51,24 +51,25 @@ export const isAnimalDealEnded = (move: MaterialMove, context: MaterialContext) 
   context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex).location.type === LocationType.AnimalSetAside &&
   animalSetAside(context).length === SET_ASIDE_SIZE + 1
 
-/** The card moved flies as usual; the other cards set aside glide to their place once the move is played. */
-export const animalPileGlide = (context: ItemContext, animation: MoveAnimation, boundaries: GridBoundaries) => {
+/**
+ * The card moved flies as usual; the other cards set aside fade in the middle, in when the pile is about to
+ * show (still the 4 cards out of the round), out when it is about to hide.
+ */
+export const animalPileFade = (context: ItemContext, animation: MoveAnimation, boundaries: GridBoundaries) => {
   if (context.type !== MaterialType.AnimalCard) return
   const move = animation.move as MoveItem
   if (context.index === move.itemIndex) return frameworkAnimations.getItemAnimation(context, animation, boundaries)
   const item = context.rules.material(MaterialType.AnimalCard).getItem(context.index)
   if (item.location.type !== LocationType.AnimalSetAside) return
-  const future = futureRules(context, move)
-  const futureItem = future.material(MaterialType.AnimalCard).getItem(context.index)
-  const current = transformItem(context).join(' ')
-  const target = (context.material[context.type]?.getItemTransform(futureItem, { ...context, rules: future }) ?? []).join(' ')
-  const glide = keyframes`
-    from { transform: ${current}; }
-    to { transform: ${target}; }
+  const appearing = !isAnimalPileReset(context)
+  const transform = transformItem(context).join(' ')
+  const fade = keyframes`
+    from { transform: ${transform}; opacity: ${appearing ? 0 : 1}; }
+    to { transform: ${transform}; opacity: ${appearing ? 1 : 0}; }
   `
   return css`
     > * {
-      animation: ${glide} ${animation.duration}s ease-in-out forwards;
+      animation: ${fade} ${animation.duration}s ease-in-out forwards;
     }
   `
 }
