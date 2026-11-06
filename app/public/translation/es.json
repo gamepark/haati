@@ -1,1 +1,334 @@
-{}
+{
+  "header": {
+    "choose-cards": {
+      "you": "Elige tu animal para el duelo (y un Personaje si quieres)",
+      "player": "{player} elige sus cartas para el duelo",
+      "players": "Los jugadores eligen sus cartas para el duelo"
+    },
+    "add-character": {
+      "you": "Añade una carta de Personaje a tu duelo, o <validate>confirma</validate>",
+      "player": "{player} elige sus cartas para el duelo"
+    },
+    "reveal-duel": "Se revelan las cartas del duelo",
+    "resolve-palace": {
+      "you": "¡Duelo ganado! Coloca tu carta en el Palacio, o activa primero tu Personaje",
+      "player": "{player} ha ganado el duelo y resuelve su Palacio"
+    },
+    "resolve-jungle": {
+      "you": "Duelo perdido: coloca tu carta en la Jungla, o activa primero tu Personaje",
+      "player": "{player} ha perdido el duelo y resuelve su Jungla"
+    },
+    "jungle-elephant": {
+      "you": "Elefante: mueve un animal de la Jungla al Palacio (tuyo o del rival), o <pass>pasa</pass>",
+      "player": "{player} puede mover un animal de la Jungla al Palacio"
+    },
+    "jungle-tiger": {
+      "you": "Tigre: mueve un animal del Palacio a la Jungla (tuyo o del rival), o <pass>pasa</pass>",
+      "player": "{player} puede mover un animal del Palacio a la Jungla"
+    },
+    "maharaja": {
+      "you": "Maharajá: mueve un animal entre el Palacio y la Jungla, o <pass>pasa</pass>",
+      "player": "{player} activa al Maharajá"
+    },
+    "thief-win": {
+      "you": "Ladrona: toma un animal de la Jungla rival para tu Jungla, o <pass>pasa</pass>",
+      "player": "{player} activa a la Ladrona"
+    },
+    "thief-lose": {
+      "you": "Ladrona: toma un animal del Palacio rival para tu Palacio, o <pass>pasa</pass>",
+      "player": "{player} activa a la Ladrona"
+    },
+    "hunter": {
+      "you": "Cazador: elimina un animal del Palacio o de la Jungla rival, o <pass>pasa</pass>",
+      "player": "{player} activa al Cazador"
+    },
+    "discard-character": {
+      "you": "Solo puedes conservar dos cartas de Personaje: descarta una",
+      "player": "{player} descarta una carta de Personaje"
+    },
+    "refill-hand": {
+      "you": "Elige una de las dos cartas visibles: tu rival recibirá la otra",
+      "player": "{player} elige su carta entre las dos visibles"
+    },
+    "end-of-round": "Fin de la ronda",
+    "round-won": {
+      "you": "¡Ganas la ronda!",
+      "player": "{player} gana la ronda"
+    }
+  },
+  "panel": {
+    "prestige": "{count} de Prestigio",
+    "turn": "Turno {turn}"
+  },
+  "announce": {
+    "round": "Ronda {round}",
+    "turns-left": "Quedan {count} turnos",
+    "last-turn": "Último turno",
+    "round-won": {
+      "you": "Has ganado la ronda {round}",
+      "player": "{player} ha ganado la ronda {round}"
+    }
+  },
+  "log": {
+    "hidden-animal": "una carta de Animal",
+    "hidden-character": "una carta de Personaje",
+    "reveal": "{player} revela <animal/>",
+    "reveal-bet": "{player} revela <animal/> y <character/>",
+    "reveal-bet-lost": "{player} revela <animal/> y <character/>: apuesta perdida, carta descartada sin efecto",
+    "duel-won": "{player} gana el duelo",
+    "place": {
+      "palace": "{player} coloca <animal/> en su Palacio",
+      "jungle": "{player} coloca <animal/> en su Jungla"
+    },
+    "activate": "{player} activa <character/>",
+    "draw-character": "{player} roba una carta de Personaje",
+    "discard-character": "{player} descarta <character/>",
+    "from": {
+      "palace": "de su Palacio",
+      "palace.other": "del Palacio de {owner}",
+      "jungle": "de su Jungla",
+      "jungle.other": "de la Jungla de {owner}"
+    },
+    "to": {
+      "palace": "a su Palacio",
+      "palace.other": "al Palacio de {owner}",
+      "jungle": "a su Jungla",
+      "jungle.other": "a la Jungla de {owner}"
+    },
+    "move": "{player} mueve <animal/> {from} {to}",
+    "hunt": "{player} elimina <animal/> {from}",
+    "pass": "{player} renuncia al efecto",
+    "collection": {
+      "palace": "{player} completa la Colección del Palacio",
+      "jungle": "{player} completa la Colección de la Jungla"
+    },
+    "gain": "{player} gana {gain}",
+    "favor": "{count, plural, one {# Favor} other {# Favores}}",
+    "honor": "{count, plural, one {# Honor} other {# Honores}}",
+    "and": " y ",
+    "choose": "{player} elige <animal/>",
+    "receive": "{player} recibe <animal/>",
+    "last-card": "Empate perfecto: {player} revela su última carta, <animal/>",
+    "round-won": "{player} gana la ronda: {winner} de Prestigio contra {loser}",
+    "round-won.honor": "{player} gana la ronda: empate a {prestige} de Prestigio, pero {winner} Honores contra {loser}",
+    "round-won.duel": "{player} gana la ronda gracias al duelo de desempate",
+    "honor-to-favor": "Los Favores se descartan, los Honores se convierten en Favores"
+  },
+  "button": {
+    "play": "Jugar",
+    "bet": "Apostar",
+    "to-palace": "Al Palacio",
+    "to-jungle": "A la Jungla",
+    "eliminate": "Eliminar",
+    "take": "Tomar",
+    "activate": "Activar",
+    "discard": "Descartar"
+  },
+  "help": {
+    "taken": {
+      "title": "Carta tomada en el turno anterior",
+      "intro": "{player} tomó esta carta en el turno anterior:",
+      "location": "{player} tomó esta carta en el turno anterior y la conserva en la mano."
+    },
+    "location": {
+      "animal-deck": "En un mazo de Animales, boca abajo.",
+      "animal-offer": "Visible en lo alto de un mazo: el perdedor del próximo duelo elegirá entre las dos cartas visibles.",
+      "animal-discard": "Eliminada por el Cazador.",
+      "character-deck": "En el mazo de cartas de Personaje.",
+      "character-discard": "En el descarte de cartas de Personaje.",
+      "hand": "En la mano de {player}.",
+      "hand.mine": "En tu mano.",
+      "duel": "Jugada en el duelo por {player}.",
+      "duel.mine": "Jugada en tu duelo.",
+      "palace": "En el Palacio de {player}.",
+      "palace.mine": "En tu Palacio.",
+      "jungle": "En la Jungla de {player}.",
+      "jungle.mine": "En tu Jungla."
+    },
+    "animal": {
+      "hidden": {
+        "title": "Carta de Animal",
+        "intro": "Hay 24 cartas de Animal: 3 familias (<b>Elefante</b>, <b>Tigre</b> y <b>Ratón</b>), cada una numerada del 1 al 8.",
+        "set-aside": "Al comienzo de cada ronda, 4 de ellas se apartan al azar, boca abajo, sin que nadie las vea: no se juegan durante la ronda. Incluso contando las cartas ya jugadas, nunca puedes estar seguro de cuáles quedan en los mazos o en la mano de tu rival."
+      },
+      "elephant": {
+        "title": "Elefante {value}",
+        "duel": "El <b>Elefante vence al Tigre</b>, pero es vencido por el Ratón.",
+        "palace": "Gana <b>1 Favor por cada Elefante</b> en tu Palacio, incluido el que acabas de colocar.",
+        "jungle": "Puedes <b>mover 1 animal de la Jungla al Palacio</b>, tuyo o del rival. Puede ser el Elefante que acabas de jugar."
+      },
+      "tiger": {
+        "title": "Tigre {value}",
+        "duel": "El <b>Tigre vence al Ratón</b>, pero es vencido por el Elefante.",
+        "palace": "Gana <b>1 Favor por cada Tigre</b> en tu Jungla. Después, <b>roba 1 carta de Personaje</b>.",
+        "jungle": "Puedes <b>mover 1 animal del Palacio a la Jungla</b>, tuyo o del rival."
+      },
+      "mouse": {
+        "title": "Ratón {value}",
+        "duel": "El <b>Ratón vence al Elefante</b>, pero es vencido por el Tigre.",
+        "palace": "Gana <b>1 Honor y 1 Favor por cada pareja de Ratones</b> en tu Palacio, incluida la que acabas de formar.",
+        "jungle": "<b>Roba 1 carta de Personaje</b>."
+      },
+      "same-family": "Si los dos animales son de la misma familia, <b>el valor más alto</b> gana el duelo.",
+      "palace": "En el Palacio (duelo ganado)",
+      "jungle": "En la Jungla (duelo perdido)",
+      "collection": "Un animal movido no activa el efecto del lugar al que llega. Reúne <b>4 valores consecutivos</b> en tu Palacio o tu Jungla para ganar una Colección."
+    },
+    "character": {
+      "hidden": "Carta de Personaje",
+      "hidden.intro": "Hay 8 cartas de Personaje: la Mercader, el Maharajá, la Ladrona y el Cazador, cada uno con una apuesta por la victoria y una apuesta por la derrota.",
+      "merchant": "La Mercader",
+      "maharaja": "El Maharajá",
+      "thief": "La Ladrona",
+      "hunter": "El Cazador",
+      "bet": {
+        "win": "✓ Apuesta por ganar el duelo",
+        "lose": "✗ Apuesta por perder el duelo"
+      },
+      "effect": {
+        "11": "Duelo ganado: gana <b>2 Favores</b>.",
+        "12": "Duelo perdido: gana <b>1 Favor y 1 Honor</b>.",
+        "21": "Duelo ganado: <b>mueve el animal que quieras</b> del Palacio a la Jungla, o al revés (tuyo o del rival). El animal movido no activa el efecto del lugar.",
+        "22": "Duelo perdido: gana <b>1 Favor</b> y después <b>mueve el animal que quieras</b> del Palacio a la Jungla, o al revés (tuyo o del rival). El animal movido no activa el efecto del lugar.",
+        "31": "Duelo ganado: toma <b>1 animal de la Jungla rival</b> y colócalo en tu propia Jungla, sin activar el efecto del lugar.",
+        "32": "Duelo perdido: toma <b>1 animal del Palacio rival</b> y colócalo en tu propio Palacio, sin activar el efecto del lugar.",
+        "41": "Duelo ganado: gana <b>1 Favor</b> y <b>elimina 1 animal rival</b> (de su Palacio o su Jungla). Ese animal se descarta.",
+        "42": "Duelo perdido: gana <b>1 Honor</b> y <b>elimina 1 animal rival</b> (de su Palacio o su Jungla). Ese animal se descarta."
+      },
+      "rules": "Recordatorios",
+      "rule": {
+        "play": "Puedes jugar <b>una sola carta de Personaje</b>, boca abajo, por duelo, además de tu carta de Animal.",
+        "reveal": "<b>Apuesta ganada</b>: activa la carta antes o después de tu carta de Animal y luego descártala. <b>Apuesta perdida</b>: descártala sin efecto.",
+        "limit": "Solo puedes conservar <b>dos cartas de Personaje</b> en la mano: si robas una 3.ª, descarta una.",
+        "draw": "Las cartas de Personaje no jugadas se quedan en la mano de una ronda a otra."
+      }
+    },
+    "collection": {
+      "palace": {
+        "title": "Colección del Palacio",
+        "intro": "La gana el primer jugador que reúne <b>4 valores consecutivos en su Palacio</b>, sean cuales sean los animales y su orden."
+      },
+      "jungle": {
+        "title": "Colección de la Jungla",
+        "intro": "La gana el primer jugador que reúne <b>4 valores consecutivos en su Jungla</b>, sean cuales sean los animales y su orden."
+      },
+      "reward": "Recompensa",
+      "gain": "{favor, plural, =0 {} one {<b># Favor</b>} other {<b># Favores</b>}}{honor, plural, =0 {} one { y <b># Honor</b>} other { y <b># Honores</b>}}",
+      "rules": "Recordatorios",
+      "rule": {
+        "check": "Cada jugador comprueba sus Colecciones después de resolver sus efectos. El ganador del duelo comprueba antes que el perdedor.",
+        "once": "Una ficha ganada ya no está disponible durante el resto de la ronda.",
+        "faces": "Al comienzo de cada ronda, la cara visible de la ficha se decide a cara o cruz."
+      },
+      "available": "Todavía disponible en el tablero.",
+      "won": "Ganada por {player} en esta ronda.",
+      "won.mine": "La has ganado en esta ronda."
+    },
+    "prestige": {
+      "favor": {
+        "title": "Favor",
+        "intro": "Las fichas de Prestigio por su cara blanca son puntos de <b>Favor</b>. Cuentan para tu Prestigio, pero se pierden al final de la ronda."
+      },
+      "honor": {
+        "title": "Honor",
+        "intro": "Las fichas de Prestigio por su cara negra son puntos de <b>Honor</b>. Cuentan para tu Prestigio, deshacen los empates y se convierten en Favores para la ronda siguiente."
+      },
+      "end-of-round": "Fin de la ronda",
+      "rule": {
+        "total": "Favores + Honores = <b>Prestigio</b>. El jugador con más Prestigio gana la ronda.",
+        "tie": "En caso de empate, gana el jugador con más <b>Honor</b>. Si el empate persiste, los jugadores revelan su última carta en mano: el ganador de este último duelo gana la ronda.",
+        "after": "«¡Los Favores pasan, pero el Honor permanece!» Los Favores se descartan, los Honores se convierten en Favores ya obtenidos para la ronda siguiente."
+      },
+      "change": "Las fichas valen 1, 3 o 6: la reserva es ilimitada y el cambio se da automáticamente.",
+      "owned": "{player} tiene {favor, plural, one {# Favor} other {# Favores}} y {honor, plural, one {# Honor} other {# Honores}}.",
+      "owned.mine": "Tienes {favor, plural, one {# Favor} other {# Favores}} y {honor, plural, one {# Honor} other {# Honores}}."
+    },
+    "prestige-total": {
+      "title": "Prestigio",
+      "intro": "El <b>Prestigio</b> de un jugador es la suma de sus <b>Favores</b> (fichas blancas) y sus <b>Honores</b> (fichas negras). Es lo que decide el ganador de cada ronda.",
+      "gain-title": "Ganar Prestigio",
+      "gain": {
+        "palace": "Los <b>efectos del Palacio</b>: cada duelo ganado coloca tu carta en el Palacio, y su efecto da Favores, y Honores por las parejas de Ratones.",
+        "characters": "Algunas cartas de <b>Personaje</b>, como la Mercader, dan directamente Favores u Honores.",
+        "collections": "Las <b>Colecciones</b>: 4 valores consecutivos en el Palacio o la Jungla dan la recompensa de la ficha de Colección correspondiente."
+      },
+      "round-title": "Fin de la ronda",
+      "round": {
+        "win": "Tras 9 turnos, el jugador con más Prestigio gana la ronda.",
+        "tie": "En caso de empate, gana el jugador con más <b>Honor</b>. Si el empate persiste, los jugadores revelan su última carta en mano: el ganador de este último duelo gana la ronda.",
+        "after": "«¡Los Favores pasan, pero el Honor permanece!» Los Favores se descartan, los Honores se convierten en Favores para la ronda siguiente."
+      },
+      "game-title": "Ganar la partida",
+      "game": "El ganador de una ronda recibe una mitad del elefante de oro. El primer jugador que reúne <b>las dos mitades</b>, ganando dos rondas, gana la partida.",
+      "owned": "{player} tiene {total} de Prestigio ({favor, plural, one {# Favor} other {# Favores}} + {honor, plural, one {# Honor} other {# Honores}}).",
+      "owned.mine": "Tienes {total} de Prestigio ({favor, plural, one {# Favor} other {# Favores}} + {honor, plural, one {# Honor} other {# Honores}})."
+    },
+    "round-victory": {
+      "title": "Victoria de Ronda",
+      "intro": "Haati se juega <b>al mejor de tres rondas</b>.",
+      "winning": "Ganar la partida",
+      "rule": {
+        "round": "El ganador de una ronda recibe una ficha de Victoria de Ronda.",
+        "two": "Un jugador que gana las dos primeras rondas gana la partida.",
+        "third": "Si no, una 3.ª ronda desempata: su ganador se queda con la ficha de su rival y gana la partida."
+      },
+      "reserve": "En la reserva.",
+      "owned": "Ganada por {player}.",
+      "owned.mine": "La has ganado."
+    },
+    "board": {
+      "title": "El duelo de los Maharajás",
+      "intro": "Una ronda se juega en <b>9 turnos</b>. Cada turno se desarrolla en este orden:",
+      "choose-title": "1. Elección de cartas (simultánea)",
+      "duel-title": "2. Resolución del duelo",
+      "effects-title": "3. Efectos y Colecciones",
+      "refill-title": "4. Completar la mano: ¡elige el perdedor!",
+      "end-title": "Fin de la ronda",
+      "choose": "Cada jugador elige una de sus dos cartas de Animal y puede añadir una carta de Personaje, boca abajo.",
+      "duel": "El <b>Elefante vence al Tigre</b>, el <b>Tigre vence al Ratón</b>, el <b>Ratón vence al Elefante</b>. Entre dos animales de la misma familia, gana el valor más alto.",
+      "effects": "El ganador coloca su carta en su <b>Palacio</b> y debe aplicar su efecto. Después, el perdedor coloca la suya en su <b>Jungla</b> y puede aplicar su efecto. Luego cada uno comprueba sus Colecciones (4 valores consecutivos).",
+      "refill": "El <b>perdedor elige</b> una de las dos cartas visibles y deja la otra a su rival.",
+      "end": "Tras 9 turnos, el jugador con más <b>Prestigio</b> (Favores + Honores) gana la ronda. Los Favores se descartan, los Honores se convierten en Favores. La partida se juega al mejor de tres rondas."
+    }
+  },
+  "tuto": {
+    "welcome": "¡Bienvenido al tutorial de <b>Haati</b>!",
+    "universe": "En las suntuosas cortes de los Maharajás, los estrategas más astutos se enfrentan a través de sus animales sagrados: el <b>Elefante</b>, el <b>Tigre</b> y el <b>Ratón</b>.",
+    "favor-honor": "Tendrás que ganar puntos de <b>Favor</b> <favor></favor> y de <b>Honor</b> <honor></honor> para obtener <b>Prestigio</b>.",
+    "prestige": "El duelista con más puntos de <b>Prestigio</b> gana la ronda.",
+    "end-of-game": "¡El primero en ganar <b>2 rondas</b> gana la partida!<elephant></elephant>",
+    "turns": "Una ronda se juega en <b>9 turnos</b>: este es el turno en curso. Cada nuevo turno también se anuncia en el centro de la mesa.",
+    "deck-counters": "El contador de los mazos indica las cartas que quedan: ¡cuando se vacían, es el último turno!",
+    "hand": "Esta es tu mano: dos cartas de Animal. En cada turno, ambos jugadores eligen <b>en secreto</b> un animal para el duelo.",
+    "play": "¡Que empiece el duelo! Juega tu <b>Elefante 2</b>. Cada carta pertenece a una familia y tiene un valor: volveremos a ello.",
+    "cycle": "Tus animales se enfrentan según una regla sencilla: el <b>Elefante</b> vence al <b>Tigre</b>, el <b>Tigre</b> vence al <b>Ratón</b> y el <b>Ratón</b> vence al <b>Elefante</b>.\n\n<i>En cualquier momento, puedes hacer clic en un elemento para saber para qué sirve.</i>",
+    "palace": "¡Has ganado! Tu carta se coloca en tu <b>Palacio</b> y activa su efecto: el Elefante da 1 Favor por cada Elefante en tu Palacio, así que ganas <b>1 Favor</b>.",
+    "jungle": "Tu rival ha perdido: coloca su carta en su <b>Jungla</b>, en su lado del tablero, y también puede aplicar su efecto.\n\nAquí, el Tigre le permite <b>mover una carta de un Palacio a una Jungla</b>. Una carta siempre se queda en el lado de su jugador: es imposible intercambiar cartas entre los Palacios y las Junglas de los dos jugadores.",
+    "change-place": "Tu rival ha decidido mover tu Elefante a tu Jungla. Atención: una carta que cambia de zona <b>no activa</b> su efecto.",
+    "refill": "Tras resolver el duelo y los efectos, cada jugador toma una de las cartas de Animal visibles sobre los mazos. <b>El perdedor del duelo elige primero</b>: tú recibirás la otra carta.",
+    "play-mouse": "Te toca: ¡juega tu <b>Ratón 1</b>!",
+    "tiger-beats-mouse": "El Tigre vence al Ratón: tu rival gana el duelo. <b>El ganador siempre resuelve primero los efectos del Palacio</b>: su Tigre le da 1 Favor por cada Tigre en su Jungla y después le hace robar una carta de Personaje.",
+    "mouse-jungle": "Perder un duelo no siempre es malo: tu Ratón va a tu Jungla y te hace <b>robar una carta de Personaje</b>.",
+    "character-piles": "Este es el <b>mazo de cartas de Personaje</b> y su <b>descarte</b>.",
+    "character": "¿Te has fijado en la carta de <b>Personaje</b> que ha llegado a tu mano? ¡Puedes combinarla con tu carta de Animal para apostar por el resultado del duelo! Te contaré más en el próximo duelo.",
+    "choose-card": "Esta vez has perdido tú: eliges primero la carta que completa tu mano. Toma el <b>Elefante 4</b>, y tu rival tomará entonces el Ratón 6.",
+    "bet": "Una carta de Personaje se juega boca abajo, además del animal. Es una apuesta por tu victoria <win></win> o por tu derrota <lose></lose>. Si ganas la apuesta, activas el efecto del Personaje; si no, la carta se descarta. Por ejemplo, la <b>Mercader</b> te da 2 Favores si ganas el duelo.",
+    "play-elephant": "Juega tu <b>Elefante 4</b>.",
+    "play-merchant": "Añade tu <b>Mercader</b> para apostar por tu victoria.",
+    "same-family": "El mismo animal en ambos lados: <b>gana el valor más alto</b>. Cada familia tiene cartas numeradas del 1 al 8: ¡tu Elefante 4 vence al Elefante 3 de tu rival!",
+    "bet-won": "Has ganado el duelo: <b>¡tu apuesta ha salido bien!</b> Podrás activar tu Mercader.",
+    "resolution-order": "Con una apuesta ganada, <b>tú eliges el orden</b> de resolución. Coloca primero tu Elefante en tu Palacio: da 1 Favor por cada Elefante en tu Palacio, es decir, 1 Favor.",
+    "activate-merchant": "Ahora activa tu <b>Mercader</b>: te da 2 Favores y después va al descarte.",
+    "collections": "Reúne <b>4 valores consecutivos</b> en tu Palacio o en tu Jungla, sea cual sea la familia, para ganar la ficha de <b>Colección</b> correspondiente y su recompensa. Mira tu Jungla: ¡ya tienes el 1 y el 2!",
+    "play-tiger": "Juega tu <b>Tigre 3</b>.",
+    "lose-to-win": "<b>El Elefante vence al Tigre</b>: tu rival coloca su Elefante en su Palacio y gana 1 Favor. Tu Tigre va a tu Jungla… ¡con el <b>3</b>!",
+    "tiger-effect": "El efecto del Tigre en la Jungla te permite, a ti también, mover un animal de un Palacio a una Jungla. Mueve tu <b>Elefante 4</b> de tu Palacio a tu Jungla.",
+    "collection-won": "1, 2, 3, 4: ¡tu Jungla forma una <b>Colección</b>! Ganas la ficha de Colección de la Jungla y su recompensa: <b>3 Favores y 1 Honor</b>.",
+    "honor": "¡Tu primer <b>Honor</b>! Los Honores (fichas negras) cuentan para tu Prestigio como los Favores y deshacen los empates. Al final de la ronda, los Favores se pierden, pero los Honores se convierten en Favores para la ronda siguiente.",
+    "prestige-total": "Tienes 7 Favores y 1 Honor, ¡así que tu <b>Prestigio</b> es de 8!",
+    "your-turn": "Te toca jugar el final de la ronda: ¡quedan <b>5 turnos</b>!\n\n<i>No lo olvides: haz clic en cualquier elemento del juego (carta, ficha, tablero, contador) para ver su ayuda.</i>"
+  },
+  "table": {
+    "reserve": "Reserva"
+  }
+}

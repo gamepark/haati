@@ -1,1 +1,334 @@
-{}
+{
+  "header": {
+    "choose-cards": {
+      "you": "Wähle dein Tier für das Duell (und, wenn du willst, einen Charakter)",
+      "player": "{player} wählt die Karten für das Duell",
+      "players": "Die Spieler wählen ihre Karten für das Duell"
+    },
+    "add-character": {
+      "you": "Füge deinem Duell eine Charakterkarte hinzu oder <validate>bestätige</validate>",
+      "player": "{player} wählt die Karten für das Duell"
+    },
+    "reveal-duel": "Die Karten des Duells werden aufgedeckt",
+    "resolve-palace": {
+      "you": "Duell gewonnen! Lege deine Karte in den Palast oder aktiviere zuerst deinen Charakter",
+      "player": "{player} hat das Duell gewonnen und handelt den Palast ab"
+    },
+    "resolve-jungle": {
+      "you": "Duell verloren: Lege deine Karte in den Dschungel oder aktiviere zuerst deinen Charakter",
+      "player": "{player} hat das Duell verloren und handelt den Dschungel ab"
+    },
+    "jungle-elephant": {
+      "you": "Elefant: Verschiebe ein Tier aus dem Dschungel in den Palast (bei dir oder beim Gegner) oder <pass>passe</pass>",
+      "player": "{player} darf ein Tier aus dem Dschungel in den Palast verschieben"
+    },
+    "jungle-tiger": {
+      "you": "Tiger: Verschiebe ein Tier aus dem Palast in den Dschungel (bei dir oder beim Gegner) oder <pass>passe</pass>",
+      "player": "{player} darf ein Tier aus dem Palast in den Dschungel verschieben"
+    },
+    "maharaja": {
+      "you": "Maharadscha: Verschiebe ein Tier zwischen Palast und Dschungel oder <pass>passe</pass>",
+      "player": "{player} aktiviert den Maharadscha"
+    },
+    "thief-win": {
+      "you": "Diebin: Nimm ein Tier aus dem gegnerischen Dschungel in deinen Dschungel oder <pass>passe</pass>",
+      "player": "{player} aktiviert die Diebin"
+    },
+    "thief-lose": {
+      "you": "Diebin: Nimm ein Tier aus dem gegnerischen Palast in deinen Palast oder <pass>passe</pass>",
+      "player": "{player} aktiviert die Diebin"
+    },
+    "hunter": {
+      "you": "Jäger: Eliminiere ein Tier aus dem gegnerischen Palast oder Dschungel oder <pass>passe</pass>",
+      "player": "{player} aktiviert den Jäger"
+    },
+    "discard-character": {
+      "you": "Du darfst nur zwei Charakterkarten behalten: Wirf eine ab",
+      "player": "{player} wirft eine Charakterkarte ab"
+    },
+    "refill-hand": {
+      "you": "Wähle eine der beiden offenen Karten: Dein Gegner erhält die andere",
+      "player": "{player} wählt eine der beiden offenen Karten"
+    },
+    "end-of-round": "Ende der Runde",
+    "round-won": {
+      "you": "Du gewinnst die Runde!",
+      "player": "{player} gewinnt die Runde"
+    }
+  },
+  "panel": {
+    "prestige": "{count} Prestige",
+    "turn": "Zug {turn}"
+  },
+  "announce": {
+    "round": "Runde {round}",
+    "turns-left": "Noch {count} Züge",
+    "last-turn": "Letzter Zug",
+    "round-won": {
+      "you": "Du hast Runde {round} gewonnen",
+      "player": "{player} hat Runde {round} gewonnen"
+    }
+  },
+  "log": {
+    "hidden-animal": "eine Tierkarte",
+    "hidden-character": "eine Charakterkarte",
+    "reveal": "{player} deckt <animal/> auf",
+    "reveal-bet": "{player} deckt <animal/> und <character/> auf",
+    "reveal-bet-lost": "{player} deckt <animal/> und <character/> auf: Wette verloren, Karte ohne Effekt abgeworfen",
+    "duel-won": "{player} gewinnt das Duell",
+    "place": {
+      "palace": "{player} legt <animal/> in den eigenen Palast",
+      "jungle": "{player} legt <animal/> in den eigenen Dschungel"
+    },
+    "activate": "{player} aktiviert <character/>",
+    "draw-character": "{player} zieht eine Charakterkarte",
+    "discard-character": "{player} wirft <character/> ab",
+    "from": {
+      "palace": "aus dem eigenen Palast",
+      "palace.other": "aus dem Palast von {owner}",
+      "jungle": "aus dem eigenen Dschungel",
+      "jungle.other": "aus dem Dschungel von {owner}"
+    },
+    "to": {
+      "palace": "in den eigenen Palast",
+      "palace.other": "in den Palast von {owner}",
+      "jungle": "in den eigenen Dschungel",
+      "jungle.other": "in den Dschungel von {owner}"
+    },
+    "move": "{player} verschiebt <animal/> {from} {to}",
+    "hunt": "{player} eliminiert <animal/> {from}",
+    "pass": "{player} verzichtet auf den Effekt",
+    "collection": {
+      "palace": "{player} vervollständigt die Palast-Sammlung",
+      "jungle": "{player} vervollständigt die Dschungel-Sammlung"
+    },
+    "gain": "{player} erhält {gain}",
+    "favor": "{count, plural, one {# Gunst} other {# Gunst}}",
+    "honor": "{count, plural, one {# Ehre} other {# Ehre}}",
+    "and": " und ",
+    "choose": "{player} wählt <animal/>",
+    "receive": "{player} erhält <animal/>",
+    "last-card": "Vollkommener Gleichstand: {player} deckt die letzte Karte auf, <animal/>",
+    "round-won": "{player} gewinnt die Runde: {winner} Prestige gegen {loser}",
+    "round-won.honor": "{player} gewinnt die Runde: Gleichstand mit {prestige} Prestige, aber {winner} Ehre gegen {loser}",
+    "round-won.duel": "{player} gewinnt die Runde durch das Entscheidungsduell",
+    "honor-to-favor": "Die Gunst wird abgeworfen, die Ehre wird zu Gunst"
+  },
+  "button": {
+    "play": "Spielen",
+    "bet": "Wetten",
+    "to-palace": "In den Palast",
+    "to-jungle": "In den Dschungel",
+    "eliminate": "Eliminieren",
+    "take": "Nehmen",
+    "activate": "Aktivieren",
+    "discard": "Abwerfen"
+  },
+  "help": {
+    "taken": {
+      "title": "Im vorigen Zug genommene Karte",
+      "intro": "{player} hat diese Karte im vorigen Zug genommen:",
+      "location": "{player} hat diese Karte im vorigen Zug genommen und hält sie auf der Hand."
+    },
+    "location": {
+      "animal-deck": "In einem Tier-Nachziehstapel, verdeckt.",
+      "animal-offer": "Offen oben auf einem Stapel: Der Verlierer des nächsten Duells wählt zwischen den beiden offenen Karten.",
+      "animal-discard": "Vom Jäger eliminiert.",
+      "character-deck": "Im Nachziehstapel der Charakterkarten.",
+      "character-discard": "Im Ablagestapel der Charakterkarten.",
+      "hand": "Auf der Hand von {player}.",
+      "hand.mine": "Auf deiner Hand.",
+      "duel": "Von {player} ins Duell geschickt.",
+      "duel.mine": "In dein Duell geschickt.",
+      "palace": "Im Palast von {player}.",
+      "palace.mine": "In deinem Palast.",
+      "jungle": "Im Dschungel von {player}.",
+      "jungle.mine": "In deinem Dschungel."
+    },
+    "animal": {
+      "hidden": {
+        "title": "Tierkarte",
+        "intro": "Es gibt 24 Tierkarten: 3 Familien (<b>Elefant</b>, <b>Tiger</b> und <b>Maus</b>), jeweils von 1 bis 8 nummeriert.",
+        "set-aside": "Zu Beginn jeder Runde werden 4 davon zufällig und verdeckt beiseitegelegt, ohne dass jemand sie sieht: Sie werden in dieser Runde nicht gespielt. Selbst wenn du die bereits gespielten Karten mitzählst, kannst du also nie sicher sein, welche Karten noch in den Stapeln oder auf der Hand deines Gegners sind."
+      },
+      "elephant": {
+        "title": "Elefant {value}",
+        "duel": "Der <b>Elefant schlägt den Tiger</b>, wird aber von der Maus geschlagen.",
+        "palace": "Erhalte <b>1 Gunst pro Elefant</b> in deinem Palast, einschließlich des gerade gelegten.",
+        "jungle": "Du darfst <b>1 Tier aus dem Dschungel in den Palast verschieben</b>, bei dir oder beim Gegner. Das kann auch der gerade gespielte Elefant sein."
+      },
+      "tiger": {
+        "title": "Tiger {value}",
+        "duel": "Der <b>Tiger schlägt die Maus</b>, wird aber vom Elefanten geschlagen.",
+        "palace": "Erhalte <b>1 Gunst pro Tiger</b> in deinem Dschungel. Dann <b>ziehe 1 Charakterkarte</b>.",
+        "jungle": "Du darfst <b>1 Tier aus dem Palast in den Dschungel verschieben</b>, bei dir oder beim Gegner."
+      },
+      "mouse": {
+        "title": "Maus {value}",
+        "duel": "Die <b>Maus schlägt den Elefanten</b>, wird aber vom Tiger geschlagen.",
+        "palace": "Erhalte <b>1 Ehre und 1 Gunst pro Mäusepaar</b> in deinem Palast, einschließlich des gerade gebildeten.",
+        "jungle": "<b>Ziehe 1 Charakterkarte</b>."
+      },
+      "same-family": "Gehören beide Tiere zur selben Familie, gewinnt <b>der höhere Wert</b> das Duell.",
+      "palace": "Im Palast (Duell gewonnen)",
+      "jungle": "Im Dschungel (Duell verloren)",
+      "collection": "Ein verschobenes Tier löst den Effekt seines neuen Ortes nicht aus. Sammle <b>4 aufeinanderfolgende Werte</b> in deinem Palast oder Dschungel, um eine Sammlung zu gewinnen."
+    },
+    "character": {
+      "hidden": "Charakterkarte",
+      "hidden.intro": "Es gibt 8 Charakterkarten: die Händlerin, den Maharadscha, die Diebin und den Jäger, jeweils mit einer Wette auf den Sieg und einer Wette auf die Niederlage.",
+      "merchant": "Die Händlerin",
+      "maharaja": "Der Maharadscha",
+      "thief": "Die Diebin",
+      "hunter": "Der Jäger",
+      "bet": {
+        "win": "✓ Wette auf den Sieg im Duell",
+        "lose": "✗ Wette auf die Niederlage im Duell"
+      },
+      "effect": {
+        "11": "Duell gewonnen: Erhalte <b>2 Gunst</b>.",
+        "12": "Duell verloren: Erhalte <b>1 Gunst und 1 Ehre</b>.",
+        "21": "Duell gewonnen: <b>Verschiebe ein beliebiges Tier</b> aus dem Palast in den Dschungel oder umgekehrt (bei dir oder beim Gegner). Das verschobene Tier löst den Effekt des Ortes nicht aus.",
+        "22": "Duell verloren: Erhalte <b>1 Gunst</b>, dann <b>verschiebe ein beliebiges Tier</b> aus dem Palast in den Dschungel oder umgekehrt (bei dir oder beim Gegner). Das verschobene Tier löst den Effekt des Ortes nicht aus.",
+        "31": "Duell gewonnen: Nimm <b>1 Tier aus dem gegnerischen Dschungel</b> und lege es in deinen eigenen Dschungel, ohne den Effekt des Ortes auszulösen.",
+        "32": "Duell verloren: Nimm <b>1 Tier aus dem gegnerischen Palast</b> und lege es in deinen eigenen Palast, ohne den Effekt des Ortes auszulösen.",
+        "41": "Duell gewonnen: Erhalte <b>1 Gunst</b> und <b>eliminiere 1 gegnerisches Tier</b> (in seinem Palast oder Dschungel). Dieses Tier wird abgeworfen.",
+        "42": "Duell verloren: Erhalte <b>1 Ehre</b> und <b>eliminiere 1 gegnerisches Tier</b> (in seinem Palast oder Dschungel). Dieses Tier wird abgeworfen."
+      },
+      "rules": "Erinnerung",
+      "rule": {
+        "play": "Du darfst pro Duell <b>nur eine Charakterkarte</b> verdeckt spielen, zusätzlich zu deiner Tierkarte.",
+        "reveal": "<b>Wette gewonnen</b>: Aktiviere die Karte vor oder nach deiner Tierkarte und wirf sie dann ab. <b>Wette verloren</b>: Wirf sie ohne Effekt ab.",
+        "limit": "Du darfst nur <b>zwei Charakterkarten</b> auf der Hand behalten: Ziehst du eine 3., wirf eine ab.",
+        "draw": "Nicht gespielte Charakterkarten bleiben von einer Runde zur nächsten auf der Hand."
+      }
+    },
+    "collection": {
+      "palace": {
+        "title": "Palast-Sammlung",
+        "intro": "Gewinnt, wer als Erster <b>4 aufeinanderfolgende Werte in seinem Palast</b> sammelt, unabhängig von den Tieren und ihrer Reihenfolge."
+      },
+      "jungle": {
+        "title": "Dschungel-Sammlung",
+        "intro": "Gewinnt, wer als Erster <b>4 aufeinanderfolgende Werte in seinem Dschungel</b> sammelt, unabhängig von den Tieren und ihrer Reihenfolge."
+      },
+      "reward": "Belohnung",
+      "gain": "{favor, plural, =0 {} one {<b># Gunst</b>} other {<b># Gunst</b>}}{honor, plural, =0 {} one { und <b># Ehre</b>} other { und <b># Ehre</b>}}",
+      "rules": "Erinnerung",
+      "rule": {
+        "check": "Jeder Spieler prüft seine Sammlungen, nachdem er seine Effekte abgehandelt hat. Der Gewinner des Duells prüft vor dem Verlierer.",
+        "once": "Ein gewonnenes Plättchen ist für den Rest der Runde nicht mehr verfügbar.",
+        "faces": "Zu Beginn jeder Runde wird die sichtbare Seite des Plättchens per Münzwurf bestimmt."
+      },
+      "available": "Noch auf dem Spielplan verfügbar.",
+      "won": "Von {player} für diese Runde gewonnen.",
+      "won.mine": "Du hast es für diese Runde gewonnen."
+    },
+    "prestige": {
+      "favor": {
+        "title": "Gunst",
+        "intro": "Prestigeplättchen mit der weißen Seite nach oben sind <b>Gunst</b>-Punkte. Sie zählen zu deinem Prestige, gehen aber am Ende der Runde verloren."
+      },
+      "honor": {
+        "title": "Ehre",
+        "intro": "Prestigeplättchen mit der schwarzen Seite nach oben sind <b>Ehre</b>-Punkte. Sie zählen zu deinem Prestige, entscheiden bei Gleichstand und werden in der nächsten Runde zu Gunst."
+      },
+      "end-of-round": "Ende der Runde",
+      "rule": {
+        "total": "Gunst + Ehre = <b>Prestige</b>. Wer das meiste Prestige hat, gewinnt die Runde.",
+        "tie": "Bei Gleichstand gewinnt, wer mehr <b>Ehre</b> hat. Besteht der Gleichstand weiter, decken die Spieler ihre letzte Handkarte auf: Wer dieses letzte Duell gewinnt, gewinnt die Runde.",
+        "after": "„Die Gunst vergeht, doch die Ehre bleibt!“ Die Gunst wird abgeworfen, die Ehre wird zu bereits erworbener Gunst für die nächste Runde."
+      },
+      "change": "Die Plättchen sind 1, 3 oder 6 wert: Der Vorrat ist unbegrenzt und es wird automatisch gewechselt.",
+      "owned": "{player} hat {favor} Gunst und {honor} Ehre.",
+      "owned.mine": "Du hast {favor} Gunst und {honor} Ehre."
+    },
+    "prestige-total": {
+      "title": "Prestige",
+      "intro": "Das <b>Prestige</b> eines Spielers ist die Summe aus seiner <b>Gunst</b> (weiße Plättchen) und seiner <b>Ehre</b> (schwarze Plättchen). Es bestimmt den Gewinner jeder Runde.",
+      "gain-title": "Prestige erhalten",
+      "gain": {
+        "palace": "Die <b>Palast-Effekte</b>: Jedes gewonnene Duell bringt deine Karte in den Palast, und ihr Effekt bringt Gunst, und Ehre für Mäusepaare.",
+        "characters": "Einige <b>Charakterkarten</b>, wie die Händlerin, bringen direkt Gunst oder Ehre.",
+        "collections": "Die <b>Sammlungen</b>: 4 aufeinanderfolgende Werte im Palast oder im Dschungel bringen die Belohnung des passenden Sammlungsplättchens."
+      },
+      "round-title": "Ende der Runde",
+      "round": {
+        "win": "Nach 9 Zügen gewinnt, wer das meiste Prestige hat, die Runde.",
+        "tie": "Bei Gleichstand gewinnt, wer mehr <b>Ehre</b> hat. Besteht der Gleichstand weiter, decken die Spieler ihre letzte Handkarte auf: Wer dieses letzte Duell gewinnt, gewinnt die Runde.",
+        "after": "„Die Gunst vergeht, doch die Ehre bleibt!“ Die Gunst wird abgeworfen, die Ehre wird zu Gunst für die nächste Runde."
+      },
+      "game-title": "Die Partie gewinnen",
+      "game": "Der Gewinner einer Runde erhält eine Hälfte des goldenen Elefanten. Wer als Erster <b>beide Hälften</b> besitzt, also zwei Runden gewonnen hat, gewinnt die Partie.",
+      "owned": "{player} hat {total} Prestige ({favor} Gunst + {honor} Ehre).",
+      "owned.mine": "Du hast {total} Prestige ({favor} Gunst + {honor} Ehre)."
+    },
+    "round-victory": {
+      "title": "Rundensieg",
+      "intro": "Haati wird auf <b>zwei gewonnene Runden</b> gespielt.",
+      "winning": "Die Partie gewinnen",
+      "rule": {
+        "round": "Der Gewinner einer Runde erhält ein Rundensieg-Plättchen.",
+        "two": "Wer die ersten beiden Runden gewinnt, gewinnt die Partie.",
+        "third": "Andernfalls entscheidet eine 3. Runde: Ihr Gewinner nimmt das Plättchen seines Gegners und gewinnt die Partie."
+      },
+      "reserve": "Im Vorrat.",
+      "owned": "Von {player} gewonnen.",
+      "owned.mine": "Du hast es gewonnen."
+    },
+    "board": {
+      "title": "Das Duell der Maharadschas",
+      "intro": "Eine Runde wird in <b>9 Zügen</b> gespielt. Jeder Zug läuft in dieser Reihenfolge ab:",
+      "choose-title": "1. Karten wählen (gleichzeitig)",
+      "duel-title": "2. Duell abhandeln",
+      "effects-title": "3. Effekte und Sammlungen",
+      "refill-title": "4. Hand auffüllen: Der Verlierer wählt!",
+      "end-title": "Ende der Runde",
+      "choose": "Jeder Spieler wählt eine seiner beiden Tierkarten und fügt eventuell eine Charakterkarte hinzu, verdeckt.",
+      "duel": "Der <b>Elefant schlägt den Tiger</b>, der <b>Tiger schlägt die Maus</b>, die <b>Maus schlägt den Elefanten</b>. Zwischen zwei Tieren derselben Familie gewinnt der höhere Wert.",
+      "effects": "Der Gewinner legt seine Karte in seinen <b>Palast</b> und muss ihren Effekt anwenden. Dann legt der Verlierer seine in seinen <b>Dschungel</b> und darf ihren Effekt anwenden. Anschließend prüft jeder seine Sammlungen (4 aufeinanderfolgende Werte).",
+      "refill": "Der <b>Verlierer wählt</b> eine der beiden offenen Karten und lässt die andere seinem Gegner.",
+      "end": "Nach 9 Zügen gewinnt, wer das meiste <b>Prestige</b> (Gunst + Ehre) hat, die Runde. Die Gunst wird abgeworfen, die Ehre wird zu Gunst. Die Partie wird auf zwei gewonnene Runden gespielt."
+    }
+  },
+  "tuto": {
+    "welcome": "Willkommen im Tutorial von <b>Haati</b>!",
+    "universe": "An den prunkvollen Höfen der Maharadschas messen sich die klügsten Strategen mit ihren heiligen Tieren: dem <b>Elefanten</b>, dem <b>Tiger</b> und der <b>Maus</b>.",
+    "favor-honor": "Du musst <b>Gunst</b> <favor></favor> und <b>Ehre</b> <honor></honor> sammeln, um <b>Prestige</b> zu erlangen.",
+    "prestige": "Wer das meiste <b>Prestige</b> hat, gewinnt die Runde.",
+    "end-of-game": "Wer als Erster <b>2 Runden</b> gewinnt, gewinnt die Partie!<elephant></elephant>",
+    "turns": "Eine Runde wird in <b>9 Zügen</b> gespielt: Hier siehst du den aktuellen Zug. Jeder neue Zug wird auch in der Mitte des Tisches angekündigt.",
+    "deck-counters": "Der Zähler der Stapel zeigt die verbleibenden Karten: Sind sie leer, ist es der letzte Zug!",
+    "hand": "Das ist deine Hand: zwei Tierkarten. In jedem Zug wählen beide Spieler <b>geheim</b> ein Tier für das Duell.",
+    "play": "Auf zum Duell! Spiele deinen <b>Elefanten 2</b>. Jede Karte gehört zu einer Familie und hat einen Wert: Dazu später mehr.",
+    "cycle": "Deine Tiere treten nach einer einfachen Regel gegeneinander an: Der <b>Elefant</b> schlägt den <b>Tiger</b>, der <b>Tiger</b> schlägt die <b>Maus</b> und die <b>Maus</b> schlägt den <b>Elefanten</b>.\n\n<i>Du kannst jederzeit auf ein Element klicken, um zu erfahren, wozu es dient.</i>",
+    "palace": "Du hast gewonnen! Deine Karte kommt in deinen <b>Palast</b> und löst ihren Effekt aus: Der Elefant bringt 1 Gunst pro Elefant in deinem Palast, du erhältst also <b>1 Gunst</b>.",
+    "jungle": "Dein Gegner hat verloren: Er legt seine Karte in seinen <b>Dschungel</b>, auf seiner Seite des Spielplans, und darf ebenfalls ihren Effekt anwenden.\n\nHier erlaubt ihm der Tiger, <b>eine Karte aus einem Palast in einen Dschungel zu verschieben</b>! Eine Karte bleibt immer auf der Seite ihres Spielers: Karten können nie zwischen den Palästen und Dschungeln der beiden Spieler getauscht werden.",
+    "change-place": "Dein Gegner hat beschlossen, deinen Elefanten in deinen Dschungel zu verschieben. Achtung: Eine Karte, die den Bereich wechselt, <b>löst</b> ihren Effekt <b>nicht aus</b>!",
+    "refill": "Nachdem das Duell und die Effekte abgehandelt sind, nimmt jeder Spieler eine der offenen Tierkarten auf den Stapeln. <b>Der Verlierer des Duells wählt zuerst</b>: Du erhältst also die andere Karte.",
+    "play-mouse": "Du bist dran: Spiele deine <b>Maus 1</b>!",
+    "tiger-beats-mouse": "Der Tiger schlägt die Maus: Dein Gegner gewinnt das Duell. <b>Der Gewinner handelt immer zuerst die Palast-Effekte ab</b>: Sein Tiger bringt ihm 1 Gunst pro Tiger in seinem Dschungel, dann zieht er eine Charakterkarte.",
+    "mouse-jungle": "Ein Duell zu verlieren ist nicht immer schlecht: Deine Maus kommt in deinen Dschungel und du <b>ziehst eine Charakterkarte</b>.",
+    "character-piles": "Hier sind der <b>Nachziehstapel der Charakterkarten</b> und sein <b>Ablagestapel</b>.",
+    "character": "Hast du die <b>Charakterkarte</b> bemerkt, die auf deine Hand gekommen ist? Du kannst sie mit deiner Tierkarte kombinieren, um auf den Ausgang des Duells zu wetten! Mehr dazu beim nächsten Duell.",
+    "choose-card": "Diesmal hast du verloren: Du wählst zuerst die Karte, die deine Hand auffüllt. Nimm den <b>Elefanten 4</b>, dein Gegner nimmt dann die Maus 6.",
+    "bet": "Eine Charakterkarte wird verdeckt gespielt, zusätzlich zum Tier. Sie ist eine Wette auf deinen Sieg <win></win> oder deine Niederlage <lose></lose>. Gewinnst du deine Wette, aktivierst du den Effekt des Charakters; sonst wird die Karte abgeworfen. Die <b>Händlerin</b> bringt dir zum Beispiel 2 Gunst, wenn du dein Duell gewinnst.",
+    "play-elephant": "Spiele deinen <b>Elefanten 4</b>.",
+    "play-merchant": "Füge deine <b>Händlerin</b> hinzu, um auf deinen Sieg zu wetten.",
+    "same-family": "Auf beiden Seiten dasselbe Tier: <b>Der höhere Wert gewinnt</b>. Jede Familie hat Karten von 1 bis 8: Dein Elefant 4 schlägt den Elefanten 3 deines Gegners!",
+    "bet-won": "Du hast das Duell gewonnen: <b>Deine Wette ist aufgegangen</b>! Du kannst deine Händlerin aktivieren.",
+    "resolution-order": "Bei einer gewonnenen Wette <b>wählst du die Reihenfolge</b> der Abhandlung. Lege zuerst deinen Elefanten in deinen Palast: Er bringt 1 Gunst pro Elefant in deinem Palast, also 1 Gunst.",
+    "activate-merchant": "Aktiviere jetzt deine <b>Händlerin</b>: Sie bringt dir 2 Gunst und kommt dann auf den Ablagestapel.",
+    "collections": "Sammle <b>4 aufeinanderfolgende Werte</b> in deinem Palast oder in deinem Dschungel, egal welcher Familie, um das passende <b>Sammlungsplättchen</b> und seine Belohnung zu gewinnen. Sieh dir deinen Dschungel an: Du hast schon die 1 und die 2!",
+    "play-tiger": "Spiele deinen <b>Tiger 3</b>.",
+    "lose-to-win": "<b>Der Elefant schlägt den Tiger</b>: Dein Gegner legt seinen Elefanten in seinen Palast und erhält 1 Gunst. Dein Tiger kommt in deinen Dschungel … mit der <b>3</b>!",
+    "tiger-effect": "Der Dschungel-Effekt des Tigers erlaubt dir nun deinerseits, ein Tier aus einem Palast in einen Dschungel zu verschieben. Verschiebe deinen <b>Elefanten 4</b> aus deinem Palast in deinen Dschungel.",
+    "collection-won": "1, 2, 3, 4: Dein Dschungel bildet eine <b>Sammlung</b>! Du gewinnst das Dschungel-Sammlungsplättchen und seine Belohnung: <b>3 Gunst und 1 Ehre</b>.",
+    "honor": "Deine erste <b>Ehre</b>! Ehre (schwarze Plättchen) zählt wie Gunst zu deinem Prestige und entscheidet bei Gleichstand. Am Ende der Runde geht die Gunst verloren, aber die Ehre wird zu Gunst für die nächste Runde.",
+    "prestige-total": "Du hast 7 Gunst und 1 Ehre, dein <b>Prestige</b> beträgt also 8!",
+    "your-turn": "Jetzt spielst du das Ende der Runde: Es bleiben noch <b>5 Züge</b>!\n\n<i>Denk daran: Klicke auf ein beliebiges Spielelement (Karte, Plättchen, Spielplan, Zähler), um seine Hilfe anzuzeigen.</i>"
+  },
+  "table": {
+    "reserve": "Vorrat"
+  }
+}

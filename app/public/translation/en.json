@@ -1,1 +1,334 @@
-{}
+{
+  "header": {
+    "choose-cards": {
+      "you": "Choose your animal for the duel (and a Character if you wish)",
+      "player": "{player} chooses their cards for the duel",
+      "players": "The players choose their cards for the duel"
+    },
+    "add-character": {
+      "you": "Add a Character card to your duel, or <validate>confirm</validate>",
+      "player": "{player} chooses their cards for the duel"
+    },
+    "reveal-duel": "The duel cards are revealed",
+    "resolve-palace": {
+      "you": "Duel won! Place your card in the Palace, or activate your Character first",
+      "player": "{player} won the duel and resolves their Palace"
+    },
+    "resolve-jungle": {
+      "you": "Duel lost: place your card in the Jungle, or activate your Character first",
+      "player": "{player} lost the duel and resolves their Jungle"
+    },
+    "jungle-elephant": {
+      "you": "Elephant: move an animal from the Jungle to the Palace (yours or your opponent’s), or <pass>pass</pass>",
+      "player": "{player} may move an animal from the Jungle to the Palace"
+    },
+    "jungle-tiger": {
+      "you": "Tiger: move an animal from the Palace to the Jungle (yours or your opponent’s), or <pass>pass</pass>",
+      "player": "{player} may move an animal from the Palace to the Jungle"
+    },
+    "maharaja": {
+      "you": "Maharaja: move an animal between the Palace and the Jungle, or <pass>pass</pass>",
+      "player": "{player} activates the Maharaja"
+    },
+    "thief-win": {
+      "you": "Thief: take an animal from your opponent’s Jungle into your Jungle, or <pass>pass</pass>",
+      "player": "{player} activates the Thief"
+    },
+    "thief-lose": {
+      "you": "Thief: take an animal from your opponent’s Palace into your Palace, or <pass>pass</pass>",
+      "player": "{player} activates the Thief"
+    },
+    "hunter": {
+      "you": "Hunter: eliminate an animal from your opponent’s Palace or Jungle, or <pass>pass</pass>",
+      "player": "{player} activates the Hunter"
+    },
+    "discard-character": {
+      "you": "You may only keep two Character cards: discard one",
+      "player": "{player} discards a Character card"
+    },
+    "refill-hand": {
+      "you": "Choose one of the two face-up cards: your opponent will get the other one",
+      "player": "{player} chooses one of the two face-up cards"
+    },
+    "end-of-round": "End of the round",
+    "round-won": {
+      "you": "You win the round!",
+      "player": "{player} wins the round"
+    }
+  },
+  "panel": {
+    "prestige": "{count} Prestige",
+    "turn": "Turn {turn}"
+  },
+  "announce": {
+    "round": "Round {round}",
+    "turns-left": "{count} turns left",
+    "last-turn": "Last turn",
+    "round-won": {
+      "you": "You won round {round}",
+      "player": "{player} won round {round}"
+    }
+  },
+  "log": {
+    "hidden-animal": "an Animal card",
+    "hidden-character": "a Character card",
+    "reveal": "{player} reveals <animal/>",
+    "reveal-bet": "{player} reveals <animal/> and <character/>",
+    "reveal-bet-lost": "{player} reveals <animal/> and <character/>: bet lost, card discarded without effect",
+    "duel-won": "{player} wins the duel",
+    "place": {
+      "palace": "{player} places <animal/> in their Palace",
+      "jungle": "{player} places <animal/> in their Jungle"
+    },
+    "activate": "{player} activates <character/>",
+    "draw-character": "{player} draws a Character card",
+    "discard-character": "{player} discards <character/>",
+    "from": {
+      "palace": "from their Palace",
+      "palace.other": "from {owner}’s Palace",
+      "jungle": "from their Jungle",
+      "jungle.other": "from {owner}’s Jungle"
+    },
+    "to": {
+      "palace": "to their Palace",
+      "palace.other": "to {owner}’s Palace",
+      "jungle": "to their Jungle",
+      "jungle.other": "to {owner}’s Jungle"
+    },
+    "move": "{player} moves <animal/> {from} {to}",
+    "hunt": "{player} eliminates <animal/> {from}",
+    "pass": "{player} gives up the effect",
+    "collection": {
+      "palace": "{player} completes the Palace Collection",
+      "jungle": "{player} completes the Jungle Collection"
+    },
+    "gain": "{player} gains {gain}",
+    "favor": "{count, plural, one {# Favor} other {# Favor}}",
+    "honor": "{count, plural, one {# Honor} other {# Honor}}",
+    "and": " and ",
+    "choose": "{player} chooses <animal/>",
+    "receive": "{player} receives <animal/>",
+    "last-card": "Perfect tie: {player} reveals their last card, <animal/>",
+    "round-won": "{player} wins the round: {winner} Prestige against {loser}",
+    "round-won.honor": "{player} wins the round: tied at {prestige} Prestige, but {winner} Honor against {loser}",
+    "round-won.duel": "{player} wins the round thanks to the tie-breaking duel",
+    "honor-to-favor": "Favor is discarded, Honor becomes Favor"
+  },
+  "button": {
+    "play": "Play",
+    "bet": "Bet",
+    "to-palace": "To the Palace",
+    "to-jungle": "To the Jungle",
+    "eliminate": "Eliminate",
+    "take": "Take",
+    "activate": "Activate",
+    "discard": "Discard"
+  },
+  "help": {
+    "taken": {
+      "title": "Card taken on the previous turn",
+      "intro": "{player} took this card on the previous turn:",
+      "location": "{player} took this card on the previous turn and keeps it in hand."
+    },
+    "location": {
+      "animal-deck": "In an Animal deck, face down.",
+      "animal-offer": "Face up on top of a deck: the loser of the next duel will choose between the two face-up cards.",
+      "animal-discard": "Eliminated by the Hunter.",
+      "character-deck": "In the Character deck.",
+      "character-discard": "In the Character discard pile.",
+      "hand": "In {player}’s hand.",
+      "hand.mine": "In your hand.",
+      "duel": "Committed to the duel by {player}.",
+      "duel.mine": "Committed to your duel.",
+      "palace": "In {player}’s Palace.",
+      "palace.mine": "In your Palace.",
+      "jungle": "In {player}’s Jungle.",
+      "jungle.mine": "In your Jungle."
+    },
+    "animal": {
+      "hidden": {
+        "title": "Animal card",
+        "intro": "There are 24 Animal cards: 3 families (<b>Elephant</b>, <b>Tiger</b> and <b>Mouse</b>), each numbered from 1 to 8.",
+        "set-aside": "At the start of each round, 4 of them are set aside at random, face down, without anyone seeing them: they are not played during the round. Even counting the cards already played, you can never be sure which ones remain in the decks or in your opponent’s hand."
+      },
+      "elephant": {
+        "title": "Elephant {value}",
+        "duel": "The <b>Elephant beats the Tiger</b>, but is beaten by the Mouse.",
+        "palace": "Gain <b>1 Favor per Elephant</b> in your Palace, including the one you just placed.",
+        "jungle": "You may <b>move 1 animal from the Jungle to the Palace</b>, yours or your opponent’s. It can be the Elephant you just played."
+      },
+      "tiger": {
+        "title": "Tiger {value}",
+        "duel": "The <b>Tiger beats the Mouse</b>, but is beaten by the Elephant.",
+        "palace": "Gain <b>1 Favor per Tiger</b> in your Jungle. Then <b>draw 1 Character card</b>.",
+        "jungle": "You may <b>move 1 animal from the Palace to the Jungle</b>, yours or your opponent’s."
+      },
+      "mouse": {
+        "title": "Mouse {value}",
+        "duel": "The <b>Mouse beats the Elephant</b>, but is beaten by the Tiger.",
+        "palace": "Gain <b>1 Honor and 1 Favor per pair of Mice</b> in your Palace, including the one you just completed.",
+        "jungle": "<b>Draw 1 Character card</b>."
+      },
+      "same-family": "If both animals belong to the same family, <b>the highest value</b> wins the duel.",
+      "palace": "In the Palace (duel won)",
+      "jungle": "In the Jungle (duel lost)",
+      "collection": "A moved animal does not trigger the effect of the place it arrives in. Gather <b>4 consecutive values</b> in your Palace or your Jungle to win a Collection."
+    },
+    "character": {
+      "hidden": "Character card",
+      "hidden.intro": "There are 8 Character cards: the Merchant, the Maharaja, the Thief and the Hunter, each with a bet on winning and a bet on losing.",
+      "merchant": "The Merchant",
+      "maharaja": "The Maharaja",
+      "thief": "The Thief",
+      "hunter": "The Hunter",
+      "bet": {
+        "win": "✓ Bet on winning the duel",
+        "lose": "✗ Bet on losing the duel"
+      },
+      "effect": {
+        "11": "Duel won: gain <b>2 Favor</b>.",
+        "12": "Duel lost: gain <b>1 Favor and 1 Honor</b>.",
+        "21": "Duel won: <b>move any animal</b> from the Palace to the Jungle, or the other way around (yours or your opponent’s). The moved animal does not trigger the effect of the place.",
+        "22": "Duel lost: gain <b>1 Favor</b>, then <b>move any animal</b> from the Palace to the Jungle, or the other way around (yours or your opponent’s). The moved animal does not trigger the effect of the place.",
+        "31": "Duel won: take <b>1 animal from your opponent’s Jungle</b> and place it in your own Jungle, without triggering the effect of the place.",
+        "32": "Duel lost: take <b>1 animal from your opponent’s Palace</b> and place it in your own Palace, without triggering the effect of the place.",
+        "41": "Duel won: gain <b>1 Favor</b> and <b>eliminate 1 of your opponent’s animals</b> (in their Palace or Jungle). That animal is discarded.",
+        "42": "Duel lost: gain <b>1 Honor</b> and <b>eliminate 1 of your opponent’s animals</b> (in their Palace or Jungle). That animal is discarded."
+      },
+      "rules": "Reminders",
+      "rule": {
+        "play": "You may play <b>only one Character card</b>, face down, per duel, in addition to your Animal card.",
+        "reveal": "<b>Bet won</b>: activate the card before or after your Animal card, then discard it. <b>Bet lost</b>: discard it without effect.",
+        "limit": "You may only keep <b>two Character cards</b> in hand: if you draw a 3<sup>rd</sup> one, discard one.",
+        "draw": "Unplayed Character cards stay in hand from one round to the next."
+      }
+    },
+    "collection": {
+      "palace": {
+        "title": "Palace Collection",
+        "intro": "Won by the first player who gathers <b>4 consecutive values in their Palace</b>, regardless of the animals and their order."
+      },
+      "jungle": {
+        "title": "Jungle Collection",
+        "intro": "Won by the first player who gathers <b>4 consecutive values in their Jungle</b>, regardless of the animals and their order."
+      },
+      "reward": "Reward",
+      "gain": "{favor, plural, =0 {} one {<b># Favor</b>} other {<b># Favor</b>}}{honor, plural, =0 {} one { and <b># Honor</b>} other { and <b># Honor</b>}}",
+      "rules": "Reminders",
+      "rule": {
+        "check": "Each player checks their Collections after resolving their effects. The winner of the duel checks before the loser.",
+        "once": "Once won, a token is no longer available for the rest of the round.",
+        "faces": "At the start of each round, the visible side of the token is decided by a coin toss."
+      },
+      "available": "Still available on the board.",
+      "won": "Won by {player} for this round.",
+      "won.mine": "You won it for this round."
+    },
+    "prestige": {
+      "favor": {
+        "title": "Favor",
+        "intro": "Prestige tokens on their white side are <b>Favor</b> points. They count towards your Prestige, but are lost at the end of the round."
+      },
+      "honor": {
+        "title": "Honor",
+        "intro": "Prestige tokens on their black side are <b>Honor</b> points. They count towards your Prestige, break ties, and become Favor for the next round."
+      },
+      "end-of-round": "End of the round",
+      "rule": {
+        "total": "Favor + Honor = <b>Prestige</b>. The player with the most Prestige wins the round.",
+        "tie": "In case of a tie, the player with the most <b>Honor</b> wins. If the tie persists, the players reveal the last card in their hand: the winner of this final duel wins the round.",
+        "after": "“Favor fades, but Honor endures!” Favor is discarded, and Honor becomes Favor already earned for the next round."
+      },
+      "change": "Tokens are worth 1, 3 or 6: the supply is unlimited and change is made automatically.",
+      "owned": "{player} has {favor} Favor and {honor} Honor.",
+      "owned.mine": "You have {favor} Favor and {honor} Honor."
+    },
+    "prestige-total": {
+      "title": "Prestige",
+      "intro": "A player’s <b>Prestige</b> is the sum of their <b>Favor</b> (white tokens) and their <b>Honor</b> (black tokens). It decides the winner of each round.",
+      "gain-title": "Gaining Prestige",
+      "gain": {
+        "palace": "<b>Palace effects</b>: each won duel places your card in the Palace, and its effect earns Favor, and Honor for pairs of Mice.",
+        "characters": "Some <b>Character</b> cards, such as the Merchant, directly earn Favor or Honor.",
+        "collections": "<b>Collections</b>: 4 consecutive values in the Palace or the Jungle earn the reward of the matching Collection token."
+      },
+      "round-title": "End of the round",
+      "round": {
+        "win": "After 9 turns, the player with the most Prestige wins the round.",
+        "tie": "In case of a tie, the player with the most <b>Honor</b> wins. If the tie persists, the players reveal the last card in their hand: the winner of this final duel wins the round.",
+        "after": "“Favor fades, but Honor endures!” Favor is discarded, and Honor becomes Favor for the next round."
+      },
+      "game-title": "Winning the game",
+      "game": "The winner of a round receives one half of the golden elephant. The first player to gather <b>both halves</b>, by winning two rounds, wins the game.",
+      "owned": "{player} has {total} Prestige ({favor} Favor + {honor} Honor).",
+      "owned.mine": "You have {total} Prestige ({favor} Favor + {honor} Honor)."
+    },
+    "round-victory": {
+      "title": "Round Victory",
+      "intro": "Haati is played as <b>best of three rounds</b>.",
+      "winning": "Winning the game",
+      "rule": {
+        "round": "The winner of a round receives a Round Victory token.",
+        "two": "A player who wins the first two rounds wins the game.",
+        "third": "Otherwise, a 3<sup>rd</sup> round decides between the players: its winner takes their opponent’s token and wins the game."
+      },
+      "reserve": "In the supply.",
+      "owned": "Won by {player}.",
+      "owned.mine": "You won it."
+    },
+    "board": {
+      "title": "The duel of the Maharajas",
+      "intro": "A round is played in <b>9 turns</b>. Each turn goes in this order:",
+      "choose-title": "1. Choosing cards (simultaneous)",
+      "duel-title": "2. Resolving the duel",
+      "effects-title": "3. Effects and Collections",
+      "refill-title": "4. Refilling your hand: the loser chooses!",
+      "end-title": "End of the round",
+      "choose": "Each player chooses one of their two Animal cards and may add a Character card, face down.",
+      "duel": "The <b>Elephant beats the Tiger</b>, the <b>Tiger beats the Mouse</b>, the <b>Mouse beats the Elephant</b>. Between two animals of the same family, the highest value wins.",
+      "effects": "The winner places their card in their <b>Palace</b> and must apply its effect. Then the loser places theirs in their <b>Jungle</b> and may apply its effect. Each player then checks their Collections (4 consecutive values).",
+      "refill": "The <b>loser chooses</b> one of the two face-up cards and leaves the other one to their opponent.",
+      "end": "After 9 turns, the player with the most <b>Prestige</b> (Favor + Honor) wins the round. Favor is discarded, Honor becomes Favor. The game is played as best of three rounds."
+    }
+  },
+  "tuto": {
+    "welcome": "Welcome to the <b>Haati</b> tutorial!",
+    "universe": "In the lavish courts of the Maharajas, the finest strategists face off through their sacred animals: the <b>Elephant</b>, the <b>Tiger</b> and the <b>Mouse</b>.",
+    "favor-honor": "You will have to earn <b>Favor</b> <favor></favor> and <b>Honor</b> <honor></honor> points to gain <b>Prestige</b>.",
+    "prestige": "The duelist with the most <b>Prestige</b> points wins the round.",
+    "end-of-game": "The first to win <b>2 rounds</b> wins the game!<elephant></elephant>",
+    "turns": "A round is played in <b>9 turns</b>: here is the current turn. Each new turn is also announced in the middle of the table.",
+    "deck-counters": "The deck counters show the remaining cards: when the decks are empty, it is the last turn!",
+    "hand": "Here is your hand: two Animal cards. Each turn, both players <b>secretly</b> choose an animal for the duel.",
+    "play": "Time for a duel! Play your <b>Elephant 2</b>. Each card belongs to a family and has a value: more on that later.",
+    "cycle": "Your animals face off according to a simple rule: the <b>Elephant</b> beats the <b>Tiger</b>, the <b>Tiger</b> beats the <b>Mouse</b>, and the <b>Mouse</b> beats the <b>Elephant</b>.\n\n<i>At any time, you can click an element to find out what it is for.</i>",
+    "palace": "You won! Your card is placed in your <b>Palace</b> and triggers its effect: the Elephant earns 1 Favor per Elephant in your Palace, so you gain <b>1 Favor</b>.",
+    "jungle": "Your opponent lost: they place their card in their <b>Jungle</b>, on their side of the board, and may apply its effect too.\n\nHere, the Tiger lets them <b>move a card from a Palace to a Jungle</b>! A card always stays on its player’s side: cards can never be swapped between the two players’ Palaces and Jungles.",
+    "change-place": "Your opponent decided to move your Elephant to your Jungle. Watch out: a card that changes area <b>does not trigger</b> its effect!",
+    "refill": "Once the duel and the effects are resolved, each player takes one of the Animal cards face up on the decks. <b>The loser of the duel chooses first</b>: so you will get the other card.",
+    "play-mouse": "Your turn: play your <b>Mouse 1</b>!",
+    "tiger-beats-mouse": "The Tiger beats the Mouse: your opponent wins the duel. <b>The winner always resolves the Palace effects first</b>: their Tiger earns them 1 Favor per Tiger in their Jungle, then makes them draw a Character card.",
+    "mouse-jungle": "Losing a duel is not always bad: your Mouse goes to your Jungle and makes you <b>draw a Character card</b>.",
+    "character-piles": "Here are the <b>Character deck</b> and its <b>discard pile</b>.",
+    "character": "Did you notice the <b>Character</b> card that joined your hand? You can pair it with your Animal card to bet on the outcome of the duel! I will tell you more at the next duel.",
+    "choose-card": "This time, you lost: you choose first the card that completes your hand. Take the <b>Elephant 4</b>, and your opponent will then take the Mouse 6.",
+    "bet": "A Character card is played face down, in addition to the animal. It is a bet on your victory <win></win> or your defeat <lose></lose>. If you win your bet, you activate the Character’s effect; otherwise, the card is discarded. For example, the <b>Merchant</b> earns you 2 Favor if you win your duel.",
+    "play-elephant": "Play your <b>Elephant 4</b>.",
+    "play-merchant": "Add your <b>Merchant</b> to bet on your victory.",
+    "same-family": "The same animal on both sides: <b>the highest value wins</b>. Each family has cards numbered from 1 to 8: your Elephant 4 beats your opponent’s Elephant 3!",
+    "bet-won": "You won the duel: <b>your bet succeeded</b>! You will be able to activate your Merchant.",
+    "resolution-order": "With a won bet, <b>you choose the order</b> of resolution. First place your Elephant in your Palace: it earns 1 Favor per Elephant in your Palace, that is 1 Favor.",
+    "activate-merchant": "Now activate your <b>Merchant</b>: she earns you 2 Favor, then goes to the discard pile.",
+    "collections": "Gather <b>4 consecutive values</b> in your Palace or in your Jungle, whatever the family, to win the matching <b>Collection</b> token and its reward. Look at your Jungle: you already have the 1 and the 2!",
+    "play-tiger": "Play your <b>Tiger 3</b>.",
+    "lose-to-win": "<b>The Elephant beats the Tiger</b>: your opponent places their Elephant in their Palace and gains 1 Favor. Your Tiger goes to your Jungle… with the <b>3</b>!",
+    "tiger-effect": "The Tiger’s Jungle effect lets you, in turn, move an animal from a Palace to a Jungle. Move your <b>Elephant 4</b> from your Palace to your Jungle.",
+    "collection-won": "1, 2, 3, 4: your Jungle forms a <b>Collection</b>! You win the Jungle Collection token and its reward: <b>3 Favor and 1 Honor</b>.",
+    "honor": "Your first <b>Honor</b>! Honor (black tokens) counts towards your Prestige like Favor and breaks ties. At the end of the round, Favor is lost, but Honor becomes Favor for the next round.",
+    "prestige-total": "You have 7 Favor and 1 Honor, so your <b>Prestige</b> is 8!",
+    "your-turn": "Your turn to play the end of the round: <b>5 turns</b> left!\n\n<i>Remember: click any game element (card, token, board, counter) to show its help.</i>"
+  },
+  "table": {
+    "reserve": "Supply"
+  }
+}
