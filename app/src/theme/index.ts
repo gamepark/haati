@@ -168,7 +168,8 @@ export const theme: GameTheme = {
     background: {
       ...defaultTheme.root.background,
       image: background,
-      overlay: 'rgba(252, 243, 214, 0.25)'
+      // Darkened like the other games, tinted with the deep plum of the interface rather than plain black.
+      overlay: 'rgba(22, 12, 18, 0.74)'
     }
   },
   palette: {
