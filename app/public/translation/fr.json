@@ -19,27 +19,27 @@
       "player": "{player} a perdu le duel et résout sa Jungle"
     },
     "jungle-elephant": {
-      "you": "Éléphant : déplacez un animal de la Jungle vers le Palais (chez vous ou chez l’adversaire), ou <pass>passez</pass>",
+      "you": "Éléphant : déplacez un animal de la Jungle au Palais, ou <pass>passez</pass>",
       "player": "{player} peut déplacer un animal de la Jungle vers le Palais"
     },
     "jungle-tiger": {
-      "you": "Tigre : déplacez un animal du Palais vers la Jungle (chez vous ou chez l’adversaire), ou <pass>passez</pass>",
+      "you": "Tigre : déplacez un animal du Palais à la Jungle, ou <pass>passez</pass>",
       "player": "{player} peut déplacer un animal du Palais vers la Jungle"
     },
     "maharaja": {
-      "you": "Maharaja : déplacez un animal entre le Palais et la Jungle, ou <pass>passez</pass>",
+      "you": "Maharaja : déplacez un animal entre Palais et Jungle, ou <pass>passez</pass>",
       "player": "{player} active le Maharaja"
     },
     "thief-win": {
-      "you": "Voleuse : prenez un animal de la Jungle adverse pour votre Jungle, ou <pass>passez</pass>",
+      "you": "Voleuse : volez un animal de la Jungle adverse, ou <pass>passez</pass>",
       "player": "{player} active la Voleuse"
     },
     "thief-lose": {
-      "you": "Voleuse : prenez un animal du Palais adverse pour votre Palais, ou <pass>passez</pass>",
+      "you": "Voleuse : volez un animal du Palais adverse, ou <pass>passez</pass>",
       "player": "{player} active la Voleuse"
     },
     "hunter": {
-      "you": "Chasseur : éliminez un animal du Palais ou de la Jungle adverse, ou <pass>passez</pass>",
+      "you": "Chasseur : éliminez un animal adverse, ou <pass>passez</pass>",
       "player": "{player} active le Chasseur"
     },
     "discard-character": {

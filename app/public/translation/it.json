@@ -19,27 +19,27 @@
       "player": "{player} ha perso il duello e risolve la sua Giungla"
     },
     "jungle-elephant": {
-      "you": "Elefante: sposta un animale dalla Giungla al Palazzo (tuo o dell’avversario), oppure <pass>passa</pass>",
+      "you": "Elefante: sposta un animale dalla Giungla al Palazzo, o <pass>passa</pass>",
       "player": "{player} può spostare un animale dalla Giungla al Palazzo"
     },
     "jungle-tiger": {
-      "you": "Tigre: sposta un animale dal Palazzo alla Giungla (tuo o dell’avversario), oppure <pass>passa</pass>",
+      "you": "Tigre: sposta un animale dal Palazzo alla Giungla, o <pass>passa</pass>",
       "player": "{player} può spostare un animale dal Palazzo alla Giungla"
     },
     "maharaja": {
-      "you": "Maharaja: sposta un animale tra il Palazzo e la Giungla, oppure <pass>passa</pass>",
+      "you": "Maharaja: sposta un animale tra Palazzo e Giungla, o <pass>passa</pass>",
       "player": "{player} attiva il Maharaja"
     },
     "thief-win": {
-      "you": "Ladra: prendi un animale dalla Giungla avversaria per la tua Giungla, oppure <pass>passa</pass>",
+      "you": "Ladra: ruba un animale dalla Giungla avversaria, o <pass>passa</pass>",
       "player": "{player} attiva la Ladra"
     },
     "thief-lose": {
-      "you": "Ladra: prendi un animale dal Palazzo avversario per il tuo Palazzo, oppure <pass>passa</pass>",
+      "you": "Ladra: ruba un animale dal Palazzo avversario, o <pass>passa</pass>",
       "player": "{player} attiva la Ladra"
     },
     "hunter": {
-      "you": "Cacciatore: elimina un animale dal Palazzo o dalla Giungla avversari, oppure <pass>passa</pass>",
+      "you": "Cacciatore: elimina un animale avversario, o <pass>passa</pass>",
       "player": "{player} attiva il Cacciatore"
     },
     "discard-character": {

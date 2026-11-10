@@ -19,11 +19,11 @@
       "player": "{player} hat das Duell verloren und handelt den Dschungel ab"
     },
     "jungle-elephant": {
-      "you": "Elefant: Verschiebe ein Tier aus dem Dschungel in den Palast (bei dir oder beim Gegner) oder <pass>passe</pass>",
+      "you": "Elefant: Verschiebe ein Tier vom Dschungel in den Palast oder <pass>passe</pass>",
       "player": "{player} darf ein Tier aus dem Dschungel in den Palast verschieben"
     },
     "jungle-tiger": {
-      "you": "Tiger: Verschiebe ein Tier aus dem Palast in den Dschungel (bei dir oder beim Gegner) oder <pass>passe</pass>",
+      "you": "Tiger: Verschiebe ein Tier vom Palast in den Dschungel oder <pass>passe</pass>",
       "player": "{player} darf ein Tier aus dem Palast in den Dschungel verschieben"
     },
     "maharaja": {
@@ -31,15 +31,15 @@
       "player": "{player} aktiviert den Maharadscha"
     },
     "thief-win": {
-      "you": "Diebin: Nimm ein Tier aus dem gegnerischen Dschungel in deinen Dschungel oder <pass>passe</pass>",
+      "you": "Diebin: Stiehl ein Tier aus dem gegnerischen Dschungel oder <pass>passe</pass>",
       "player": "{player} aktiviert die Diebin"
     },
     "thief-lose": {
-      "you": "Diebin: Nimm ein Tier aus dem gegnerischen Palast in deinen Palast oder <pass>passe</pass>",
+      "you": "Diebin: Stiehl ein Tier aus dem gegnerischen Palast oder <pass>passe</pass>",
       "player": "{player} aktiviert die Diebin"
     },
     "hunter": {
-      "you": "Jäger: Eliminiere ein Tier aus dem gegnerischen Palast oder Dschungel oder <pass>passe</pass>",
+      "you": "Jäger: Eliminiere ein gegnerisches Tier oder <pass>passe</pass>",
       "player": "{player} aktiviert den Jäger"
     },
     "discard-character": {

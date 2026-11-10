@@ -19,27 +19,27 @@
       "player": "{player} lost the duel and resolves their Jungle"
     },
     "jungle-elephant": {
-      "you": "Elephant: move an animal from the Jungle to the Palace (yours or your opponent’s), or <pass>pass</pass>",
+      "you": "Elephant: move an animal from Jungle to Palace, or <pass>pass</pass>",
       "player": "{player} may move an animal from the Jungle to the Palace"
     },
     "jungle-tiger": {
-      "you": "Tiger: move an animal from the Palace to the Jungle (yours or your opponent’s), or <pass>pass</pass>",
+      "you": "Tiger: move an animal from Palace to Jungle, or <pass>pass</pass>",
       "player": "{player} may move an animal from the Palace to the Jungle"
     },
     "maharaja": {
-      "you": "Maharaja: move an animal between the Palace and the Jungle, or <pass>pass</pass>",
+      "you": "Maharaja: move an animal between Palace and Jungle, or <pass>pass</pass>",
       "player": "{player} activates the Maharaja"
     },
     "thief-win": {
-      "you": "Thief: take an animal from your opponent’s Jungle into your Jungle, or <pass>pass</pass>",
+      "you": "Thief: steal an animal from the opponent’s Jungle, or <pass>pass</pass>",
       "player": "{player} activates the Thief"
     },
     "thief-lose": {
-      "you": "Thief: take an animal from your opponent’s Palace into your Palace, or <pass>pass</pass>",
+      "you": "Thief: steal an animal from the opponent’s Palace, or <pass>pass</pass>",
       "player": "{player} activates the Thief"
     },
     "hunter": {
-      "you": "Hunter: eliminate an animal from your opponent’s Palace or Jungle, or <pass>pass</pass>",
+      "you": "Hunter: eliminate an opponent’s animal, or <pass>pass</pass>",
       "player": "{player} activates the Hunter"
     },
     "discard-character": {

@@ -19,27 +19,27 @@
       "player": "{player} ha perdido el duelo y resuelve su Jungla"
     },
     "jungle-elephant": {
-      "you": "Elefante: mueve un animal de la Jungla al Palacio (tuyo o del rival), o <pass>pasa</pass>",
+      "you": "Elefante: mueve un animal de la Jungla al Palacio, o <pass>pasa</pass>",
       "player": "{player} puede mover un animal de la Jungla al Palacio"
     },
     "jungle-tiger": {
-      "you": "Tigre: mueve un animal del Palacio a la Jungla (tuyo o del rival), o <pass>pasa</pass>",
+      "you": "Tigre: mueve un animal del Palacio a la Jungla, o <pass>pasa</pass>",
       "player": "{player} puede mover un animal del Palacio a la Jungla"
     },
     "maharaja": {
-      "you": "Maharajá: mueve un animal entre el Palacio y la Jungla, o <pass>pasa</pass>",
+      "you": "Maharajá: mueve un animal entre Palacio y Jungla, o <pass>pasa</pass>",
       "player": "{player} activa al Maharajá"
     },
     "thief-win": {
-      "you": "Ladrona: toma un animal de la Jungla rival para tu Jungla, o <pass>pasa</pass>",
+      "you": "Ladrona: roba un animal de la Jungla rival, o <pass>pasa</pass>",
       "player": "{player} activa a la Ladrona"
     },
     "thief-lose": {
-      "you": "Ladrona: toma un animal del Palacio rival para tu Palacio, o <pass>pasa</pass>",
+      "you": "Ladrona: roba un animal del Palacio rival, o <pass>pasa</pass>",
       "player": "{player} activa a la Ladrona"
     },
     "hunter": {
-      "you": "Cazador: elimina un animal del Palacio o de la Jungla rival, o <pass>pasa</pass>",
+      "you": "Cazador: elimina un animal rival, o <pass>pasa</pass>",
       "player": "{player} activa al Cazador"
     },
     "discard-character": {
