@@ -1,4 +1,4 @@
-import { css, keyframes } from '@emotion/react'
+import { css, Keyframes, keyframes } from '@emotion/react'
 import { LocationType } from '@gamepark/haati/material/LocationType'
 import { MaterialType } from '@gamepark/haati/material/MaterialType'
 import { ROUNDS_TO_WIN } from '@gamepark/haati/rules/EndOfRoundRule'
@@ -59,21 +59,20 @@ export const roundWonShow = (context: ItemContext, move: MaterialMove, duration:
   const turnedFrom = transforms.includes('rotateY(180deg)') ? 180 : 0
   const turnedTo = half > 0 ? 180 : 0
   const base = transforms.filter((transform) => transform !== 'rotateY(180deg)').join(' ')
-  const frame = (to: { x: number; y: number }, z: number, scale: number, turn: number, glow: number) =>
-    `transform: ${base} translate3d(${to.x - from.x}em, ${to.y - from.y}em, ${z}em) scale(${scale}) rotateY(${turn}deg);
-     filter: drop-shadow(0 0 ${glow}em ${colors.goldLight});`
+  const frame = (to: { x: number; y: number }, z: number, scale: number, turn: number) =>
+    `transform: ${base} translate3d(${to.x - from.x}em, ${to.y - from.y}em, ${z}em) scale(${scale}) rotateY(${turn}deg);`
   const centre = { x: 0, y: 0 }
   const animation = keyframes`
-    0% { ${frame(from, 0, 1, turnedFrom, 0)} }
-    ${ROUND_WON_ARRIVED}% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo, 0)} }
-    ${ROUND_WON_SHINING}%, ${ROUND_WON_LEAVING}% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo, 0.4)} }
-    100% { ${frame(place, 0, 1, turnedTo, 0)} }
+    0% { ${frame(from, 0, 1, turnedFrom)} }
+    ${ROUND_WON_ARRIVED}%, ${ROUND_WON_LEAVING}% { ${frame(centre, 20, VICTORY_SHOW_SCALE, turnedTo)} }
+    100% { ${frame(place, 0, 1, turnedTo)} }
   `
-  return css`
-    > * {
-      animation: ${animation} ${duration}s ease-in-out forwards;
-    }
+  const glow = keyframes`
+    0%, ${ROUND_WON_ARRIVED}% { ${glowFrame(0)} }
+    ${ROUND_WON_SHINING}%, ${ROUND_WON_LEAVING}% { ${glowFrame(VICTORY_GLOW)} }
+    100% { ${glowFrame(0)} }
   `
+  return showCss(animation, glow, duration)
 }
 
 /**
@@ -99,28 +98,44 @@ export const victoryShow = (context: ItemContext, move: MaterialMove, duration: 
   const transforms = transformItem(context)
   const flipped = transforms.includes('rotateY(180deg)')
   const base = transforms.filter((transform) => transform !== 'rotateY(180deg)').join(' ')
-  const frame = (to: { x: number; y: number }, z: number, scale: number, glow: number) =>
-    `transform: ${base} translate3d(${to.x - from.x}em, ${to.y - from.y}em, ${z}em) scale(${scale})${flipped ? ' rotateY(180deg)' : ''};
-     filter: drop-shadow(0 0 ${glow}em ${colors.goldLight});`
-  const still = frame(from, 0, 1, 0)
-  const shown = frame(centre, 20, VICTORY_SHOW_SCALE, 0)
-  const shining = frame(centre, 20, VICTORY_SHOW_SCALE, 0.4)
+  const frame = (to: { x: number; y: number }, z: number, scale: number) =>
+    `transform: ${base} translate3d(${to.x - from.x}em, ${to.y - from.y}em, ${z}em) scale(${scale})${flipped ? ' rotateY(180deg)' : ''};`
+  const still = frame(from, 0, 1)
+  const shown = frame(centre, 20, VICTORY_SHOW_SCALE)
   const animation = held
     ? keyframes`
         0% { ${still} }
-        25%, 50% { ${shown} }
-        65%, 82% { ${shining} }
-        100% { ${frame(place, 0, 1, 0)} }
+        25%, 82% { ${shown} }
+        100% { ${frame(place, 0, 1)} }
       `
     : keyframes`
         0%, 25% { ${still} }
-        50% { ${shown} }
-        65%, 82% { ${shining} }
-        100% { ${frame(place, 0, 1, 0)} }
+        50%, 82% { ${shown} }
+        100% { ${frame(place, 0, 1)} }
       `
-  return css`
-    > * {
-      animation: ${animation} ${duration}s ease-in-out forwards;
-    }
+  const glow = keyframes`
+    0%, 50% { ${glowFrame(0)} }
+    65%, 82% { ${glowFrame(VICTORY_GLOW)} }
+    100% { ${glowFrame(0)} }
   `
+  return showCss(animation, glow, duration)
 }
+
+/** How far the golden glow of a Round victory token spreads while it shines in the middle (em). */
+const VICTORY_GLOW = 0.4
+
+const glowFrame = (spread: number) => `filter: drop-shadow(0 0 ${spread}em ${colors.goldLight});`
+
+/**
+ * The token moves and turns over as a whole, while each of its faces glows by itself: a filter on the
+ * element that turns over would flatten it (see the CSS Transforms spec), and Firefox, which follows
+ * the spec, then shows the front face mirrored in place of the back one, or none of them.
+ */
+const showCss = (animation: Keyframes, glow: Keyframes, duration: number) => css`
+  > * {
+    animation: ${animation} ${duration}s ease-in-out forwards;
+  }
+  > * > * > * {
+    animation: ${glow} ${duration}s ease-in-out forwards;
+  }
+`
