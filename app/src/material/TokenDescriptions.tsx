@@ -128,9 +128,20 @@ class PrestigeDescription extends MoneyDescription<number, MaterialType, Locatio
   getItemExtraCss(item: MaterialItem<number, LocationType, number>, context: ItemContext) {
     const extraCss = super.getItemExtraCss(item, context)
     const shines = item.location.type === LocationType.PlayerPrestige && !!item.location.rotation && getTutorialEffect(context) === TutorialEffect.Honor
-    return shines ? [extraCss, tutorialShineCss] : extraCss
+    return shines ? [extraCss, facesShineCss] : extraCss
   }
 }
+
+/**
+ * The shine goes on the faces, not on the token: its filter would flatten the token (transform-style: flat), and the
+ * front face, turned away from the player by the token's rotateY(180deg), would show again, Favor instead of Honor.
+ * The faces lie in the hover wrapper of the token (see MaterialComponent in react-game).
+ */
+const facesShineCss = css`
+  > * > * {
+    ${tutorialShineCss};
+  }
+`
 
 export const boardDescription = new HaatiBoardDescription()
 export const collectionTokenDescription = new CollectionTokenDescription()
